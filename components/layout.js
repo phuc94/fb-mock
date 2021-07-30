@@ -1,17 +1,17 @@
 import Nav from './Navbar';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar/searchbar';
 import LeftSideBar from './Sidebar/left';
 import RightSideBar from './Sidebar/right';
 
 const Layout = (props)=>{
     return(
-        <section>
+        <section className="flex flex-col">
             <Nav />
-            <SearchBar />
+            <SearchBar />            
             <div className="flex justify-between">
-                <LeftSideBar />
+                <LeftSideBar className=''/>
                 {props.children}
-                <RightSideBar />
+                <RightSideBar className=""/>
             </div>
             
         </section>

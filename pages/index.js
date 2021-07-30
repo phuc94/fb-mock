@@ -1,6 +1,6 @@
 import Layout from '../components/layout';
 import axios from 'axios'; 
-
+import MainColumn from '../components/Post/main-column';
 
 const handleAPI = ()=>{
     const options ={
@@ -11,7 +11,7 @@ const handleAPI = ()=>{
 const Index = ()=> (
     <section>
         <Layout>
-            <h1>Layout Children</h1>
+            <MainColumn />
         </Layout>
     </section>
 );

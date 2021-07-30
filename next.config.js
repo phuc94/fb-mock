@@ -1,3 +1,5 @@
 module.exports = {
-    /* config options here */
-  }
+  images: {
+    domains: ['via.placeholder.com'],
+  },
+}
