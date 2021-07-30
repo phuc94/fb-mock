@@ -1,17 +1,22 @@
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 export default class MyDocument extends Document {
     render(){
         return (
-            <html>
+            <Html>
                 <Head>
                     <title>CV project</title>
+
+                    {/* Link */}
                 </Head>
                 <body>
                     <Main />
                     <NextScript />
+
+                    {/* Javascript Library */}
+
                 </body>
-            </html>
+            </Html>
         )
     }
 }
