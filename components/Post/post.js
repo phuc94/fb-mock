@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ShareIcon from '@material-ui/icons/Share';
 import ChatBubbleOutlineRoundedIcon from '@material-ui/icons/ChatBubbleOutlineRounded';
@@ -51,7 +52,7 @@ const Lower= ()=>{
             <hr/>
             <div className="flex justify-between p-2">
                 <div className="flex gap-2 hover:bg-gray-300 px-16 py-1 rounded cursor-pointer">
-                    <ThumbUpAltIcon />
+                    <ThumbUpAltOutlinedIcon />
                     <span>Like</span>
                 </div>
                 <div className="flex gap-2 hover:bg-gray-300 px-16 py-1 rounded cursor-pointer">
@@ -70,7 +71,7 @@ const Lower= ()=>{
 
 const Post = ()=>{
     return (
-        <div className="bg-gray-800  rounded-xl text-white">
+        <div className="bg-gray-800  rounded-md text-white">
             <Upper/>
             <Mid />
             <Lower />

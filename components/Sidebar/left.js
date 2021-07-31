@@ -16,7 +16,7 @@ const UserAvatar = (props)=>{
 
 const LeftSideBarItem = (props)=>{
     return(
-        <div className="px-3 flex py-2 hover:bg-gray-300 cursor-pointer rounded">
+        <div className="px-3 flex py-2 hover:bg-gray-700 cursor-pointer rounded">
             <props.Icon className="mr-3"/>
             <h3>{props.text}</h3>
         </div>
@@ -26,7 +26,7 @@ const LeftSideBarItem = (props)=>{
 
 const LeftSideBar = () =>{
     return(
-        <div className="hidden lg:block h-screen bg-gray-100 p-6 pl-10 flex flex-col flex-grow-0 overflow-hidden  w-96 sticky top-10" >
+        <div className="text-white hidden lg:block h-screen bg-gray-900 p-6 pl-10 flex flex-col flex-grow-0 overflow-hidden  w-96 sticky top-10" >
             <UserAvatar />
             <LeftSideBarItem Icon={SettingsIcon} text='Setting'/>
             <LeftSideBarItem Icon={NotificationsActiveIcon} text='Notification'/>

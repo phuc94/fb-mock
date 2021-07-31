@@ -9,7 +9,7 @@ const handleAPI = ()=>{
     return axios('./single-blog' ).then((res)=>{console.log(res)});
 }
 const Index = ()=> (
-    <section>
+    <section className="bg-gray-900">
         <Layout>
             <MainColumn />
         </Layout>
