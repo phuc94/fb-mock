@@ -25,11 +25,6 @@ const Mid =()=>{
             <div className="">
                 <div  className="relative w-full h-96">
                         <Image objectFit='cover' layout='fill' src="https://via.placeholder.com/500" />
-                    <div>
-                        <p>Scarlett Johansson Sues Disney Over Black Widow Streaming Release, Disney Responds
-                            After the latest MCU movie, Black Widow was released on Disney+, star Scarlett Johansson has filed a lawsuit against Disney
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -38,7 +33,7 @@ const Mid =()=>{
 
 const Lower= ()=>{
     return (
-        <div className="">
+        <div className="px-3 text-gray-300">
             <div className="flex justify-between py-2 px-6">
                 <div className="flex gap-2">
                     <ThumbUpAltIcon />
@@ -51,17 +46,17 @@ const Lower= ()=>{
             </div>
             <hr/>
             <div className="flex justify-between p-2">
-                <div className="flex gap-2 hover:bg-gray-300 px-16 py-1 rounded cursor-pointer">
+                <div className="flex gap-2 hover:bg-gray-600 px-16 py-1 rounded cursor-pointer">
                     <ThumbUpAltOutlinedIcon />
-                    <span>Like</span>
+                    <p className="font-medium">Like</p>
                 </div>
-                <div className="flex gap-2 hover:bg-gray-300 px-16 py-1 rounded cursor-pointer">
+                <div className="flex gap-2 hover:bg-gray-600 px-16 py-1 rounded cursor-pointer">
                     <ChatBubbleOutlineRoundedIcon />
-                    <span>Thích</span>
+                    <p className="font-medium">Thích</p>
                 </div>
-                <div className="flex gap-2 hover:bg-gray-300 px-16 py-1 rounded cursor-pointer">
+                <div className="flex gap-2 hover:bg-gray-600 px-16 py-1 rounded cursor-pointer">
                     <ShareIcon />
-                    <span>Share</span>
+                    <p className="font-medium">Share</p>
                 </div>
             </div>
         </div>
@@ -71,8 +66,8 @@ const Lower= ()=>{
 
 const Post = ()=>{
     return (
-        <div className="bg-gray-800  rounded-md text-white">
-            <Upper/>
+        <div className="bg-gray-800  rounded-md text-white max-w-2xl">
+            <Upper />
             <Mid />
             <Lower />
         </div>

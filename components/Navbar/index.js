@@ -29,7 +29,7 @@ const Left =()=>{
 const Mid =()=>{
     return (
         <div className="text-white flex gap-3 items-center">
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 cursor-pointer rounded">
+            <div className="text-3xl py-1 px-10 cursor-pointer border-b-4">
                 <HomeIcon fontSize="inherit"/>
             </div>
             <div className="text-3xl py-1 px-10 hover:bg-gray-600 cursor-pointer rounded">
