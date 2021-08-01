@@ -46,15 +46,15 @@ const Lower= ()=>{
             </div>
             <hr/>
             <div className="flex justify-between p-2">
-                <div className="flex gap-2 hover:bg-gray-600 px-16 py-1 rounded cursor-pointer">
+                <div className="flex gap-2 hover:bg-gray-600 duration-300 px-16 py-1 rounded cursor-pointer">
                     <ThumbUpAltOutlinedIcon />
                     <p className="font-medium">Like</p>
                 </div>
-                <div className="flex gap-2 hover:bg-gray-600 px-16 py-1 rounded cursor-pointer">
+                <div className="flex gap-2 hover:bg-gray-600 duration-300 px-16 py-1 rounded cursor-pointer">
                     <ChatBubbleOutlineRoundedIcon />
                     <p className="font-medium">Thích</p>
                 </div>
-                <div className="flex gap-2 hover:bg-gray-600 px-16 py-1 rounded cursor-pointer">
+                <div className="flex gap-2 hover:bg-gray-600 duration-300 px-16 py-1 rounded cursor-pointer">
                     <ShareIcon />
                     <p className="font-medium">Share</p>
                 </div>

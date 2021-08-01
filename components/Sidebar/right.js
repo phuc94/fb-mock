@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Contact = ()=>{
     return (
-        <div className="flex items-center gap-3 py-2 pl-3 hover:bg-gray-700 rounded cursor-pointer">
+        <div className="flex items-center gap-3 py-2 pl-3 hover:bg-gray-700 duration-500 rounded cursor-pointer">
             <Image width='40' height='40' className="rounded-full" src="https://via.placeholder.com/150" />
             <p className="font-medium">Peterson</p>
         </div>

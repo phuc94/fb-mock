@@ -29,19 +29,19 @@ const Left =()=>{
 const Mid =()=>{
     return (
         <div className="text-white flex gap-3 items-center">
-            <div className="text-3xl py-1 px-10 cursor-pointer border-b-4">
+            <div className="text-3xl py-1 px-10 cursor-pointer border-b-4 text-blue-500 border-blue-500">
                 <HomeIcon fontSize="inherit"/>
             </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 cursor-pointer rounded">
+            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                 <OutlinedFlagIcon fontSize="inherit" />
             </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 cursor-pointer rounded">
+            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                 <OndemandVideoOutlinedIcon fontSize="inherit" />
             </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 cursor-pointer rounded">
+            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                 <StorefrontOutlinedIcon fontSize="inherit" />
             </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 cursor-pointer rounded">
+            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                 <GroupRoundedIcon fontSize="inherit" />
             </div>
         </div>
@@ -55,16 +55,16 @@ const Right =()=>{
                 <span>Nguyen</span>
             </div>
             <div className="flex gap-2 text-white">
-                <div className="p-2 bg-gray-800 hover:bg-gray-600 cursor-pointer rounded-full">
+                <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full">
                     <MenuRoundedIcon />
                 </div>
-                <div className="p-2 bg-gray-800 hover:bg-gray-600 cursor-pointer rounded-full">
+                <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full">
                     <ChatRoundedIcon />
                 </div>
-                <div className="p-2 bg-gray-800 hover:bg-gray-600 cursor-pointer rounded-full">
+                <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full">
                     <NotificationsRoundedIcon />
                 </div>
-                <div className="p-2 bg-gray-800 hover:bg-gray-600 cursor-pointer rounded-full">
+                <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full">
                     <ArrowDropDownRoundedIcon />
                 </div>
             </div>

@@ -6,7 +6,7 @@ export default class MyDocument extends Document {
             <Html>
                 <Head>
                     <title>CV project</title>
-
+                    <link rel="icon" href="https://via.placeholder.com/150"></link>
                     {/* Link */}
                 </Head>
                 <body>

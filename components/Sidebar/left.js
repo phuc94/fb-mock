@@ -16,7 +16,7 @@ const UserAvatar = (props)=>{
 
 const LeftSideBarItem = (props)=>{
     return(
-        <div className="px-3 flex py-2 hover:bg-gray-700 cursor-pointer rounded">
+        <div className="px-3 flex py-2 hover:bg-gray-700 duration-500 cursor-pointer rounded">
             <props.Icon className="mr-3"/>
             <h3 className="font-medium">{props.text}</h3>
         </div>
