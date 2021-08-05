@@ -1,3 +1,8 @@
+import SignUp from "../components/Signup";
+import { useState } from 'react';
+import { axiosRequest } from '../services/request'
+import { Formik, Field, Form, ErrorMessage  } from 'formik';
+import * as yup from 'yup';
 
 const Left =()=>{
     return (
@@ -11,42 +16,78 @@ const Left =()=>{
         </div>
     )
 };
-const Right =()=>{
+const Right =(props)=>{
     return (
         <div className="w-96">
-            <form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-6 mx-auto">
-            <div className="mb-4">
-                <input className="shadow appearance-none border rounded-lg w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username" />
-            </div>
-            <div className="mb-5">
-                <input className="shadow appearance-none border border-red-500 rounded-lg w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password" />
-                {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
-            </div>
-            <div className="flex flex-col items-center justify-between gap-3 pb-3">
-                <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="button">
-                    Log In
-                </button>
-                <a className="inline-block align-baseline text-sm text-blue-600 hover:text-blue-800" href="#">
-                    Forgot Password?
-                </a>
-            </div>
-            <hr />
-            <div className="mt-6 w-full flex items-center">
-                <button className="mx-auto bg-green-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="button">
-                    Create new accont
-                </button>
-            </div>
-            </form>
+            <Form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-6 mx-auto">
+                <div className="mb-4">
+                    <Field name="email" className="shadow appearance-none border rounded-lg w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Email" />
+                </div>
+                <div className="mb-5">
+                    <Field name="password" className="shadow appearance-none border border-red-500 rounded-lg w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password" />
+                    {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
+                </div>
+                <div className="flex flex-col items-center justify-between gap-3 pb-3">
+                    <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="submit">
+                        Log In
+                    </button>
+                    <a className="inline-block align-baseline text-sm text-blue-600 hover:text-blue-800" href="#">
+                        Forgot Password?
+                    </a>
+                </div>
+                <hr />
+                <div className="mt-6 w-full flex items-center">
+                    <button 
+                        onClick={props.handleToggleModal}
+                        className="mx-auto bg-green-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="button">
+                        Create new accont
+                    </button>
+                </div>
+            </Form>
         </div>
     )
 }
+
 const Login = ()=>{
+    const [isShow,setIsShow] = useState(false);
+    const handleToggleModal = ()=>{
+        setIsShow(!isShow);
+        console.log(isShow);
+    }
+    const handleLogin = (data)=>{
+        
+        console.log(data)
+    }
     return(
         <section className="flex h-screen bg-gray-100 ">
             <div className="mx-auto flex pt-40 gap-10">
                 <Left />
-                <Right />
+                <Formik
+                    initialValues ={{
+                        email:'',
+                        password:''
+                    }}
+                    validationSchema={yup.object({
+                        email:yup.string().required('Email is required'),
+                        password:yup.string().required('Password is required') 
+                    })}
+                    onSubmit={(data, { setSubmitting }) => {
+                        // const data = userModelConvert(data);
+                        console.log(data);
+                        axiosRequest('/UserLogin',{
+                            method: 'post',
+                            data: data
+                        });
+                    //     setTimeout(() => {
+                    //       alert(JSON.stringify(values, null, 2));
+                    //       setSubmitting(false);
+                    //     }, 400);
+                    }}
+                    >
+                    <Right handleToggleModal={handleToggleModal} handleLogin={handleLogin}/>
+                </Formik>
             </div>
+            <SignUp isShow={isShow} handleToggleModal={handleToggleModal}/>
         </section>
     )
 };

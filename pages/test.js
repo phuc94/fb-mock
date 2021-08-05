@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 const Test =()=>{
     const [img,setImg]= useState();
+    const logout = ()=>{
+        return axios('/logout').then((res)=>{console.log(res)});
+    }
     const handleImgUpload = ()=>{
         const options ={
     
@@ -29,6 +32,9 @@ const Test =()=>{
                     </div>
                     <button type="submit">Upload</button>
                 </form>
+                <button onClick={logout} className="border border-2 p-2 bg-red-200">
+                    Logout
+                </button>
             </div>
             <div>
                 <button onClick={onpenImg}>Img</button>
