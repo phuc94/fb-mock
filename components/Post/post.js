@@ -7,12 +7,12 @@ import ChatBubbleOutlineRoundedIcon from '@material-ui/icons/ChatBubbleOutlineRo
 const Upper = ()=>{
     return (
         <div className="flex p-3">
-            <div className="mr-3">
+            <div className="mr-3 cursor-pointer">
                 <Image className="rounded-full" width={40} height={40} src="https://via.placeholder.com/150" />
             </div>
-            <div>
-                <h3>GameSpot</h3>
-                <span className="text-xs text-gray-500 italic ">asfasd ·</span>
+            <div className="flex flex-col items-center">
+                <h3 className="cursor-pointer">GameSpot</h3>
+                <span className="text-xs text-gray-500 italic ">Yesterday 16:11</span>
             </div>
         </div>
     )

@@ -28,7 +28,7 @@ const Converse = ()=>{
     const Head = ()=>{
         return(
             <div className="flex w-80 flex justify-between shadow">
-                <div className="px-3 py-1 flex items-center gap-2 text-white hover:bg-gray-700 cursor-poniter duration-100 rounded-lg">
+                <div className=" cursor-pointer px-3 py-1 flex items-center gap-2 text-white hover:bg-gray-700 cursor-poniter duration-100 rounded-lg">
                     <Image className="rounded-full" width={32} height={35} src="https://via.placeholder.com/150" />
                     <div className="flex flex-col">
                         <p className="text-base font-medium">qq</p>
@@ -96,10 +96,10 @@ const Converse = ()=>{
 const Messenger = ()=>{
     return(
         <>
-            <div className="fixed z-50 bottom-0 right-6 bg-opacity-0">
+            <div className="fixed z-10 bottom-0 right-6 bg-opacity-0">
                     <AddNewConvers />
             </div>
-            <div className="fixed z-50 bottom-0 right-28 bg-opacity-0 overflow-hidden flex gap-3">
+            <div className="fixed z-10 bottom-0 right-28 bg-opacity-0 overflow-hidden flex gap-3">
                 <Converse />
                 <Converse />
             </div>

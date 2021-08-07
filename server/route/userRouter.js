@@ -18,13 +18,11 @@ router.post('/UserRegister', (req, res, next) => {
         salt: salt,
         admin: false
     });
-
     newUser.save()
         .then((user) => {
-            console.log(user);
+            res.send('This is data')
         });
-
-    res.redirect('/login');
+    
  });
 
 // New User

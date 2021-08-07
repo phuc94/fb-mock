@@ -49,7 +49,7 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 server.use(passport.initialize());
                 server.use(passport.session());
 
-                server.use((req, res, next) => {
+                server.use((req, res, next) => {  // Log session, user
                     console.log(req.session);
                     console.log(req.user);
                     next();

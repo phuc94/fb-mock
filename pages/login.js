@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { axiosRequest } from '../services/request'
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 import * as yup from 'yup';
+import { useRouter } from 'next/router'
 
 const Left =()=>{
     return (
@@ -49,14 +50,18 @@ const Right =(props)=>{
 }
 
 const Login = ()=>{
+    const router = useRouter()
     const [isShow,setIsShow] = useState(false);
     const handleToggleModal = ()=>{
         setIsShow(!isShow);
         console.log(isShow);
     }
     const handleLogin = (data)=>{
-        
         console.log(data)
+        if(data.status == 200){
+            // router.push("/test");
+            console.log('a')
+        }
     }
     return(
         <section className="flex h-screen bg-gray-100 ">
@@ -77,7 +82,7 @@ const Login = ()=>{
                         axiosRequest('/UserLogin',{
                             method: 'post',
                             data: data
-                        });
+                        }).then(res=>{if(res.status==200){router.push('/')}})
                     //     setTimeout(() => {
                     //       alert(JSON.stringify(values, null, 2));
                     //       setSubmitting(false);
