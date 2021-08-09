@@ -6,14 +6,14 @@ import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import Image from 'next/image';
 
 
-const Body = ()=>{
+const Body = (props)=>{
     return (
         <div className="bg-gray-900 w-full">
             <div className="flex gap-6 w-[60%] mx-auto">
                 <div className="">
                     <LeftSidebar />
                 </div>
-                <MainColumn storyOnly/>
+                <MainColumn posts={props.posts} storyOnly/>
             </div>
         </div>
     )
