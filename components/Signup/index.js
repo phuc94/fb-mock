@@ -6,17 +6,7 @@ import { axiosRequest } from '../../services/request'
 
 const SignUp = (props) => {
     const timeObj = timeSelection();
-    const userModelConvert = (values)=>{
-        let userData={};
-        userData.firstName = values.firstName;
-        userData.lastName = values.lastName;
-        userData.email = values.email;
-        userData.password = values.password;
-        userData.gender = values.gender;
-        userData.dob = `${values.day}/${values.month}/${values.year}`;
-        return userData;
-    }
-
+    
     return (
         <div className={`absolute w-screen h-screen z-10 bg-white bg-opacity-80 flex justify-center items-center ${props.isShow ? "" : "hidden"}`}>
             <div className="shadow-2xl rounded-xl w-96 bg-white">
@@ -50,16 +40,11 @@ const SignUp = (props) => {
                         gender:yup.string()
                     })}
                     onSubmit={(data, { setSubmitting }) => {
-                        // const data = userModelConvert(values);
                         console.log(data);
                         axiosRequest('/UserRegister',{
                             method: 'post',
                             data: data
                         });
-                    //     setTimeout(() => {
-                    //       alert(JSON.stringify(values, null, 2));
-                    //       setSubmitting(false);
-                    //     }, 400);
                     }}
                     >
                     <Form className="p-4">

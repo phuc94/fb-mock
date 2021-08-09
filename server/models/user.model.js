@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    following: [String],
     admin: Boolean,
     firstName: String,
     lastname: String,

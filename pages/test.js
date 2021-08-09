@@ -18,17 +18,29 @@ const Test =()=>{
             setImg(res.data.img);
         });
     }
+    const encodeImageFileAsURL= (element) => {
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          console.log('RESULT', reader.result)
+        }
+        reader.readAsDataURL(file);
+      }
+      const submitHandler = (e)=> {
+        e.preventDefault();
+    }
     return (
         <div className="w-full  ">
             <div className="mx-auto border max-w-xs top">
-                <form action="/add-img" method="POST"  className="bg-white p-6">
+                <form className="bg-white p-6" onSubmit={submitHandler}>
                     <div className="mb-6">
                         <label htmlFor="name">Name</label>
                         <input type="text" name="name" className="border ml-6 "/>
                     </div>
                     <div className="flex flex-row">
                         <label htmlFor="img" >IMG</label>
-                        <input type="file" className="filepond ml-6" name="img" id="img"/>
+                        <input onChange={()=>{encodeImageFileAsURL}}
+                            type="file" className="filepond ml-6" name="img" id="img"/>
                     </div>
                     <button type="submit">Upload</button>
                 </form>

@@ -4,13 +4,15 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import MoreHorizRoundedIcon from '@material-ui/icons/MoreHorizRounded';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
+import { useState } from 'react';
 
 const Header = ()=>{
+    const [aboutForm, setAboutForm] = useState(false);
     return (
         <section className="bg-gray-800 w-full">
             <div className="w-full">
                 <div className="w-[960px] mx-auto">
-                    <Image className="rounded-l-xl rounded-r-xl" width={960} height={350} src="https://via.placeholder.com/1000" />
+                    <Image className="rounded-b-xl" width={960} height={350} src="https://via.placeholder.com/1000" />
                     <div className="flex flex-col items-center">
                         <div className="relative w-[170px]">
                             <div className="absolute w-[178px] h-[178px] -top-44 rounded-full border-[6px] border-gray-800 overflow-hidden hover:brightness-110 transition-100 cursor-pointer">
@@ -22,27 +24,48 @@ const Header = ()=>{
                                 </div>
                             </div>
                         </div>
-                        <p className="text-white font-bold text-3xl">Nguyen Truong Trung Phuc</p>
-                        <a href="" className="font-medium text-blue-600">Add information</a>
+                        <p className="text-white font-bold text-3xl mb-2">Nguyen Truong Trung Phuc</p>
+                        {!aboutForm && 
+                        <p  
+                            onClick= {()=>{setAboutForm(true)}}
+                            className="font-medium text-blue-600 cursor-pointer"
+                            >Add information</p>}
+                        {aboutForm &&
+                        <form >
+                            <textarea 
+                                className="w-[300px] h-[85px] px-3 py-2 rounded-lg bg-gray-600 text-white
+                                    text-center resize-none focus:outline-none focus:ring focus:border-blue-900" 
+                                placeholder="About you"/>
+                            <div className=" flex justify-between">
+                                <div></div>
+                                <div>
+                                    <button onClick={()=>{setAboutForm(false)}}
+                                        type="button" 
+                                        className="text-white bg-gray-600 p-2 rounded-lg mr-1"
+                                        >Close</button>
+                                    <button className="text-white bg-blue-500 p-2 rounded-lg">Save</button>
+                                </div>
+                            </div>
+                        </form>}
                     </div>
                     <div className="flex justify-center text-white">
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg">
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
                             <p>Status</p>
                         </div>
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg">
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
                             <p>About</p>
                         </div>
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg">
-                            <p>Friend</p>
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
+                            <p>Friends</p>
                         </div>
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg">
-                            <p>Picture</p>
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
+                            <p>Photos</p>
                         </div>
-                        <div className="flex p-4 hover:bg-gray-700 cursor-pointer rounded-lg">
+                        <div className="flex p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
                             <p>More</p>
                             <ArrowDropDownRoundedIcon />
                         </div>
-                        <div className="flex items-center mr-2">
+                        <div className="flex items-center mx-2">
                             <div className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400">
                                 <AddCircleIcon />
                                 <p className="font-medium pl-1">Add to story</p>

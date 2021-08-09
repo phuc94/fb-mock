@@ -18,13 +18,13 @@ const Upper = ()=>{
     )
 }
 
-const Mid =()=>{
+const Mid =(props)=>{
     return (
         <div>
-            <p className="px-3 pb-2">After the latest MCU movie, Black Widow was released on Disney+, star Scarlett Johansson has filed a lawsuit against Disney</p>
+            <p className="px-3 pb-2">{props.content}</p>
             <div className="">
                 <div  className="relative w-full h-96">
-                        <Image objectFit='cover' layout='fill' src="https://via.placeholder.com/500" />
+                        <Image objectFit='cover' layout='fill' src={props.img} />
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@ const Mid =()=>{
 const Lower= ()=>{
     return (
         <div className="px-3 text-gray-300">
-            <div className="flex justify-between py-2 px-6">
+            <div className="flex justify-between py-2 px-6 border-b-[1px] border-gray-700">
                 <div className="flex gap-2">
                     <ThumbUpAltIcon />
                     <span>1.4k</span>
@@ -44,7 +44,6 @@ const Lower= ()=>{
                     <span>105 lượt chia sẻ</span>
                 </div>
             </div>
-            <hr/>
             <div className="flex justify-between p-2">
                 <div className="flex gap-2 hover:bg-gray-600 duration-300 px-16 py-1 rounded cursor-pointer">
                     <ThumbUpAltOutlinedIcon />
@@ -64,11 +63,11 @@ const Lower= ()=>{
 }
 
 
-const Post = ()=>{
+const Post = (props)=>{
     return (
         <div className="bg-gray-800  rounded-md text-white max-w-2xl">
             <Upper />
-            <Mid />
+            <Mid content={props.content} img={props.img}/>
             <Lower />
         </div>
     )

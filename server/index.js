@@ -11,7 +11,7 @@ const handle = app.getRequestHandler();
 
 
 const userRouter = require('./route/userRouter');
-const blogRouter = require('./route/blogRouter');
+const postRouter = require('./route/postRouter');
 
 /*** MONGODB ***/ 
 const mongoose = require('mongoose');
@@ -58,7 +58,7 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 
                 /*** ROUTER ***/
                 server.use(userRouter);
-                server.use(blogRouter);
+                server.use(postRouter);
                 
 
                 server.get('*', (req,res)=>{
