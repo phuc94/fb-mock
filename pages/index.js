@@ -3,10 +3,13 @@ import axios from 'axios';
 import MainColumn from '../components/Post/main-column';
 import Messenger from '../components/Messenger/index';
 import StatusForm from '../components/Form/status'
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { axiosRequest } from '../services/request'
 
 const Index = ()=> {
+
+
+
     const [posts,setPosts]= useState([]);
     useEffect (()=>{
         axiosRequest('/AllPost')
@@ -29,7 +32,7 @@ const Index = ()=> {
             <Layout>
                 <MainColumn posts={posts} setIsFormShow={setIsFormShow}/>
             </Layout>
-            {/* <Messenger /> */}
+            <Messenger/>
         </div>
     </section>
         {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}

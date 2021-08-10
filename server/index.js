@@ -1,12 +1,10 @@
 require('dotenv').config();
-const express = require('express');
-const next = require('next');
 const session = require('express-session');
 const passport = require('passport');
 
 const PORT = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({dev});
+const app = require('next')({dev});
 const handle = app.getRequestHandler();
 
 
@@ -27,13 +25,46 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
             .then(()=>{
 
                 /*** USING EXPRESS ***/
-                const server = express();                
-                server.use(express.json());
-                server.use(express.urlencoded({extended:true}));
+                const express = require('express');
+                const expressApp = express();
+
+                /*** USING SOCKET.IO ***/
+                const server = require('http').Server(expressApp);
+                const io = require('socket.io')(server);
+                // Run when client connects
+                io.on('connection', socket => {
+
+                    //Wellcone current user
+                    socket.emit('message',{
+                        message:'Welcome to ChatCord!'
+                    });
+
+                    // Broadcast when a user connects
+                    socket.broadcast.emit('message', {
+                        message:'A user has join the chat!'
+                    });
+
+                    // Runs when client disconnects
+                    socket.on('disconnect', () => {
+                        io.emit('message', {
+                            message:'A user has left the chat'
+                        });
+                    });
+                    // Listen to chat message
+                    socket.on('chatMessage', msg=>{
+                        io.emit('message',msg)
+                        console.log(msg);
+                    })
+                });
+                
+
+
+                expressApp.use(express.json());
+                expressApp.use(express.urlencoded({extended:true}));
 
                 /*** EXPRESS SESSION USING MONGODB AS STORAGE ***/
                 const MongoStore = require('connect-mongo');
-                server.use(session({
+                expressApp.use(session({
                     secret: process.env.SECRET,
                     resave: false,
                     saveUninitialized: true,
@@ -46,22 +77,22 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
 
                 /*** PASSPORT AUTHENTICATION ***/
                 require('./middleware/passport');
-                server.use(passport.initialize());
-                server.use(passport.session());
+                expressApp.use(passport.initialize());
+                expressApp.use(passport.session());
 
-                server.use((req, res, next) => {  // Log session, user
-                    console.log(req.session);
-                    console.log(req.user);
+                expressApp.use((req, res, next) => {  // Log session, user
+                    // console.log(req.session);
+                    // console.log(req.user);
                     next();
                 });
                 
                 
                 /*** ROUTER ***/
-                server.use(userRouter);
-                server.use(postRouter);
+                expressApp.use(userRouter);
+                expressApp.use(postRouter);
                 
 
-                server.get('*', (req,res)=>{
+                expressApp.get('*', (req,res)=>{
                     return handle(req,res);
                 });
                 server.listen(PORT, err =>{

@@ -22,7 +22,7 @@ router.get('/add-blog', (req,res)=>{
 router.get('/AllPost',(req,res)=>{
     Post.find()
         .then((result)=>{
-            console.log(result);
+            // console.log(result);
             res.send(result);
         })
         .catch((err)=>{console.log(err)});

@@ -14,12 +14,15 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     following: [String],
-    admin: Boolean,
+    friends: [String],
+    reqPending: [String],
+    resPending: [String],
     firstName: String,
     lastname: String,
     dob: String,
     gender: String,
-    detail: Object
+    detail: Object,
+    admin: Boolean
 })
 
 const User = mongoose.model('User', userSchema, 'user');

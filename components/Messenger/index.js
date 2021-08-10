@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 /***** Material Icon *****/
 import OpenInNewOutlinedIcon from '@material-ui/icons/OpenInNewOutlined';
@@ -14,6 +14,12 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import GifRoundedIcon from '@material-ui/icons/GifRounded';
 import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded';
 
+import { Formik, Field, Form, ErrorMessage  } from 'formik';
+import * as yup from 'yup';
+
+import { io } from "socket.io-client";
+
+
 const AddNewConvers =()=>{
     return (
         <div className="pb-3 pr-3">
@@ -24,7 +30,7 @@ const AddNewConvers =()=>{
     )
 }
 
-const Converse = ()=>{
+const Converse = (props)=>{
     const Head = ()=>{
         return(
             <div className="flex w-80 flex justify-between shadow">
@@ -56,10 +62,12 @@ const Converse = ()=>{
         )
     };
 
-    const Body = ()=> {
+    const Body = (props)=> {
         return(
-            <div className="h-80 shadow-inner">
-
+            <div className="h-80 shadow-inner overflow-y-scroll">
+                {props.chatContent.map(mess=>(
+                    <p>{mess}</p>
+                ))}
             </div>
         )
     };
@@ -73,9 +81,9 @@ const Converse = ()=>{
                     
                 </div>
                 <div className="flex items-center flex-grow-1">
-                    <form className="flex items-center">
-                        <input type="text" className="outline-none w-full w-36 px-3 py-2 mr-2 rounded-full bg-gray-500 text-gray-100" placeholder="Aa"/>
-                    </form>
+                    <Form className="flex items-center">
+                        <Field type="text" name="message" className="outline-none w-full w-36 px-3 py-2 mr-2 rounded-full bg-gray-500 text-gray-100" placeholder="Aa"/>
+                    </Form>
                 </div>
                 <div className="text-blue-500">
                     <ThumbUpAltRoundedIcon />
@@ -87,21 +95,45 @@ const Converse = ()=>{
     return (
         <div className="shadow bg-gray-800 rounded-t-lg ">
             <Head />
-            <Body />
+            <Body chatContent={props.chatContent}/>
             <Footer />
         </div>
     )
 }
 
 const Messenger = ()=>{
+    const [chatContent,setChatContent] = useState(['test']);
+    console.log([...chatContent]);
+    const socket= io();
+    useEffect(()=>{
+        socket.on('message', message=>{
+            const newMess = chatContent;
+            newMess.push(message.message);
+            setChatContent(newMess);
+            console.log(chatContent);
+        })
+    },[socket])
     return(
         <>
             <div className="fixed z-10 bottom-0 right-6 bg-opacity-0">
                     <AddNewConvers />
             </div>
             <div className="fixed z-10 bottom-0 right-28 bg-opacity-0 overflow-hidden flex gap-3">
-                <Converse />
-                <Converse />
+            <Formik
+                    initialValues ={{
+                        message:'',
+                    }}
+                    validationSchema={yup.object({
+                        message:yup.string().required('Email is required'),
+                    })}
+                    onSubmit={(data, actions) => {
+                        console.log(data);
+                        socket.emit('chatMessage',data);
+                        actions.resetForm();
+                    }}
+                    >
+                    <Converse chatContent={chatContent}/>
+                </Formik>
             </div>
         </>
     )
