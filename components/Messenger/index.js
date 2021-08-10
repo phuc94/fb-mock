@@ -105,14 +105,14 @@ const Messenger = ()=>{
     const [chatContent,setChatContent] = useState(['test']);
     console.log([...chatContent]);
     const socket= io();
-    useEffect(()=>{
-        socket.on('message', message=>{
-            const newMess = chatContent;
-            newMess.push(message.message);
-            setChatContent(newMess);
-            console.log(chatContent);
-        })
-    },[socket])
+    socket.on('message', message=>{
+        setChatContent([...chatContent,message.message]);
+    console.log("🚀 ~ file: index.js ~ line 106 ~ Messenger ~ chatContent", chatContent)
+})
+    socket.on('chatMessage', message=>{
+        setChatContent([...chatContent,message.message]);
+    console.log("🚀 ~ file: index.js ~ line 106 ~ Messenger ~ chatContent", chatContent)
+})
     return(
         <>
             <div className="fixed z-10 bottom-0 right-6 bg-opacity-0">

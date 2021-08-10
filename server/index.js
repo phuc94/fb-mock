@@ -35,21 +35,21 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 io.on('connection', socket => {
 
                     //Wellcone current user
-                    socket.emit('message',{
-                        message:'Welcome to ChatCord!'
-                    });
+                    // socket.emit('message',{
+                    //     message:'Welcome to ChatCord!'
+                    // });
 
-                    // Broadcast when a user connects
-                    socket.broadcast.emit('message', {
-                        message:'A user has join the chat!'
-                    });
+                    // // Broadcast when a user connects
+                    // socket.broadcast.emit('message', {
+                    //     message:'A user has join the chat!'
+                    // });
 
                     // Runs when client disconnects
-                    socket.on('disconnect', () => {
-                        io.emit('message', {
-                            message:'A user has left the chat'
-                        });
-                    });
+                    // socket.on('disconnect', () => {
+                    //     io.emit('message', {
+                    //         message:'A user has left the chat'
+                    //     });
+                    // });
                     // Listen to chat message
                     socket.on('chatMessage', msg=>{
                         io.emit('message',msg)
