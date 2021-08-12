@@ -7,11 +7,11 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = require('next')({dev});
 const handle = app.getRequestHandler();
 
-
 const userRouter = require('./route/userRouter');
 const postRouter = require('./route/postRouter');
 
-/*** MONGODB ***/ 
+
+/*** CONNECT TO MONGODB ATLAS ***/ 
 const mongoose = require('mongoose');
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -28,34 +28,47 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 const express = require('express');
                 const expressApp = express();
 
-                /*** USING SOCKET.IO ***/
+                /*** ------> USING SOCKET.IO  ***/
                 const server = require('http').Server(expressApp);
                 const io = require('socket.io')(server);
+                /*** SOCKET.IO CONFIG ***/
                 // Run when client connects
+                const userJoin =(id,username, room)=>{
+                    return {
+                        id,
+                        user: username,
+                        room
+                    }
+                }
                 io.on('connection', socket => {
-
-                    //Wellcone current user
-                    // socket.emit('message',{
-                    //     message:'Welcome to ChatCord!'
-                    // });
-
-                    // // Broadcast when a user connects
-                    // socket.broadcast.emit('message', {
-                    //     message:'A user has join the chat!'
-                    // });
-
-                    // Runs when client disconnects
-                    // socket.on('disconnect', () => {
-                    //     io.emit('message', {
-                    //         message:'A user has left the chat'
-                    //     });
-                    // });
+                    socket.on('joinRoom',({username,room})=>{
+                        const User =userJoin(socket.id,username,room);
+                        console.log(User);
+                        socket.join(User.room);
+                        //Wellcone current user
+                        socket.emit('message',{
+                            message:'Welcome to ChatCord!'
+                        });
+                        // Broadcast when a user connects
+                        socket.broadcast.to(User.room).emit('message', {
+                            message:'A user has join the chat!'
+                        });
+                    })
+                    
                     // Listen to chat message
                     socket.on('chatMessage', msg=>{
                         io.emit('message',msg)
                         console.log(msg);
-                    })
+                    });
+
+                    // Runs when client disconnects
+                    socket.on('disconnect', () => {
+                        io.emit('message', {
+                            message:'A user has left the chat'
+                        });
+                    });
                 });
+                /***  USING SOCKET.IO <------ ***/
                 
 
 
@@ -80,9 +93,10 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 expressApp.use(passport.initialize());
                 expressApp.use(passport.session());
 
-                expressApp.use((req, res, next) => {  // Log session, user
-                    // console.log(req.session);
-                    // console.log(req.user);
+                /*** CONSOLE LOG USER ***/
+                expressApp.use((req, res, next) => {
+                    console.log(req.session);
+                    console.log(req.user);
                     next();
                 });
                 
@@ -106,60 +120,3 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
             })
         })
     .catch((err) => console.log(err));
-
-
-
-
-
-
-
-                // const server = express();
-
-                // server.get('/api/shows', function (req,res){
-                //     return res.end('We made it!');
-                // });
-
-                // // mongoDB
-                // server.get('/add-blog', (req,res)=>{
-                //     const blog = new Blog({
-                //         title: 'test',
-                //         snippet: 'test',
-                //         body: 'test'
-                //     });
-                //     blog.save()
-                //         .then((result)=>{
-                //             res.send(result)
-                //         })
-                //         .catch((err)=>{console.log(err)});
-                // });
-                // server.get('/all-blogs',(req,res)=>{
-                //     Blog.find()
-                //         .then((result)=>{
-                //             res.send(result);
-                //         })
-                //         .catch((err)=>{console.log(err)});
-                // });
-                // server.get('/single-blog',(req,res)=>{
-                //     Blog.findById('61027bab768913295094a876')
-                //         .then((result)=>{
-                //             res.send(result);
-                //         })
-                //         .catch((err)=>{console.log(err)});
-                // });
-
-                // Base64 upload
-                // server.post('/add-img',(req,res)=>{
-                //     console.log('Request File: ',req.file);
-                //     const imgString = base64Img.base64Sync(req.file.path);
-                //     const blog = new Blog({
-                //         title: req.body.name,
-                //         snippet: req.body.name,
-                //         body: req.body.name,
-                //         img: imgString
-                //     });
-                //     blog.save()
-                //         .then((result)=>{
-                //             res.send(result)
-                //         })
-                //         .catch((err)=>{console.log(err)});
-                // })

@@ -1,55 +1,22 @@
 const express = require('express');
-const passport = require('passport');
-const genPassword = require('../utils/password').genPassword;
-const User = require('../models/user.model');
 const router = express.Router();
+const userController = require('../controller/user.controller')
 
-router.post('/UserLogin', passport.authenticate('local', { failureRedirect: '/login', successRedirect: '/' }));
+router.post('/UserLogin', (req,res,next) =>{userController.logIn(req, res, next)});
 
-router.post('/UserRegister', (req, res, next) => {
-    const saltHash = genPassword(req.body.password);
-    
-    const salt = saltHash.salt;
-    const hash = saltHash.hash;
+router.post('/SearchUser',(req,res)=> {userController.searchUser(req,res)});
 
-    const newUser = new User({
-        email: req.body.email,
-        hash: hash,
-        salt: salt,
-        admin: false
-    });
-    newUser.save()
-        .then((user) => {
-            res.send('This is data')
-        });
-    
- });
+router.post('/AddFriend',(req,res)=>{userController.friendRequest(req,res)});
 
-// New User
-router.post('/createNewUser', (req,res) => {
-    console.log('Making request!');
-    console.log(req.body);
-    // console.log('REQQQQQ>>>');
-    // console.log(req);
-    const newUser = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender,
-        dob: req.body.dob,
-        detail: {}
-    });
-    newUser.save()
-        .then((result)=>{
-            res.send(result)
-        })
-        .catch((err)=>{console.log(err)});
-});
+router.post('/FriendCancle',(req,res)=>{userController.friendCancle(req,res)});
 
-router.get('/logout', (req, res, next) => {
+router.post('/UserRegister', (req, res) => {userController.userRegister(req,res)});
+
+router.get('/CheckOwner', (req,res)=>{userController.checkOwner(req,res)})
+
+router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/login');
+    res.status(200).redirect('/login');
 });
 
 

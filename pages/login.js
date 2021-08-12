@@ -1,9 +1,11 @@
 import SignUp from "../components/Signup";
+import LoginFail from "../components/Modal/loginFail";
 import { useState } from 'react';
 import { axiosRequest } from '../services/request'
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 import * as yup from 'yup';
 import { useRouter } from 'next/router'
+import { useCookies } from 'react-cookie';
 
 const Left =()=>{
     return (
@@ -39,7 +41,7 @@ const Right =(props)=>{
                 <hr />
                 <div className="mt-6 w-full flex items-center">
                     <button 
-                        onClick={props.handleToggleModal}
+                        onClick={props.handleToggleSignUpModal}
                         className="mx-auto bg-green-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="button">
                         Create new accont
                     </button>
@@ -51,16 +53,19 @@ const Right =(props)=>{
 
 const Login = ()=>{
     const router = useRouter()
-    const [isShow,setIsShow] = useState(false);
-    const handleToggleModal = ()=>{
-        setIsShow(!isShow);
-        console.log(isShow);
+    const [isSingUpShow,setIsSingUpShow] = useState(false);
+    const [isLogInFailShow,setIsLogInFailShow] = useState(false);
+    const [cookies, setCookie] = useCookies(['user']);
+    const handleToggleSignUpModal = ()=>{
+        setIsSingUpShow(!isSingUpShow);
+    };
+    const handleToggleLogInFailModal = ()=>{
+        setIsLogInFailShow(!isLogInFailShow);
     }
     const handleLogin = (data)=>{
         console.log(data)
         if(data.status == 200){
             // router.push("/test");
-            console.log('a')
         }
     }
     return(
@@ -82,17 +87,25 @@ const Login = ()=>{
                         axiosRequest('/UserLogin',{
                             method: 'post',
                             data: data
-                        }).then(res=>{if(res.status==200){router.push('/')}})
+                        }).then(res=>{
+                            if (res.data === false){handleToggleLogInFailModal()}
+                            else {
+                                router.push('/');
+                                console.log(res.data);
+                                setCookie('user',res.data._id)
+                            }
+                        })
                     //     setTimeout(() => {
                     //       alert(JSON.stringify(values, null, 2));
                     //       setSubmitting(false);
                     //     }, 400);
                     }}
                     >
-                    <Right handleToggleModal={handleToggleModal} handleLogin={handleLogin}/>
+                    <Right handleToggleSignUpModal={handleToggleSignUpModal} handleLogin={handleLogin}/>
                 </Formik>
             </div>
-            <SignUp isShow={isShow} handleToggleModal={handleToggleModal}/>
+            <SignUp isSingUpShow={isSingUpShow} handleToggleSignUpModal={handleToggleSignUpModal}/>
+            <LoginFail isLogInFailShow={isLogInFailShow} handleToggleLogInFailModal={handleToggleLogInFailModal} />
         </section>
     )
 };

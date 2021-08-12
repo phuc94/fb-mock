@@ -3,19 +3,22 @@ import MoreHorizRoundedIcon from '@material-ui/icons/MoreHorizRounded';
 
 const NotiDropdown = ()=>{
     return(
-        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl">
+        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700 h-[700px] overflow-auto">
             <div className="flex items-center justify-between">
                 <p className="pl-3 py-3 text-2xl font-medium">Notification</p>
                 <div className="pr-3 text-gray-400">
                     <MoreHorizRoundedIcon />
                 </div>
             </div>
-            <div className="flex justify-between px-3">
+            <div className="flex justify-between px-3 border-t-[1px] border-gray-700">
                 <p>Recent</p>
                 <a href="" className="text-blue hover:bg-gray-700 rounded-lg p-1 px-2">See all</a>
             </div>
             <NotiList />
-            <p>Before</p>
+            <div className="flex justify-between px-3 border-t-[1px] border-gray-700">
+                <p>Before</p>
+                <div></div>
+            </div>
             <NotiList />
         </div>
     )

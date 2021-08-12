@@ -1,6 +1,6 @@
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 import * as yup from 'yup';
-import { axiosRequest } from '../../services/request'
+import * as postServices from '../../services/post'
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import Image from 'next/image'
 import LockRoundedIcon from '@material-ui/icons/LockRounded';
@@ -66,10 +66,7 @@ const StatusForm = (props)=>{
                         onSubmit={(data, { setSubmitting }) => {
                             data.img=img;
                             console.log(data);
-                            axiosRequest('/AddPost',{
-                                method: 'post',
-                                data: data
-                            }).then(res=>{if(res.status==200){console.log('status:',200)}})
+                            postServices(data).then(res=>{if(res.status==200){console.log('status:',200)}})
                         }}
                         >
                         {({ errors, setFieldValue }) => (

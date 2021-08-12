@@ -1,12 +1,14 @@
 import '../styles/global.css'
 import {  Head } from 'next/document';
-
-import { io } from "socket.io-client";
+import { CookiesProvider } from 'react-cookie';
 
 function MyApp({ Component, pageProps }) {
-    const socket= io();
-    console.log(socket)
-    return <Component {...pageProps} />
+    
+    return (
+        <CookiesProvider>
+            <Component {...pageProps} />
+        </CookiesProvider>
+    )
 };
 
 export default MyApp;

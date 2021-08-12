@@ -11,7 +11,7 @@ const Contact = ()=>{
 
 const RightSideBar = ()=>{
     return (
-        <div className="text-white hidden 2xl:block h-screen bg-gray-900 py-6 px-3 flex flex-col flex-grow-0 w-72 overflow-scroll sticky top-10">
+        <div className="text-white hidden 2xl:block h-screen bg-gray-900 py-6 px-3 flex flex-col flex-grow-0 w-72 overflow-y-scroll sticky top-10">
             <h3>Your contacts</h3>
             <Contact />
             <Contact />

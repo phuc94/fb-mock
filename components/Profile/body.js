@@ -5,7 +5,6 @@ import HouseRoundedIcon from '@material-ui/icons/HouseRounded';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import Image from 'next/image';
 
-
 const Body = (props)=>{
     return (
         <div className="bg-gray-900 w-full">
@@ -13,7 +12,7 @@ const Body = (props)=>{
                 <div className="">
                     <LeftSidebar />
                 </div>
-                <MainColumn posts={props.posts} storyOnly/>
+                <MainColumn setIsFormShow={props.setIsFormShow} posts={props.posts} statusRender={(props.isOwner === true) ? true : false } storyRender={false}/>
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 
 const MessengerDropdown = ()=>{
     return(
-        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl">
+        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700">
             <div className="flex items-center justify-between">
                 <p className="pl-3 py-3 text-2xl font-medium">Messenger</p>
                 <div className="pr-3 text-gray-400 flex gap-2">
@@ -33,7 +33,7 @@ const MessengerDropdown = ()=>{
                     </div>
                 </div>
             </div>
-            <div className="overflow-scroll h-screen">
+            <div className="overflow-auto h-[700px]">
                 <MessList />
             </div>
         </div>
@@ -64,76 +64,6 @@ const MessList = ()=>{
                     <p className="text-gray-200 text-xs">View your profile</p>
                 </div>
             </div><div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
-                <Image
-                    className="group-hover:cursor-pointer rounded-full"
-                    width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
-                <div className="ml-3">
-                    <p className="text-white font-base">Nguyen Truong Trung Phuc</p>
-                    <p className="text-gray-200 text-xs">View your profile</p>
-                </div>
-            </div>
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
                 <Image
                     className="group-hover:cursor-pointer rounded-full"
                     width={60} height={60}

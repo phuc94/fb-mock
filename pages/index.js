@@ -8,9 +8,8 @@ import { axiosRequest } from '../services/request'
 
 const Index = ()=> {
 
-
-
     const [posts,setPosts]= useState([]);
+    const [isFormShow,setIsFormShow] = useState(false)
     useEffect (()=>{
         axiosRequest('/AllPost')
             .then(res=>{
@@ -18,21 +17,15 @@ const Index = ()=> {
                 setPosts(res.data);
             });
     },[])
-    const [isFormShow,setIsFormShow] = useState(false)
-    const handleAPI = ()=>{
-        const options ={
     
-        }
-        return axios('./single-blog' ).then((res)=>{console.log(res)});
-    }
     return (
         <>
         <section className="bg-gray-900 relative">
         <div>
             <Layout>
-                <MainColumn posts={posts} setIsFormShow={setIsFormShow}/>
+                <MainColumn posts={posts} setIsFormShow={setIsFormShow} storyRender={true} statusRender={true}/>
             </Layout>
-            <Messenger/>
+            {/* <Messenger/> */}
         </div>
     </section>
         {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}

@@ -5,10 +5,13 @@ import NightsStayIcon from '@material-ui/icons/NightsStay';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded';
 import Image from 'next/image';
+import * as userService from '../../services/user'
+import { useRouter } from 'next/router'
 
 const AccDropdown = ()=>{
+    const router = useRouter();
     return(
-        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl">
+        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700">
             <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
                 <Image
                     className="group-hover:cursor-pointer rounded-full"
@@ -19,17 +22,17 @@ const AccDropdown = ()=>{
                     <p className="text-gray-300">View your profile</p>
                 </div>
             </div>
-            <hr />
-            <div className="flex p-2 m-2 hover:bg-gray-600 items-center rounded-lg cursor-pointer">
-                <div className="bg-gray-700 p-1 rounded-full">
-                    <AnnouncementIcon />
-                </div>
-                <div>
-                    <p className="font-medium text-white pl-2">Contribute Idea</p>
-                    <p className="text-xs pl-2 text-gray-100">Help us improve new Facebook version.</p>
+            <div className="border-t-[1px] border-b-[1px] border-gray-700">
+                <div className="flex p-2 m-2 hover:bg-gray-600 items-center rounded-lg cursor-pointer" >
+                    <div className="bg-gray-700 p-1 rounded-full">
+                        <AnnouncementIcon />
+                    </div>
+                    <div>
+                        <p className="font-medium text-white pl-2">Contribute Idea</p>
+                        <p className="text-xs pl-2 text-gray-100">Help us improve new Facebook version.</p>
+                    </div>
                 </div>
             </div>
-            <hr />
             <div className="p-2 font-medium">
                 <div className="flex p-2 hover:bg-gray-600 rounded-lg cursor-pointer items-center">
                     <div className="bg-gray-700 p-1 rounded-full">
@@ -58,7 +61,11 @@ const AccDropdown = ()=>{
                         <ChevronRightRoundedIcon />
                     </div>
                 </div>
-                <div className="flex p-2 hover:bg-gray-600 rounded-lg cursor-pointer items-center">
+                <div onClick={()=>{userService.logOut()
+                    .then((res)=>{
+                        if(res.status == 200){router.push('/login')}
+                    })}}
+                    className="flex p-2 hover:bg-gray-600 rounded-lg cursor-pointer items-center">
                     <div  className="bg-gray-700 p-1 rounded-full">
                         <ExitToAppIcon />
                     </div>

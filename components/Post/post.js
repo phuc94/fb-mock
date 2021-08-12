@@ -23,9 +23,11 @@ const Mid =(props)=>{
         <div>
             <p className="px-3 pb-2">{props.content}</p>
             <div className="">
-                <div  className="relative w-full h-96">
+                { !(props.img == '') &&
+                    <div  className="relative w-full h-96">
                         <Image objectFit='cover' layout='fill' src={props.img} />
-                </div>
+                    </div>
+                }
             </div>
         </div>
     )

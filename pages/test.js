@@ -1,11 +1,39 @@
 import axios from 'axios'; 
 import { useState } from 'react';
+import * as userService from '../services/user'
 
 const Test =()=>{
     const [img,setImg]= useState();
+    const [user,setUser]= useState();
     const logout = ()=>{
         return axios('/logout').then((res)=>{console.log(res)});
-    }
+    };
+    const findUser = ()=>{
+        return axios('/SearchUser',{
+            method:"post",
+            data:{
+                user:user
+            }
+        }).then((res)=>{console.log(res)});
+    };
+    const addfriend = () => {
+        return axios('/AddFriend',{
+            method:"post",
+            data:{
+                targetId:'610bdffe645b5928483616eb'
+            }
+        }).then((res)=>{console.log(res)});
+    };
+    const userpost = () => {
+        return axios('/UserPost',{
+            params:{
+                userID:'610bdcf66660373a50e88396'
+            }
+        }).then((res)=>{console.log(res)});
+    };
+    const checkowner = () => {
+        userService.checkIfOwner('610bdcf66660373a50e88396').then(res=>{console.log(res)})
+    };
     const handleImgUpload = ()=>{
         const options ={
     
@@ -47,6 +75,27 @@ const Test =()=>{
                 <button onClick={logout} className="border border-2 p-2 bg-red-200">
                     Logout
                 </button>
+                <div>
+                    <input type="text" onChange={e=>{setUser(e.target.value)}}/>
+                    <button onClick={findUser} className="border border-2 p-2 bg-red-200">
+                        Find User
+                    </button>
+                </div>
+                <div>
+                    <button onClick={addfriend} className="border border-2 p-2 bg-red-200">
+                        Add friend
+                    </button>
+                </div>
+                <div>
+                    <button onClick={userpost} className="border border-2 p-2 bg-red-200">
+                        UserPost
+                    </button>
+                </div>
+                <div>
+                    <button onClick={checkowner} className="border border-2 p-2 bg-red-200">
+                        CheckOwner
+                    </button>
+                </div>
             </div>
             <div>
                 <button onClick={onpenImg}>Img</button>

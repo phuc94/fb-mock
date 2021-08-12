@@ -1,25 +1,37 @@
 import Header from '../../components/Profile/header'
 import Body from '../../components/Profile/body'
-import { axiosRequest } from '../../services/request'
-import { useState,useEffect } from 'react';
 import Nav from '../../components/Navbar';
+import StatusForm from '../../components/Form/status';
 
+import { useState,useEffect } from 'react';
+import { useRouter } from 'next/router'
 
-const ProfilePage = ()=> {
+import * as postService from '../../services/post'
+import * as userService from '../../services/user'
+
+const ProfilePage = ({isOwner})=> {
+    const router = useRouter();
+    const [isFormShow,setIsFormShow] = useState(false)
     const [posts,setPosts]= useState([]);
     useEffect (()=>{
-        axiosRequest('/AllPost')
-            .then(res=>{
-                console.log(res);
-                setPosts(res.data);
-            });
-    },[])
+        if(router.asPath !== '/[user]'){
+            postService.getUserPost(router.asPath.replace('/',''))
+                .then(res=>{setPosts(res.data)});
+        }
+    },[router.asPath])
     return(
         <section className="bg-gray-900">
             <Nav />
-            <Header />
-            <Body posts={posts}/>
+            <Header isOwner={isOwner}/>
+            <Body isOwner={isOwner} posts={posts} setIsFormShow={setIsFormShow}/>
+            {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
         </section>
     )
 };
+
+ProfilePage.getInitialProps = async ({req,asPath}) => {
+    const respond = await userService.checkIfOwner(req.user._id,asPath.replace('/',''));
+    return {isOwner: respond.data};
+  }
+
 export default ProfilePage;

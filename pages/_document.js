@@ -6,6 +6,7 @@ export default class MyDocument extends Document {
             <Html>
                 <Head>
                     <title>CV project</title>
+                    <meta httpEquiv="Cache-control" content="public"></meta>
                     <link rel="icon" href="https://via.placeholder.com/150"></link>
                     {/* Link */}
                 </Head>

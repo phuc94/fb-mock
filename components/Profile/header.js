@@ -4,10 +4,45 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import MoreHorizRoundedIcon from '@material-ui/icons/MoreHorizRounded';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
-import { useState } from 'react';
+import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
+import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
+import PersonAddDisabledRoundedIcon from '@material-ui/icons/PersonAddDisabledRounded';
+import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
+import * as userService from '../../services/user'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 
-const Header = ()=>{
+const Header = (props)=>{
+    useEffect(()=>{
+        console.log(props.isOwner);
+        switch (props.isOwner){
+            case true:
+                setIsOwner(true);
+                break;
+            case 'reqPending':
+                setReqPending(true);
+                break;
+            case 'resPending':
+                setResPending(true);
+                break;
+            case 'friend':
+                setFriend(true);
+                break;
+            case 'noStatus':
+                setNoStatus(true);
+                break;
+            default:
+                break;
+        }
+    },[props.isOwner])
+    const [isOwner, setIsOwner] = useState(false);
     const [aboutForm, setAboutForm] = useState(false);
+    const [friend, setFriend] = useState(false);
+    const [noStatus, setNoStatus] = useState(false);
+    const [reqPending, setReqPending] = useState(false);
+    const [resPending, setResPending] = useState(false);
+    const router = useRouter();
+    const curUser = router.asPath.replace('/','')
     return (
         <section className="bg-gray-800 w-full">
             <div className="w-full">
@@ -48,7 +83,7 @@ const Header = ()=>{
                             </div>
                         </form>}
                     </div>
-                    <div className="flex justify-center text-white">
+                    <div className="flex justify-center text-white border-t-[1px] border-gray-700 mt-3">
                         <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
                             <p>Status</p>
                         </div>
@@ -66,19 +101,81 @@ const Header = ()=>{
                             <ArrowDropDownRoundedIcon />
                         </div>
                         <div className="flex items-center mx-2">
-                            <div className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400">
-                                <AddCircleIcon />
-                                <p className="font-medium pl-1">Add to story</p>
-                            </div>
+                            {/**** OWNER OR NOT ****/}
+                            { isOwner ?
+                                (
+                                <div className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400 duration-200">
+                                    <AddCircleIcon />
+                                    <p className="font-medium pl-1">Add to story</p>
+                                </div>
+                                )
+                                :
+                                (null)
+                            }
+
+                            {/**** FRIEND STATUS ****/}
+                            {/**** NO STATUS ****/}
+                            {noStatus && !isOwner ?
+                                (
+                                    <div onClick={()=>{userService.friendRequest(curUser)
+                                            .then(res=>{if(res.status==200){setReqPending(true)}})}}
+                                        className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400 duration-200">
+                                        <PersonAddRoundedIcon />
+                                        <p className="font-medium pl-1">Add friend</p>
+                                    </div>
+                                )
+                                :
+                                (null)
+                            }
+
+                            {/**** FRIEND REQUEST PENDING ****/}
+                            {reqPending && !isOwner ?
+                                (
+                                    <div onClick={()=>{userService.friendCancle(curUser)
+                                        .then(res=>{if(res.status==200){setReqPending(false)}})}}
+                                        className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400 duration-200">
+                                        <PersonAddDisabledRoundedIcon />
+                                        <p className="font-medium pl-1">Cancle request</p>
+                                    </div>
+                                )
+                                :
+                                (null)
+                            }
+
+                            {/**** ALREADY FRIEND ****/}
+                            {friend && !isOwner ?
+                                (
+                                    <div className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400 duration-200">
+                                        <PeopleAltRoundedIcon />
+                                        <p className="font-medium pl-1">Friend</p>
+                                    </div>
+                                )
+                                :
+                                (null)
+                            }
+
                         </div>
                         <div className="flex items-center mr-2">
-                            <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600">
-                                <EditRoundedIcon />
-                                <p className="font-medium pl-1">Edit your Profile</p>
-                            </div>
+                            {/**** OWNER OR NOT -> EDIT/CHAT ****/}
+                            { props.isOwner === true ?
+                                (
+                                    <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600 duration-200">
+                                        <EditRoundedIcon />
+                                        <p className="font-medium pl-1">Edit your Profile</p>
+                                    </div>
+                                )
+                                :
+                                (
+                                    <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600 duration-200">
+                                        <ChatRoundedIcon />
+                                        <p className="font-medium pl-1">Leave a message</p>
+                                    </div>
+                                )
+                            }
+
                         </div>
                         <div className="flex items-center">
-                            <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600">
+                            <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600 duration-200">
                                 <MoreHorizRoundedIcon />
                             </div>
                         </div>
@@ -88,4 +185,4 @@ const Header = ()=>{
         </section>
     )
 };
-export default Header;
+export default Header; 
