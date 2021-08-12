@@ -29,9 +29,12 @@ const ProfilePage = ({isOwner})=> {
     )
 };
 
-ProfilePage.getInitialProps = async ({req,asPath}) => {
-    const respond = await userService.checkIfOwner(req.user._id,asPath.replace('/',''));
-    return {isOwner: respond.data};
-  }
+export async function getServerSideProps({req,params}) {
+    const respond = await userService.checkIfOwner(req.user._id,params.user);
+    return {
+        props: {isOwner: respond.data}
+      } 
+}
+
 
 export default ProfilePage;

@@ -8,7 +8,7 @@ import Image from 'next/image';
 import * as userService from '../../services/user'
 import { useRouter } from 'next/router'
 
-const AccDropdown = ()=>{
+const AccDropdown = (props)=>{
     const router = useRouter();
     return(
         <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700">
@@ -63,7 +63,7 @@ const AccDropdown = ()=>{
                 </div>
                 <div onClick={()=>{userService.logOut()
                     .then((res)=>{
-                        if(res.status == 200){router.push('/login')}
+                        if(res.status == 200){props.removeCookie('user');router.push('/login')}
                     })}}
                     className="flex p-2 hover:bg-gray-600 rounded-lg cursor-pointer items-center">
                     <div  className="bg-gray-700 p-1 rounded-full">

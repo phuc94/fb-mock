@@ -15,20 +15,33 @@ import { useRouter } from 'next/router'
 const Header = (props)=>{
     useEffect(()=>{
         console.log(props.isOwner);
+        const stateCleaning = () => {
+            setIsOwner(false);
+            setAboutForm(false);
+            setFriend(false);
+            setNoStatus(false);
+            setReqPending(false);
+            setResPending(false);
+        };
         switch (props.isOwner){
             case true:
+                stateCleaning();
                 setIsOwner(true);
                 break;
             case 'reqPending':
+                stateCleaning();
                 setReqPending(true);
                 break;
             case 'resPending':
+                stateCleaning();
                 setResPending(true);
                 break;
             case 'friend':
+                stateCleaning();
                 setFriend(true);
                 break;
             case 'noStatus':
+                stateCleaning();
                 setNoStatus(true);
                 break;
             default:

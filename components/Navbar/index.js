@@ -73,7 +73,7 @@ const Left =()=>{
                         </div>
                     </div>
                     {searchResult.map(item=>(
-                    <div onClick={()=>{router.push(`/${item.id}`)}} key={item.id}
+                    <div onClick={()=>{router.push(`/${item.id}`);setSearchResult([]);setIsSeach(false)}} key={item.id}
                         className=" hover:bg-gray-600 p-1 pl-2 min-w-[250px] rounded-lg flex items-center cursor-pointer gap-2">
                         <div className="mr-3 cursor-pointer w-[40px] flex-shrink-0">
                             <Image width='40' height='40' className="rounded-full" src="https://via.placeholder.com/150" />
@@ -166,18 +166,18 @@ const Right =(props)=>{
             <div className="relative z-10">
                 {messDropdown && <MessengerDropdown />}
                 {notiDropdown && <NotiDropdown />}
-                {accDropdown && <AccDropdown />}
+                {accDropdown && <AccDropdown removeCookie={props.removeCookie}/>}
             </div>
         </div>
     )
 }
 function Nav (){
-    const [cookies, setCookie] = useCookies(['user']);
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     return (
         <div className="flex justify-between px-6 h-14 bg-gray-800 z-20 sticky top-0">
             <Left />
             <Mid />
-            <Right cookies={cookies}/>
+            <Right cookies={cookies} removeCookie={removeCookie}/>
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import { axiosRequest } from './request';
+const serverURL = 'phuc94.herokuapp.com'
 
 export const checkIfOwner = (userId, targetId) => {
     const options = {
@@ -7,7 +8,7 @@ export const checkIfOwner = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest('http://localhost:3000/CheckOwner',options);
+    return axiosRequest(serverURL + '/CheckOwner',options);
 };
 
 export const friendRequest = (targetId) => {
