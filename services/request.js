@@ -5,7 +5,7 @@ export const axiosRequest = (url,options)=>{
     const option ={
         ...options
     }
-    return axios(serverURL + url,option )
+    return axios(url,option )
     .then((response) => response)
     .catch((error) => console.log(error));
 };
