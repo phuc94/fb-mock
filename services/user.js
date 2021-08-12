@@ -1,5 +1,5 @@
 import { axiosRequest } from './request';
-const serverURL = 'phuc94.herokuapp.com'
+const serverURL = 'http://phuc94.herokuapp.com'
 
 export const checkIfOwner = (userId, targetId) => {
     const options = {
