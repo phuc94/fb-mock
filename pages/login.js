@@ -1,7 +1,7 @@
 import SignUp from "../components/Signup";
 import LoginFail from "../components/Modal/loginFail";
 import { useState } from 'react';
-import { axiosRequest } from '../services/request'
+import { logIn } from '../services/user'
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 import * as yup from 'yup';
 import { useRouter } from 'next/router'
@@ -84,10 +84,7 @@ const Login = ()=>{
                     onSubmit={(data, { setSubmitting }) => {
                         // const data = userModelConvert(data);
                         console.log(data);
-                        axiosRequest('/UserLogin',{
-                            method: 'post',
-                            data: data
-                        }).then(res=>{
+                        logIn(data).then(res=>{
                             if (res.data === false){handleToggleLogInFailModal()}
                             else {
                                 router.push('/');

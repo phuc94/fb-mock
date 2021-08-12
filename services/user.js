@@ -20,6 +20,14 @@ export const friendRequest = (targetId) => {
     return axiosRequest('/AddFriend',options);
 };
 
+export const logIn = (data) => {
+    const options = {
+        method: "post",
+        data
+    }
+    return axiosRequest('/AddFriend',options);
+};
+
 export const friendCancle = (targetId) => {
     const options = {
         method: "post",
