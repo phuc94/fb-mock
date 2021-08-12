@@ -7,7 +7,7 @@ export const checkIfOwner = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest('http://localhost:3000/CheckOwner',options);
+    return axiosRequest('/CheckOwner',options);
 };
 
 export const friendRequest = (targetId) => {
