@@ -66,7 +66,7 @@ const StatusForm = (props)=>{
                         onSubmit={(data, { setSubmitting }) => {
                             data.img=img;
                             console.log(data);
-                            postServices(data).then(res=>{if(res.status==200){console.log('status:',200)}})
+                            postServices.addPost(data).then(res=>{if(res.status==200){console.log('status:',200)}})
                         }}
                         >
                         {({ errors, setFieldValue }) => (
