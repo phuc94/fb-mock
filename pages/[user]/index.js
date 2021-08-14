@@ -19,6 +19,7 @@ const ProfilePage = ({isOwner})=> {
             .then(res=>{setUserData(res.data)});
     }
     useEffect (()=>{
+        console.log(isOwner);
         if(router.asPath !== '/[user]'){
             fetchUserData();
             postService.getUserPost(router.asPath.replace('/',''))
