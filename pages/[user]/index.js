@@ -12,29 +12,51 @@ import * as userService from '../../services/user'
 const ProfilePage = ({isOwner})=> {
     const router = useRouter();
     const [isFormShow,setIsFormShow] = useState(false)
+    const [userData,setUserData] = useState(null)
     const [posts,setPosts]= useState([]);
+    const fetchUserData = () =>{
+        userService.getUserData(router.asPath.replace('/',''))
+            .then(res=>{setUserData(res.data)});
+    }
     useEffect (()=>{
         if(router.asPath !== '/[user]'){
+            fetchUserData();
             postService.getUserPost(router.asPath.replace('/',''))
                 .then(res=>{setPosts(res.data)});
         }
     },[router.asPath])
     return(
-        <section className="bg-gray-900">
-            <Nav />
-            <Header isOwner={isOwner}/>
-            <Body isOwner={isOwner} posts={posts} setIsFormShow={setIsFormShow}/>
-            {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
-        </section>
+        <>
+            {userData ? 
+                (
+                    <section className="bg-gray-900">
+                        <Nav />
+                        <Header isOwner={isOwner} userData={userData} fetchUserData={fetchUserData}/>
+                        <Body isOwner={isOwner} posts={posts} setIsFormShow={setIsFormShow}/>
+                        {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
+                    </section>
+                ):
+                (null)
+
+            }
+        </>
     )
 };
 
 export async function getServerSideProps({req,params}) {
-    const respond = await userService.checkIfOwner(req.user._id,params.user);
+    if(!req.user){
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login"
+              }
+        }
+    }
+    else {
+        const respond = await userService.checkIfOwner(req.user._id,params.user);
     return {
         props: {isOwner: respond.data}
-      } 
-}
-
-
+      }
+    }
+};
 export default ProfilePage;

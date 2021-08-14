@@ -32,7 +32,12 @@ const Test =()=>{
         }).then((res)=>{console.log(res)});
     };
     const checkowner = () => {
-        userService.checkIfOwner('610bdcf66660373a50e88396').then(res=>{console.log(res)})
+        return axios('/testRoute2',{
+            params:{
+                id: '611619dd14c96f46f05c8712'
+            }
+        }).then((res)=>{console.log(res)});
+        
     };
     const handleImgUpload = ()=>{
         const options ={
@@ -93,7 +98,7 @@ const Test =()=>{
                 </div>
                 <div>
                     <button onClick={checkowner} className="border border-2 p-2 bg-red-200">
-                        CheckOwner
+                        TestRoute
                     </button>
                 </div>
             </div>

@@ -29,7 +29,7 @@ const StatusForm = (props)=>{
     
     return (
         <div className="fixed w-screen h-screen flex justify-center items-center p-3 bg-gray-900 rounded-xl top-0 bg-opacity-80">
-            <div className="bg-gray-800 border-[1px] border-gray-700 rounded-xl shadow text-gray-300">
+            <div className="bg-gray-800 border-[1px] max-h-[730px] border-gray-700 rounded-xl shadow text-gray-300">
                 <div className="flex justify-between p-3 border-b-[1px] border-gray-700">
                     <div></div>
                     <p className="font-medium text-xl">Add new status</p>
@@ -71,17 +71,26 @@ const StatusForm = (props)=>{
                         >
                         {({ errors, setFieldValue }) => (
                         <Form>
-                            <Field className="w-[500px] h-[200px] bg-gray-600 text-white outline-none p-2"
-                                as="textarea" name="content" />
+                            <Field className="w-[500px] max-h-[215px] bg-gray-800 text-white outline-none py-2 px-3"
+                                as="textarea" name="content" placeholder="What's in your mind?"/>
+                            {!(img == '') ?
+                                (<div className="">
+                                    <div className="relative w-[450px] h-[450px] rounded overflow-hidden px-auto">
+                                        <Image className='object-contain w-full h-full' layout='fill'
+                                            src={img}/>
+                                    </div>
+                                </div>)
+                                : (null)
+                            }
                             <div className="px-3 pt-3">
                                 <div className=" flex justify-between items-center rounded-xl border border-[1px] border-gray-700 p-3">
                                     <div className="">
                                         <p>Add to your status</p>
                                     </div>
                                     <div className="flex gap-3">
-                                        <div className="text-green-500 cursor-pointer" >
+                                        <div className="text-green-500 cursor-pointer" onClick={()=>{imgBtn.current.click()}}>
                                             <PhotoLibraryRoundedIcon />
-                                            <input ref={imgBtn} id="file" name="file" type="file" className=""
+                                            <input ref={imgBtn} id="file" name="file" type="file" className="hidden"
                                                 onChange={encodeImageFileAsURL} />
                                         </div>
                                         <div className="text-blue-500">

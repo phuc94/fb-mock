@@ -14,11 +14,11 @@ import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 
 import { useCookies } from 'react-cookie';
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import AccDropdown from './accDropdown'
 import NotiDropdown from './notiDropdown'
 import MessengerDropdown from './messengerDropdown'
-
+import { debounce } from 'lodash'
 import axios from 'axios'; 
 
 import { userSearchConvert } from '../../utils/helper';
@@ -28,9 +28,9 @@ const Left =()=>{
     const [isSeach,setIsSeach] = useState(false);
     const [user,setUser]= useState('');
     const router = useRouter();
+    const submitBtn = useRef(null);
     const findUser = (e)=>{
         e.preventDefault();
-        console.log(user);
         return axios('/SearchUser',{
             method:"post",
             data:{
@@ -39,26 +39,31 @@ const Left =()=>{
         }).then((res)=>{
             if(res.data.length > 0){
                 let users = userSearchConvert(res.data);
-                console.log("🚀 ~ file: index.js ~ line 41 ~ findUser ~ users", users);                
                 setIsSeach(true);
                 setSearchResult(users);
             }
         });
     };
+    const debounceFindUser = useCallback(debounce(() =>{
+        submitBtn.current.click();
+    },500),[]);
     return (
         <div className="py-2 flex items-center ">
-            <Image 
-                onClick={()=>{router.push('/');}}
-                className="cursor-pointer"
-                width={40} height={40} 
-                src='https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-2019-circle-512.png'/>
+            <div className=" min-w-[40px]">
+                <Image
+                    onClick={()=>{router.push('/');}}
+                    className="cursor-pointer"
+                    width={40} height={40}
+                    src='https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-2019-circle-512.png'/>
+            </div>
             <div className="ml-3 h-10 bg-gray-500 rounded-full items-center flex pl-2 bg-gray-500 relative">
                 <div className='text-gray-300'>
                     <SearchIcon />
                 </div>
                 <form onSubmit={findUser}>
-                    <input onChange={e=>{setUser(e.target.value)}}
+                    <input onChange={e=>{setUser(e.target.value);debounceFindUser()}}
                         className="px-3 rounded-full h-full outline-none bg-gray-500 text-white" placeholder="Search in Facebook"/>
+                        <button type='submit' ref={submitBtn} className="hidden"></button>
                 </form>
                 
                 <div className={` bg-gray-800 top-[45px] left-[0px] p-2 ${ isSeach ? 'absolute': 'hidden' }
@@ -110,7 +115,7 @@ const Mid =()=>{
         </div>
     )
 };
-const Right =(props)=>{
+export const Right =(props)=>{
     const [accDropdown,setAccDropdown] = useState(false);
     const [notiDropdown,setNotiDropdown] = useState(false);
     const [messDropdown,setMessDropdown] = useState(false);
@@ -139,11 +144,13 @@ const Right =(props)=>{
     return(
         <div className="pt-2">
             <div className="flex items-center gap-3">
-                <div onClick={()=>{router.push(`/${props.cookies.user}`)}}
-                    className="px-3 py-1 flex items-center gap-2 text-white cursor-pointer hover:bg-gray-600 rounded-full">
-                    <Image className="rounded-full" width={35} height={35} src="https://via.placeholder.com/150" />
-                    <span>Nguyen</span>
-                </div>
+                {!props.noAvatar &&
+                    <div onClick={()=>{router.push(`/${props.cookies.user}`)}}
+                        className="px-3 py-1 flex items-center gap-2 text-white cursor-pointer hover:bg-gray-600 rounded-full">
+                        <Image className="rounded-full" width={35} height={35} src="https://via.placeholder.com/150" />
+                        <span>Nguyen</span>
+                    </div>
+                }
                 <div className="flex gap-2 text-white">
                     <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full" 
                         onClick={()=>handleDropdown()}>

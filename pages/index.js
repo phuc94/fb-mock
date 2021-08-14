@@ -6,7 +6,7 @@ import StatusForm from '../components/Form/status'
 import { useState, useEffect } from 'react';
 import { axiosRequest } from '../services/request'
 
-const Index = ()=> {
+const Index = ({isLoggedIn})=> {
 
     const [posts,setPosts]= useState([]);
     const [isFormShow,setIsFormShow] = useState(false)
@@ -32,4 +32,17 @@ const Index = ()=> {
         </>
     )
 };
+export async function getServerSideProps({req,params}) {
+    if(!req.user){
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login"
+              }
+        }
+    }else return{
+        props: {isLoggedIn: true}
+      }
+     
+}
  export default Index;

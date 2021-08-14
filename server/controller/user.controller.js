@@ -22,6 +22,26 @@ self.logIn = (req,res,next) => {
 };
 
 
+/**** CHECK OWNER ****/
+self.checkOwner = (req,res) =>{
+    const userId = req.query.userId.slice(1,req.query.targetId.length+1);
+    const targetId = req.query.targetId;
+    if (userId == targetId){
+        res.send(true)
+    }
+    else {
+        // TODO: check friend status
+        User.find({_id : userId})
+            .then(userObj=>{res.send(checkFriendStatus(userObj[0],targetId))})
+    }
+};
+
+/**** CHECK LOGGED IN ****/
+self.checkLoggedIn = (req,res) =>{
+    if(req.user._id){res.send(true)}
+    else {res.redirect('/login')}
+};
+
 /**** FRIEND REQUEST ****/
 self.friendRequest = (req,res) => {
     let newReqPending = [];
@@ -86,18 +106,55 @@ self.searchUser = (req,res) =>{
     .catch((err)=>{console.log(err)});
 };
 
-/**** CHECK OWNER ****/
-self.checkOwner = (req,res) =>{
-    const userId = req.query.userId.slice(1,req.query.targetId.length+1);
-    const targetId = req.query.targetId;
-    if (userId == targetId){
-        res.send(true)
-    }
-    else {
-        // TODO: check friend status
-        User.find({_id : userId})
-            .then(userObj=>{res.send(checkFriendStatus(userObj[0],targetId))})
-    }
+
+/**** GET USER PHOTOS ****/
+self.getUserPhoto = (req,res) =>{
+    User.findOne({_id: req.query.userId})
+    .then(user=>{
+        res.send(user.userData.photos);
+    })
 };
+
+/**** UPLOAD AVATAR ****/
+self.uploadAvatar = (req,res) =>{
+    User.findOne({_id: req.user._id})
+    .then(user=>{
+        user.userData.avatar = req.body.img;
+        user.save().then(response=>{res.send(response)});
+    })
+};
+
+/**** UPLOAD COVER ****/
+self.uploadCover = (req,res) =>{
+    User.findOne({_id: req.user._id})
+    .then(user=>{
+        user.userData.cover = req.body.img;
+        user.save().then(response=>{res.send(response)});
+    })
+};
+
+/**** GET USER DATA ****/
+self.getUserData = (req,res) =>{
+    User.findOne({_id: req.query.userId})
+    .then(user=>{
+        res.send(user)});
+};
+
+
+self.testRoute = (req,res) => {
+    User.findOne({email : req.query.email}).then(email=>{
+        email.userData.photos.push({img: req.query.avatar});
+        email.save().catch(err=>console.log(err))
+    }).catch(err=>console.log(err))
+};
+
+self.testRoute2 = (req,res) => {
+    User.findOne({'userData.photos._id':req.query.id},).then(img=>{
+        const result = img.userData.photos.id(req.query.id);
+        res.send(result);
+    }).catch(err=>console.log(err))
+};
+
+
 
 module.exports = self;

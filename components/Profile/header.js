@@ -9,8 +9,11 @@ import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import PersonAddDisabledRoundedIcon from '@material-ui/icons/PersonAddDisabledRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import * as userService from '../../services/user'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router'
+import CameraAltRoundedIcon from '@material-ui/icons/CameraAltRounded';
+
+import ImgUploadModal from '../../components/Form/imgUpload'
 
 const Header = (props)=>{
     useEffect(()=>{
@@ -49,25 +52,84 @@ const Header = (props)=>{
         }
     },[props.isOwner])
     const [isOwner, setIsOwner] = useState(false);
+    const [isImgUploadShow, setIsImgUploadShow] = useState(false);
+    const [isCoverConfirm, setIsCoverConfirm] = useState(false);
     const [aboutForm, setAboutForm] = useState(false);
     const [friend, setFriend] = useState(false);
     const [noStatus, setNoStatus] = useState(false);
     const [reqPending, setReqPending] = useState(false);
     const [resPending, setResPending] = useState(false);
+    const [newCover, setNewCover] = useState(null);
     const router = useRouter();
     const curUser = router.asPath.replace('/','')
+    const coverInput = useRef();
+    const encodeImageFileAsURL= (element) => {
+        let file = element.target.files[0];
+        let reader = new FileReader();
+        reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            setNewCover(reader.result);
+        }, false);
+        if (file) {
+            reader.readAsDataURL(file);
+        };
+        setIsCoverConfirm(true);
+    };
+    const handleUpdateCover = () =>{
+        userService.UpdateCover(newCover)
+        .then(res=>{props.fetchUserData();setNewCover(null);setIsCoverConfirm(false);});
+    };
+
     return (
         <section className="bg-gray-800 w-full">
-            <div className="w-full">
+            <div className="w-full relative">
+                {isCoverConfirm &&
+                    <div className="h-[55px] w-full bg-gray-500 bg-opacity-30 absolute flex justify-between z-20">
+                        <div></div>
+                        <div className="py-[10px] px-[20px] flex gap-3">
+                            <button onClick={()=>{setNewCover(null);setIsCoverConfirm(false)}}
+                                className="py-[5px] px-10 bg-gray-500 font-medium text-gray-100 bg-opacity-40 rounded hover:brightness-110">
+                                Cancle
+                            </button>
+                            <button onClick={handleUpdateCover}
+                                className="py-[5px] px-10 bg-blue-500 font-medium text-gray-100 rounded hover:brightness-110">
+                                Save
+                            </button>
+                        </div>
+                    </div> 
+                }
                 <div className="w-[960px] mx-auto">
-                    <Image className="rounded-b-xl" width={960} height={350} src="https://via.placeholder.com/1000" />
+                    <div className="relative">
+
+                        {newCover === null ?
+                            (
+                                <Image className="rounded-b-xl" width={960} height={350}
+                                src={props.userData.userData.cover === '' ? "https://via.placeholder.com/1000" : props.userData.userData.cover} />
+                            ) :
+                            (
+                                <Image className="rounded-b-xl" width={960} height={350}
+                                src={newCover} />
+                            )
+                        }
+
+                        <div onClick={()=>{coverInput.current.click()}}
+                            className="bg-gray-100 absolute bottom-[25px] right-[40px] flex items-center gap-2
+                            rounded-lg px-2 py-1 cursor-pointer">
+                            <CameraAltRoundedIcon />
+                            <p className="font-medium">Edit cover</p>
+                            <input onChange={encodeImageFileAsURL}
+                                ref={coverInput} type="file" className="hidden"/>
+                        </div>
+                    </div>
                     <div className="flex flex-col items-center">
                         <div className="relative w-[170px]">
                             <div className="absolute w-[178px] h-[178px] -top-44 rounded-full border-[6px] border-gray-800 overflow-hidden hover:brightness-110 transition-100 cursor-pointer">
-                                <Image className="" width={200} height={200} src="https://via.placeholder.com/500" />
+                                <Image src={ props.userData.userData.avatar === '' ? "https://via.placeholder.com/500" : props.userData.userData.avatar }
+                                    className="" width={200} height={200} />
                             </div>
                             <div className="absolute -top-14 right-0">
-                                <div className="text-white p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-100 cursor-pointer">
+                                <div onClick={()=>{setIsImgUploadShow(true);document.body.classList.add('overflow-hidden')}}
+                                    className="text-white p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-100 cursor-pointer">
                                     <AddAPhotoRoundedIcon />
                                 </div>
                             </div>
@@ -75,7 +137,7 @@ const Header = (props)=>{
                         <p className="text-white font-bold text-3xl mb-2">Nguyen Truong Trung Phuc</p>
                         {!aboutForm && 
                         <p  
-                            onClick= {()=>{setAboutForm(true)}}
+                            onClick= {()=>{setAboutForm(true);}}
                             className="font-medium text-blue-600 cursor-pointer"
                             >Add information</p>}
                         {aboutForm &&
@@ -195,7 +257,9 @@ const Header = (props)=>{
                     </div>
                 </div>
             </div>
+            {/**** AVATAR UPLOAD FORM ****/}
+            {isImgUploadShow && <ImgUploadModal setIsImgUploadShow={setIsImgUploadShow} fetchUserData={props.fetchUserData}/>}
         </section>
     )
 };
-export default Header; 
+export default Header;

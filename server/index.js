@@ -96,7 +96,7 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 /*** CONSOLE LOG USER ***/
                 expressApp.use((req, res, next) => {
                     console.log(req.session);
-                    console.log(req.user);
+                    // console.log(req.user);
                     next();
                 });
                 

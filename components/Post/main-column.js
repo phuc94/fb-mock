@@ -12,7 +12,7 @@ const MainColumn =(props)=>{
                 <Status setIsFormShow={props.setIsFormShow}/>
             }
             {props.posts.map(post=>(
-                <Post content={post.body} img={post.img} key={post._id}/>
+                <Post content={post.body} img={post.img} key={post._id} id={post._id}/>
             ))}
 
         </div>

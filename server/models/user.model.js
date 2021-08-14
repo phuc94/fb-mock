@@ -1,5 +1,15 @@
 const mongoose = require('mongoose');
 
+const userPhotoSchema = new mongoose.Schema({
+    uploadDate: String
+},{timestamps: true});
+
+const userDataSchema = new mongoose.Schema({
+    avatar: String,
+    cover: String,
+    photos: [userPhotoSchema]
+});
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -21,7 +31,7 @@ const userSchema = new mongoose.Schema({
     lastname: String,
     dob: String,
     gender: String,
-    detail: Object,
+    userData: userDataSchema,
     admin: Boolean
 })
 
