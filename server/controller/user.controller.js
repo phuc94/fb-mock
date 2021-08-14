@@ -88,7 +88,11 @@ self.userRegister = (req,res) =>{
         email: req.body.email,
         hash: hash,
         salt: salt,
-        admin: false
+        admin: false,
+        userData:{
+            avatar: '',
+            cover: ''
+        }
     });
     newUser.save()
         .then((user) => {
