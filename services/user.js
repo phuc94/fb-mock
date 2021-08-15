@@ -8,7 +8,7 @@ export const checkIfOwner = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest('http://localhost:3000/CheckOwner',options);
+    return axiosRequest(serverURL + '/CheckOwner',options);
 };
 
 export const checkIfLoggedIn = (userId, targetId) => {
@@ -18,7 +18,7 @@ export const checkIfLoggedIn = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest('http://localhost:3000/CheckLoggedIn',options);
+    return axiosRequest(serverURL + '/CheckLoggedIn',options);
 };
 
 export const getBasicUserData = (userId) => {
@@ -27,7 +27,7 @@ export const getBasicUserData = (userId) => {
             userId
         }
     }
-    return axiosRequest('http://localhost:3000/GetBasicUserData',options);
+    return axiosRequest(serverURL + '/GetBasicUserData',options);
 };
 
 
