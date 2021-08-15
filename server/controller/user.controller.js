@@ -27,13 +27,36 @@ self.logIn = (req,res,next) => {
 self.checkOwner = (req,res) =>{
     const userId = req.query.userId.slice(1,25);
     const targetId = req.query.targetId;
-    if (userId == targetId){
-        res.send(true)
-    }
-    else {
-        User.find({_id : userId})
-            .then(userObj=>{res.send(checkFriendStatus(userObj[0],targetId))})
-    }
+    /** Get basic user data **/
+    User.findOne({_id : userId})
+        .then(userObj=>{
+            let userData = {
+                email : userObj.email,
+                firstName : userObj.firstName,
+                lastName : userObj.lastName,
+                avatar : userObj.userData.avatar,
+            };
+            /** Check onwnership **/
+            if (userId == targetId){
+                const result = {
+                    userData,
+                    isOwner:true
+                }
+                res.send(result)
+            }
+            else {
+                User.find({_id : userId})
+                    .then(userObj=>{
+                        const result = {
+                            userData,
+                            isOwner:checkFriendStatus(userObj[0],targetId)
+                        }
+                        res.send(result);
+                    })
+            }
+        })
+        .catch((err)=>{console.log(err)});
+    
 };
 
 /**** GET BASIC USER DATA ****/
@@ -51,8 +74,7 @@ self.getBasicUserData = (req,res) =>{
             };
             res.send(data);
         })
-        .catch((err)=>{console.log(err)});
-   
+        .catch((err)=>{console.log(err)});   
 };
 
 /**** CHECK LOGGED IN ****/

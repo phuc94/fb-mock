@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import * as postService from '../../services/post'
 import * as userService from '../../services/user'
 
-const ProfilePage = ({isOwner})=> {
+const ProfilePage = ({serverProps})=> {
     const router = useRouter();
     const [isFormShow,setIsFormShow] = useState(false)
     const [userData,setUserData] = useState(null)
@@ -19,7 +19,7 @@ const ProfilePage = ({isOwner})=> {
             .then(res=>{setUserData(res.data)});
     }
     useEffect (()=>{
-        console.log(isOwner);
+        console.log(serverProps);
         if(router.asPath !== '/[user]'){
             fetchUserData();
             postService.getUserPost(router.asPath.replace('/',''))
@@ -31,9 +31,9 @@ const ProfilePage = ({isOwner})=> {
             {userData ? 
                 (
                     <section className="bg-gray-900">
-                        <Nav />
-                        <Header isOwner={isOwner} userData={userData} fetchUserData={fetchUserData}/>
-                        <Body isOwner={isOwner} posts={posts} setIsFormShow={setIsFormShow}/>
+                        <Nav basicUserData={serverProps.userData}/>
+                        <Header isOwner={serverProps.isOwner} userData={userData} fetchUserData={fetchUserData}/>
+                        <Body isOwner={serverProps.isOwner} posts={posts} setIsFormShow={setIsFormShow}/>
                         {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
                     </section>
                 ):
@@ -56,7 +56,7 @@ export async function getServerSideProps({req,params}) {
     else {
         const respond = await userService.checkIfOwner(req.user._id,params.user);
         return {
-            props: {isOwner: respond.data}
+            props: {serverProps: respond.data}
         }
     }
 };
