@@ -8,7 +8,10 @@ const Status = (props)=>{
         <div className="bg-gray-800 rounded-md p-3 w-[630px]">
             <div className="flex items-center mb-2">
                 <div className="mr-3 px-1">
-                    <Image className="rounded-full" width={45} height={45} src="https://via.placeholder.com/150" />
+                    {props.avatar &&
+                        <Image src={props.avatar == '' ? "https://via.placeholder.com/150" : props.avatar}
+                            className="rounded-full" width={45} height={45} />
+                    }
                 </div>
                 <div onClick={()=> {props.setIsFormShow(true);document.body.classList.add('overflow-hidden');}}
                     className="w-full h-10 bg-gray-700 hover:bg-gray-600 duration-300 cursor-pointer flex items-center text-white px-5 rounded-full ">

@@ -1,6 +1,7 @@
 const searchEmail = (dataArr,string) =>{
     return dataArr.filter(item => item.email.includes(string))
 };
+
 const checkFriendStatus =(userObj,targetId) => {
     const target = JSON.stringify(targetId);
     console.log("***************************");
@@ -29,4 +30,15 @@ const userDataFilter = (userData) => {
     return result;
 }
 
-module.exports = {searchEmail, checkFriendStatus, userDataFilter};
+const basicUserDatafilter = (userData) => {
+    let result ={};
+    result.email = userData.email;
+    result.avatar = userData.userData.avatar;
+    result.cover = userData.userData.cover;
+    result.firstName = userData.firstName;
+    result.lastName = userData.lastName;
+
+    return result;
+}
+
+module.exports = {searchEmail, checkFriendStatus, userDataFilter, basicUserDatafilter};

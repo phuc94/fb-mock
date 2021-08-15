@@ -10,6 +10,15 @@ export const getUserPost = (userId) => {
     return axiosRequest('/UserPost',options);
 };
 
+export const getOwnerData = (userId) => {
+    const options = {
+        params:{
+            userId: userId
+        }
+    }
+    return axiosRequest('/GetOwnerData',options);
+};
+
 export const addPost = (data) => {
     const options = {
         method: 'post',

@@ -1,6 +1,6 @@
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
-
+const { basicUserDatafilter } = require('../utils/helper')
 
 self = this;
 
@@ -20,6 +20,15 @@ self.addPost = (req,res)=>{
                 .catch((err)=>{console.log(err)});
         })
     
+};
+
+self.getOwnerData = (req,res)=>{
+    User.findOne({_id:req.query.userId.slice(0,25)})
+        .then(user=>{
+            const data = basicUserDatafilter(user);
+            res.send(data)
+        })
+        .catch((err)=>{console.log(err)})
 };
 
 self.getAllPost = (req,res) =>{

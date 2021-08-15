@@ -5,12 +5,17 @@ import Messenger from '../components/Messenger/index';
 import StatusForm from '../components/Form/status'
 import { useState, useEffect } from 'react';
 import { getAllPost } from '../services/post'
-import { getBasicUserData, checkIfOwner } from '../services/user'
+import { getBasicUserData } from '../services/user'
 
 const Index = ({basicUserData})=> {
 
     const [posts,setPosts]= useState([]);
     const [isFormShow,setIsFormShow] = useState(false)
+    const avatarObj = {
+        userData:{
+            avatar: basicUserData.avatar
+        }
+    }
     useEffect (()=>{
         console.log(basicUserData);
         getAllPost()
@@ -25,7 +30,8 @@ const Index = ({basicUserData})=> {
         <section className="bg-gray-900 relative">
             <div>
                 <Layout basicUserData={basicUserData}>
-                    <MainColumn posts={posts} setIsFormShow={setIsFormShow} storyRender={true} statusRender={true}/>
+                    <MainColumn posts={posts} setIsFormShow={setIsFormShow} 
+                        storyRender={true} statusRender={true} userData={avatarObj}/>
                 </Layout>
                 {/* <Messenger/> */}
             </div>

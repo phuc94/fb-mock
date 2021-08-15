@@ -12,7 +12,8 @@ const Body = (props)=>{
                 <div className="">
                     <LeftSidebar />
                 </div>
-                <MainColumn setIsFormShow={props.setIsFormShow} posts={props.posts} statusRender={(props.isOwner === true) ? true : false } storyRender={false}/>
+                <MainColumn setIsFormShow={props.setIsFormShow} posts={props.posts} userData={props.userData}
+                    statusRender={(props.isOwner === true) ? true : false } storyRender={false}/>
             </div>
         </div>
     )

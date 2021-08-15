@@ -134,7 +134,7 @@ const Header = (props)=>{
                                 </div>
                             </div>
                         </div>
-                        <p className="text-white font-bold text-3xl mb-2">Nguyen Truong Trung Phuc</p>
+                        <p className="text-white font-bold text-3xl mb-2">{props.userData.lastName +' '+ props.userData.firstName}</p>
                         {!aboutForm && 
                         <p  
                             onClick= {()=>{setAboutForm(true);}}

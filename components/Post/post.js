@@ -4,15 +4,31 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ShareIcon from '@material-ui/icons/Share';
 import ChatBubbleOutlineRoundedIcon from '@material-ui/icons/ChatBubbleOutlineRounded';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { getOwnerData } from '../../services/post';
 
 export const Upper = (props)=>{
+    const [ownerData,setOwnerData] = useState(null);
+    const router = useRouter();
+    useEffect(()=>{
+        getOwnerData(props.data.userId)
+            .then(res=>{
+                setOwnerData(res);
+            })
+    },[])
     return (
         <div className="flex p-3">
             <div className="mr-3 cursor-pointer">
-                <Image className="rounded-full" width={40} height={40} src="https://via.placeholder.com/150" />
+                {ownerData && 
+                    <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
+                        className="rounded-full" width={40} height={40} />
+                }
             </div>
             <div className="flex flex-col text-white">
-                <h3 className="cursor-pointer">{props.data.ownerName}</h3>
+                <h3 onClick={()=>{router.push(`/${props.data.userId}`)}}
+                    className="cursor-pointer">
+                    {props.data.ownerName}
+                </h3>
                 <span className="text-xs text-gray-500 italic ">{props.data.createdAt}</span>
             </div>
         </div>

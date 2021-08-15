@@ -33,7 +33,7 @@ const ProfilePage = ({serverProps})=> {
                     <section className="bg-gray-900">
                         <Nav basicUserData={serverProps.userData}/>
                         <Header isOwner={serverProps.isOwner} userData={userData} fetchUserData={fetchUserData}/>
-                        <Body isOwner={serverProps.isOwner} posts={posts} setIsFormShow={setIsFormShow}/>
+                        <Body isOwner={serverProps.isOwner} posts={posts} setIsFormShow={setIsFormShow} userData={userData}/>
                         {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
                     </section>
                 ):
