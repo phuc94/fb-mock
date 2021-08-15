@@ -5,7 +5,7 @@ import RightSideBar from './Sidebar/right';
 const Layout = (props)=>{
     return(
         <section className="flex flex-col">
-            <Nav />
+            <Nav basicUserData={props.basicUserData}/>
             <div className="flex justify-between">
                 <LeftSideBar className=''/>
                 {props.children}

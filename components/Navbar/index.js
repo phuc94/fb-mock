@@ -147,8 +147,9 @@ export const Right =(props)=>{
                 {!props.noAvatar &&
                     <div onClick={()=>{router.push(`/${props.cookies.user}`)}}
                         className="px-3 py-1 flex items-center gap-2 text-white cursor-pointer hover:bg-gray-600 rounded-full">
-                        <Image className="rounded-full" width={35} height={35} src="https://via.placeholder.com/150" />
-                        <span>Nguyen</span>
+                        <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
+                        className="rounded-full" width={35} height={35}  />
+                        <span>{props.basicUserData.firstName}</span>
                     </div>
                 }
                 <div className="flex gap-2 text-white">
@@ -178,13 +179,13 @@ export const Right =(props)=>{
         </div>
     )
 }
-function Nav (){
+function Nav (props){
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     return (
         <div className="flex justify-between px-6 h-14 bg-gray-800 z-20 sticky top-0">
             <Left />
             <Mid />
-            <Right cookies={cookies} removeCookie={removeCookie}/>
+            <Right cookies={cookies} removeCookie={removeCookie} basicUserData={props.basicUserData}/>
         </div>
     )
 }

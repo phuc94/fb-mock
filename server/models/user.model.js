@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userPhotoSchema = new mongoose.Schema({
-    uploadDate: String
+    img: String
 },{timestamps: true});
 
 const userDataSchema = new mongoose.Schema({
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     reqPending: [String],
     resPending: [String],
     firstName: String,
-    lastname: String,
+    lastName: String,
     dob: String,
     gender: String,
     userData: userDataSchema,

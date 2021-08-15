@@ -4,14 +4,38 @@ import { Upper, Lower, Mid } from '../../components/Post/post';
 import Comment from '../../components/Post/comment';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { useRouter } from 'next/router';
-
+import * as postServices from '../../services/post';
+import { useEffect, useState } from 'react';
 
 function PostPage(){
+    const[postData,setPostData] = useState(null);
     const router = useRouter();
+    useEffect(() => {
+        let postId = router.asPath.replace('/','');
+        postId = postId.slice(5,postId.length);
+        if(router.asPath !== 'post/[post]'){
+            postServices.getPost(postId)
+                .then(res=>{console.log(res.data);setPostData(res.data)})
+        }
+    }, [router.asPath])
+    
     return (
         <section className="flex w-screen h-screen">
+            { postData ?
+                (<DataReady data={postData}/>) : (null)
+            }
+        </section>
+    )
+}
+export default PostPage;
+
+const DataReady = (props) =>{
+    const router = useRouter();
+    return(
+        <>
             <div className="relative w-full bg-black">
-                <Image className="object-contain w-full h-full" layout="fill"  src="https://via.placeholder.com/2000" />
+                <Image src={props.data.img}
+                    className="object-contain w-full h-full" layout="fill"/>
                 <div className="absolute bg-opacity-0 h-[60px] w-full">
                     <div className="flex items-center pt-2 pl-3">
                         <div onClick={()=>{router.back()}}
@@ -35,13 +59,12 @@ function PostPage(){
                         <div></div>
                         <Right noAvatar/>
                     </div>
-                    <Upper />
-                    <Mid img='' content={'hard code test'}/>
+                    <Upper data={props.data}/>
+                    <Mid data={props.data} noImg/>
                     <Lower />
                     <Comment />
                 </div>
             </div>
-        </section>
+        </>
     )
-}
-export default PostPage;
+};

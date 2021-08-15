@@ -5,7 +5,11 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    body:{
+    content:{
+        type: String,
+        required: true
+    },
+    ownerName:{
         type: String,
         required: true
     },

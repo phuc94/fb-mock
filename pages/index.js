@@ -4,14 +4,16 @@ import MainColumn from '../components/Post/main-column';
 import Messenger from '../components/Messenger/index';
 import StatusForm from '../components/Form/status'
 import { useState, useEffect } from 'react';
-import { axiosRequest } from '../services/request'
+import { getAllPost } from '../services/post'
+import { getBasicUserData, checkIfOwner } from '../services/user'
 
-const Index = ({isLoggedIn})=> {
+const Index = ({basicUserData})=> {
 
     const [posts,setPosts]= useState([]);
     const [isFormShow,setIsFormShow] = useState(false)
     useEffect (()=>{
-        axiosRequest('/AllPost')
+        console.log(basicUserData);
+        getAllPost()
             .then(res=>{
                 console.log(res);
                 setPosts(res.data);
@@ -21,13 +23,13 @@ const Index = ({isLoggedIn})=> {
     return (
         <>
         <section className="bg-gray-900 relative">
-        <div>
-            <Layout>
-                <MainColumn posts={posts} setIsFormShow={setIsFormShow} storyRender={true} statusRender={true}/>
-            </Layout>
-            {/* <Messenger/> */}
-        </div>
-    </section>
+            <div>
+                <Layout basicUserData={basicUserData}>
+                    <MainColumn posts={posts} setIsFormShow={setIsFormShow} storyRender={true} statusRender={true}/>
+                </Layout>
+                {/* <Messenger/> */}
+            </div>
+        </section>
         {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
         </>
     )
@@ -40,9 +42,12 @@ export async function getServerSideProps({req,params}) {
                 destination: "/login"
               }
         }
-    }else return{
-        props: {isLoggedIn: true}
-      }
+        }else{
+            const respond = await getBasicUserData(req.user._id);
+            return {
+                props: {basicUserData: respond.data}
+            }
+        }
      
 }
  export default Index;

@@ -55,9 +55,9 @@ export async function getServerSideProps({req,params}) {
     }
     else {
         const respond = await userService.checkIfOwner(req.user._id,params.user);
-    return {
-        props: {isOwner: respond.data}
-      }
+        return {
+            props: {isOwner: respond.data}
+        }
     }
 };
 export default ProfilePage;

@@ -10,6 +10,8 @@ router.get('/CheckLoggedIn', (req,res)=>{userController.checkLoggedIn(req,res)})
 
 router.post('/SearchUser',(req,res)=> {userController.searchUser(req,res)});
 
+router.get('/GetBasicUserData',(req,res)=> {userController.getBasicUserData(req,res)});
+
 router.post('/AddFriend',(req,res)=>{userController.friendRequest(req,res)});
 
 router.post('/FriendCancle',(req,res)=>{userController.friendCancle(req,res)});

@@ -8,7 +8,7 @@ export const checkIfOwner = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest(serverURL + '/CheckOwner',options);
+    return axiosRequest('http://localhost:3000/CheckOwner',options);
 };
 
 export const checkIfLoggedIn = (userId, targetId) => {
@@ -18,8 +18,18 @@ export const checkIfLoggedIn = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest(serverURL + '/CheckLoggedIn',options);
+    return axiosRequest('http://localhost:3000/CheckLoggedIn',options);
 };
+
+export const getBasicUserData = (userId) => {
+    const options = {
+        params:{
+            userId
+        }
+    }
+    return axiosRequest('http://localhost:3000/GetBasicUserData',options);
+};
+
 
 export const friendRequest = (targetId) => {
     const options = {
@@ -96,3 +106,4 @@ export const UpdateCover = (img) => {
     }
     return axiosRequest('/UploadCover',options);
 };
+

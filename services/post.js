@@ -17,3 +17,20 @@ export const addPost = (data) => {
     }
     return axiosRequest('/AddPost',options);
 };
+
+export const getPost = (_id) => {
+    const options = {
+        method: 'get',
+        params:{
+            _id
+        }
+    }
+    return axiosRequest('/GetPost',options);
+};
+
+export const getAllPost = () => {
+    const options = {
+        method: 'get'
+    }
+    return axiosRequest('/AllPost',options);
+};

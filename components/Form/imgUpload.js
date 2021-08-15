@@ -34,11 +34,10 @@ export default ImgUploadModal;
 
 /**** UPLOAD FORM ****/
 const PhotoUploadForm = (props) =>{
-
-    const handleSubmit = (e) =>{
-        e.preventDefault();
+    const [content,setContent] = useState(null);
+    const handleSubmit = () =>{
         let data ={};
-        data.content = e.target[0].value;
+        data.content = content;
         data.img=props.uploadedImg;
         userService.UserUploadAvatar(data)
             .then(res=>{if(res.status==200){
@@ -50,7 +49,7 @@ const PhotoUploadForm = (props) =>{
     }
     
     return(
-        <div className="w-[670px] h-[800px] bg-gray-800 rounded-xl overflow-y-auto border-[1px] border-gray-700">
+        <div className="w-[670px] h-[600px] bg-gray-800 flex flex-col rounded-xl overflow-y-auto border-[1px] border-gray-700">
             <div className="py-3 text-center flex justify-between items-center
                 border-b-[1px] border-gray-700">
                 <div className="w-[35px] h-[35px] ml-3"></div>
@@ -61,35 +60,33 @@ const PhotoUploadForm = (props) =>{
                     <CloseRoundedIcon />
                 </div>
             </div>
-            <div className="h-[720px]">
-                <form onSubmit={handleSubmit}>
-                    <div className="h-full flex flex-col justify-between">
-                        <div className="w-full py-3 px-6">
-                                <textarea className="w-full bg-gray-600 p-3
-                                    rounded-xl border-[1px] border-gray-700"
-                                    type="textarea" rows="4" placeholder="Description" name="content"/>
-                        </div>
-                        <div className="flex-grow flex justify-center items-center">
-                            <div className="relative w-[450px] h-[450px] rounded overflow-hidden">
-                                <Image className='object-contain w-full h-full' layout='fill' 
-                                    src={props.uploadedImg == '' ? 'https://via.placeholder.com/150' : props.uploadedImg}/>
-                            </div>
-                        </div>
-                        <div className="flex justify-between">
-                            <div></div>
-                            <div className="flex gap-3 pr-3">
-                                <button onClick={()=>{props.setIsUploading(false)}}
-                                    className="py-2 px-2 rounded-lg hover:bg-gray-600"
-                                    >Cancle
-                                </button>
-                                <button type="submit"
-                                    className="py-2 px-6 rounded-lg bg-blue-500 hover:brightness-110"
-                                    >Upload
-                                </button>
-                            </div>
+            <div className="max-h-[480px] overflow-y-scroll">
+                <div className="h-full flex flex-col justify-between">
+                    <div className="w-full py-3 px-6">
+                            <textarea onChange={(e)=>{setContent(e.target.value)}}
+                                className="w-full bg-gray-600 p-3 rounded-xl border-[1px] border-gray-700"
+                                type="textarea" rows="4" placeholder="Description" name="content"/>
+                    </div>
+                    <div className="flex-grow flex justify-center items-center">
+                        <div className="relative w-full rounded overflow-hidden">
+                            <img className='w-full h-auto' 
+                                src={props.uploadedImg == '' ? 'https://via.placeholder.com/150' : props.uploadedImg}/>
                         </div>
                     </div>
-                </form>
+                </div>
+            </div>
+            <div className="flex justify-between">
+                <div></div>
+                <div className="flex gap-3 pr-3 pt-[10px]">
+                    <button onClick={()=>{props.setIsUploading(false)}}
+                        className="py-2 px-2 rounded-lg hover:bg-gray-600"
+                        >Cancle
+                    </button>
+                    <button onClick={handleSubmit}
+                        className="py-2 px-6 rounded-lg bg-blue-500 hover:brightness-110"
+                        >Upload
+                    </button>
+                </div>
             </div>
         </div>
     )

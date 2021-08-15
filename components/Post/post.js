@@ -5,15 +5,15 @@ import ShareIcon from '@material-ui/icons/Share';
 import ChatBubbleOutlineRoundedIcon from '@material-ui/icons/ChatBubbleOutlineRounded';
 import { useRouter } from 'next/router';
 
-export const Upper = ()=>{
+export const Upper = (props)=>{
     return (
         <div className="flex p-3">
             <div className="mr-3 cursor-pointer">
                 <Image className="rounded-full" width={40} height={40} src="https://via.placeholder.com/150" />
             </div>
-            <div className="flex flex-col items-center text-white">
-                <h3 className="cursor-pointer">GameSpot</h3>
-                <span className="text-xs text-gray-500 italic ">Yesterday 16:11</span>
+            <div className="flex flex-col text-white">
+                <h3 className="cursor-pointer">{props.data.ownerName}</h3>
+                <span className="text-xs text-gray-500 italic ">{props.data.createdAt}</span>
             </div>
         </div>
     )
@@ -23,15 +23,17 @@ export const Mid =(props)=>{
     const router = useRouter();
     return (
         <div className="text-gray-100">
-            <p className="px-3 pb-2">{props.content}</p>
-            <div className="">
-                { !(props.img == '') &&
-                    <div onClick={()=>{router.push(`/post/${props.id}`)}}
-                        className="relative w-full h-96 cursor-pointer">
-                        <Image className='object-contain w-full h-full' layout='fill' src={props.img} />
-                    </div>
-                }
-            </div>
+            <p className="px-3 pb-2">{props.data.content}</p>
+            {!props.noImg &&
+                <div className="">
+                    { !(props.data.img == '') &&
+                        <div onClick={()=>{router.push(`/post/${props.data._id}`)}}
+                            className="relative w-full h-96 cursor-pointer">
+                            <Image className='object-contain w-full h-full' layout='fill' src={props.data.img} />
+                        </div>
+                    }
+                </div>
+            }
         </div>
     )
 }
@@ -58,7 +60,7 @@ export const Lower= ()=>{
                 <div className="flex gap-2 hover:bg-gray-600 duration-300 w-full 
                     justify-center py-1 rounded cursor-pointer">
                     <ChatBubbleOutlineRoundedIcon />
-                    <p className="font-medium">Thích</p>
+                    <p className="font-medium">Comment</p>
                 </div>
                 <div className="flex gap-2 hover:bg-gray-600 duration-300 w-full 
                     justify-center py-1 rounded cursor-pointer">
@@ -74,8 +76,8 @@ export const Lower= ()=>{
 const Post = (props)=>{
     return (
         <div className="bg-gray-800 w-[630px] rounded-md text-white max-w-2xl">
-            <Upper />
-            <Mid content={props.content} img={props.img} id={props.id}/>
+            <Upper data={props.data}/>
+            <Mid data={props.data}/>
             <Lower />
         </div>
     )

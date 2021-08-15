@@ -1,4 +1,5 @@
 let User = require('../models/user.model');
+const postController = require('../controller/post.controller');
 const genPassword = require('../utils/password').genPassword;
 const { searchEmail, checkFriendStatus, userDataFilter } = require('../utils/helper');
 const passport = require('passport');
@@ -24,16 +25,34 @@ self.logIn = (req,res,next) => {
 
 /**** CHECK OWNER ****/
 self.checkOwner = (req,res) =>{
-    const userId = req.query.userId.slice(1,req.query.targetId.length+1);
+    const userId = req.query.userId.slice(1,25);
     const targetId = req.query.targetId;
     if (userId == targetId){
         res.send(true)
     }
     else {
-        // TODO: check friend status
         User.find({_id : userId})
             .then(userObj=>{res.send(checkFriendStatus(userObj[0],targetId))})
     }
+};
+
+/**** GET BASIC USER DATA ****/
+self.getBasicUserData = (req,res) =>{
+    const userId = req.query.userId.slice(1,25);
+    console.log('888888888888888888888888888888888888888888');
+    console.log(userId);
+    User.findOne({_id : userId})
+        .then(userObj=>{
+            let data = {
+                email : userObj.email,
+                firstName : userObj.firstName,
+                lastName : userObj.lastName,
+                avatar : userObj.userData.avatar,
+            };
+            res.send(data);
+        })
+        .catch((err)=>{console.log(err)});
+   
 };
 
 /**** CHECK LOGGED IN ****/
@@ -86,6 +105,8 @@ self.userRegister = (req,res) =>{
 
     const newUser = new User({
         email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         hash: hash,
         salt: salt,
         admin: false,
@@ -125,6 +146,7 @@ self.uploadAvatar = (req,res) =>{
     .then(user=>{
         user.userData.avatar = req.body.img;
         user.save().then(response=>{res.send(response)});
+        postController.addPost(req,res);
     })
 };
 
