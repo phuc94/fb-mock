@@ -5,7 +5,7 @@ import InsertEmoticonRoundedIcon from '@material-ui/icons/InsertEmoticonRounded'
 
 const Status = (props)=>{
     return (
-        <div className="bg-gray-800 rounded-md p-3 w-[630px]">
+        <div className="bg-gray-800 rounded-md p-3 w-[630px] shadow-lg">
             <div className="flex items-center mb-2">
                 <div className="mr-3 px-1">
                     {props.avatar &&

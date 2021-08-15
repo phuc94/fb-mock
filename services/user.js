@@ -8,7 +8,7 @@ export const checkIfOwner = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest(serverURL + '/CheckOwner',options);
+    return axiosRequest('http://localhost:3000/CheckOwner',options);
 };
 
 export const checkIfLoggedIn = (userId, targetId) => {
@@ -18,7 +18,7 @@ export const checkIfLoggedIn = (userId, targetId) => {
             targetId
         }
     }
-    return axiosRequest(serverURL + '/CheckLoggedIn',options);
+    return axiosRequest('http://localhost:3000/CheckLoggedIn',options);
 };
 
 export const getBasicUserData = (userId) => {
@@ -27,7 +27,7 @@ export const getBasicUserData = (userId) => {
             userId
         }
     }
-    return axiosRequest(serverURL + '/GetBasicUserData',options);
+    return axiosRequest('http://localhost:3000/GetBasicUserData',options);
 };
 
 
@@ -39,6 +39,16 @@ export const friendRequest = (targetId) => {
         }
     }
     return axiosRequest('/AddFriend',options);
+};
+
+export const acceptFriend = (targetId) => {
+    const options = {
+        method: "post",
+        data:{
+            targetId
+        }
+    }
+    return axiosRequest('/AcceptFriend',options);
 };
 
 export const logIn = (data) => {
@@ -57,6 +67,16 @@ export const friendCancle = (targetId) => {
         }
     }
     return axiosRequest('/FriendCancle',options);
+};
+
+export const AcceptFriend = (targetId) => {
+    const options = {
+        method: "post",
+        data:{
+            targetId
+        }
+    }
+    return axiosRequest('/AcceptFriend',options);
 };
 
 export const logOut = () => {

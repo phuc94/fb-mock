@@ -18,19 +18,23 @@ export const Upper = (props)=>{
     },[])
     return (
         <div className="flex p-3">
-            <div className="mr-3 cursor-pointer">
-                {ownerData && 
-                    <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
-                        className="rounded-full" width={40} height={40} />
-                }
-            </div>
-            <div className="flex flex-col text-white">
-                <h3 onClick={()=>{router.push(`/${props.data.userId}`)}}
-                    className="cursor-pointer">
-                    {props.data.ownerName}
-                </h3>
-                <span className="text-xs text-gray-500 italic ">{props.data.createdAt}</span>
-            </div>
+            {ownerData &&
+            <>
+                <div className="mr-3 cursor-pointer">
+                    {ownerData &&
+                        <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
+                            className="rounded-full" width={40} height={40} />
+                    }
+                </div>
+                <div className="flex flex-col text-white">
+                    <h3 onClick={()=>{router.push(`/${props.data.userId}`)}}
+                        className="cursor-pointer">
+                        {ownerData.data.lastName + ' ' + ownerData.data.firstName}
+                    </h3>
+                    <span className="text-xs text-gray-500 italic ">{props.data.createdAt}</span>
+                </div>
+            </>
+            }
         </div>
     )
 }
@@ -91,7 +95,7 @@ export const Lower= ()=>{
 
 const Post = (props)=>{
     return (
-        <div className="bg-gray-800 w-[630px] rounded-md text-white max-w-2xl">
+        <div className="bg-gray-800 w-[630px] rounded-md text-white max-w-2xl shadow-lg">
             <Upper data={props.data}/>
             <Mid data={props.data}/>
             <Lower />

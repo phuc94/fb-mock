@@ -41,7 +41,7 @@ const Right =(props)=>{
                 <hr />
                 <div className="mt-6 w-full flex items-center">
                     <button 
-                        onClick={props.handleToggleSignUpModal}
+                        onClick={()=>{props.handleToggleSignUpModal()}}
                         className="mx-auto bg-green-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="button">
                         Create new accont
                     </button>

@@ -8,6 +8,7 @@ import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import PersonAddDisabledRoundedIcon from '@material-ui/icons/PersonAddDisabledRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import * as userService from '../../services/user'
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router'
@@ -81,7 +82,7 @@ const Header = (props)=>{
     };
 
     return (
-        <section className="bg-gray-800 w-full">
+        <section className="bg-gray-800 w-full border-b-[1px] border-gray-700">
             <div className="w-full relative">
                 {isCoverConfirm &&
                     <div className="h-[55px] w-full bg-gray-500 bg-opacity-30 absolute flex justify-between z-20">
@@ -112,14 +113,16 @@ const Header = (props)=>{
                             )
                         }
 
-                        <div onClick={()=>{coverInput.current.click()}}
-                            className="bg-gray-100 absolute bottom-[25px] right-[40px] flex items-center gap-2
-                            rounded-lg px-2 py-1 cursor-pointer">
-                            <CameraAltRoundedIcon />
-                            <p className="font-medium">Edit cover</p>
-                            <input onChange={encodeImageFileAsURL}
-                                ref={coverInput} type="file" className="hidden"/>
-                        </div>
+                        {(isOwner === true) && 
+                            <div onClick={()=>{coverInput.current.click()}}
+                                className="bg-gray-100 absolute bottom-[25px] right-[40px] flex items-center gap-2
+                                rounded-lg px-2 py-1 cursor-pointer">
+                                <CameraAltRoundedIcon />
+                                <p className="font-medium">Edit cover</p>
+                                <input onChange={encodeImageFileAsURL}
+                                    ref={coverInput} type="file" className="hidden"/>
+                            </div>
+                        }
                     </div>
                     <div className="flex flex-col items-center">
                         <div className="relative w-[170px]">
@@ -128,13 +131,18 @@ const Header = (props)=>{
                                     className="" width={200} height={200} />
                             </div>
                             <div className="absolute -top-14 right-0">
-                                <div onClick={()=>{setIsImgUploadShow(true);document.body.classList.add('overflow-hidden')}}
-                                    className="text-white p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-100 cursor-pointer">
-                                    <AddAPhotoRoundedIcon />
-                                </div>
+                                {(isOwner === true) && 
+                                    <div onClick={()=>{setIsImgUploadShow(true);document.body.classList.add('overflow-hidden')}}
+                                        className="text-white p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-100 cursor-pointer">
+                                        <AddAPhotoRoundedIcon />
+                                    </div>
+                                }
                             </div>
                         </div>
-                        <p className="text-white font-bold text-3xl mb-2">{props.userData.lastName +' '+ props.userData.firstName}</p>
+                        <p className="text-white font-bold text-3xl mb-2 mt-3">
+                            {props.userData.lastName +' '+ props.userData.firstName}
+                        </p>
+
                         {!aboutForm && 
                         <p  
                             onClick= {()=>{setAboutForm(true);}}
@@ -193,7 +201,7 @@ const Header = (props)=>{
                             {noStatus && !isOwner ?
                                 (
                                     <div onClick={()=>{userService.friendRequest(curUser)
-                                            .then(res=>{if(res.status==200){setReqPending(true)}})}}
+                                            .then(res=>{if(res.status==200){setReqPending(true)};setNoStatus(false)})}}
                                         className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400 duration-200">
                                         <PersonAddRoundedIcon />
                                         <p className="font-medium pl-1">Add friend</p>
@@ -220,7 +228,7 @@ const Header = (props)=>{
                             {/**** ALREADY FRIEND ****/}
                             {friend && !isOwner ?
                                 (
-                                    <div className="bg-blue-500 flex py-1 px-2 rounded cursor-pointer hover:bg-blue-400 duration-200">
+                                    <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600 duration-200">
                                         <PeopleAltRoundedIcon />
                                         <p className="font-medium pl-1">Friend</p>
                                     </div>
@@ -228,7 +236,20 @@ const Header = (props)=>{
                                 :
                                 (null)
                             }
-
+                            {/**** RECEIVING REQUEST ****/}
+                            {resPending && !isOwner ?
+                                (
+                                    <div onClick={()=>{userService.acceptFriend(curUser)
+                                        .then(res=>{if(res.status==200){setResPending(false);setFriend(true)}})}}
+                                        className="bg-green-500 flex py-1 px-2 rounded cursor-pointer hover:bg-green-400 duration-200">
+                                        <GroupAddIcon />
+                                        <p className="font-medium pl-1">Accept</p>
+                                    </div>
+                                )
+                                :
+                                (null)
+                            }
+                            
                         </div>
                         <div className="flex items-center mr-2">
                             {/**** OWNER OR NOT -> EDIT/CHAT ****/}

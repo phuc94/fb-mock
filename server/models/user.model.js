@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 
-const userPhotoSchema = new mongoose.Schema({
-    img: String
-},{timestamps: true});
 
 const userDataSchema = new mongoose.Schema({
     avatar: String,
     cover: String,
-    photos: [userPhotoSchema]
+    posts: [String]
 });
 
 const userSchema = new mongoose.Schema({

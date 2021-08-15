@@ -45,6 +45,10 @@ const SignUp = (props) => {
                         axiosRequest('/UserRegister',{
                             method: 'post',
                             data: data
+                        }).then(res=>{
+                            if(res.status ==200){
+                                props.handleToggleSignUpModal();
+                            }
                         });
                     }}
                     >

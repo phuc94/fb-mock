@@ -1,7 +1,8 @@
 let User = require('../models/user.model');
+let Post = require('../models/post.model');
 const postController = require('../controller/post.controller');
 const genPassword = require('../utils/password').genPassword;
-const { searchEmail, checkFriendStatus, userDataFilter } = require('../utils/helper');
+const helper = require('../utils/helper');
 const passport = require('passport');
 
 self = this;
@@ -16,7 +17,7 @@ self.logIn = (req,res,next) => {
             res.send(user);
         } 
         else {
-            const response = userDataFilter(user);
+            const response = helper.userDataFilter(user);
             res.send(response);
         }
     })(req, res, next)
@@ -49,7 +50,7 @@ self.checkOwner = (req,res) =>{
                     .then(userObj=>{
                         const result = {
                             userData,
-                            isOwner:checkFriendStatus(userObj[0],targetId)
+                            isOwner:helper.checkFriendStatus(userObj[0],targetId)
                         }
                         res.send(result);
                     })
@@ -98,9 +99,15 @@ self.friendRequest = (req,res) => {
                 .catch((err)=>{console.log(err)});
         })
         .catch((err)=>{console.log(err)});
+    let newResPending = [];
+    User.findOne({_id : req.body.targetId})
+        .then(target=>{
+            newResPending = target.resPending.push(req.user._id);
+            target.save();
+        })
 };
 
-/**** FRIEND REQUEST ****/
+/**** CANCLE FRIEND REQUEST ****/
 self.friendCancle = (req,res) => {
     let newReqPending = [];
     User.find({_id : req.user._id})
@@ -113,6 +120,25 @@ self.friendCancle = (req,res) => {
                 res.send(result);
                 })
                 .catch((err)=>{console.log(err)});
+        })
+        .catch((err)=>{console.log(err)});
+};
+
+/**** ACCEPT FRIEND REQUEST ****/
+self.friendAccept = (req,res) => {
+    /** Resquesting User **/
+    User.findOne({_id : req.user._id})
+        .then(user=>{
+            user.resPending.splice(user.resPending.indexOf(req.body.targetId));
+            user.friends.push(req.body.targetId);
+            user.save().then(response=>{res.send(response)});
+        })
+    /** Target User **/
+    User.findOne({_id : req.body.targetId})
+        .then((target)=>{
+            target.reqPending.splice(target.reqPending.indexOf(req.user._id));
+            target.friends.push(req.user._id);
+            target.save();
         })
         .catch((err)=>{console.log(err)});
 };
@@ -147,7 +173,7 @@ self.userRegister = (req,res) =>{
 self.searchUser = (req,res) =>{
     User.find()
     .then((result)=>{
-        const user = searchEmail(result,req.body.user);
+        const user = helper.searchEmail(result,req.body.user);
         res.send(user);
     })
     .catch((err)=>{console.log(err)});
@@ -158,8 +184,13 @@ self.searchUser = (req,res) =>{
 self.getUserPhoto = (req,res) =>{
     User.findOne({_id: req.query.userId})
     .then(user=>{
-        res.send(user.userData.photos);
+        Post.find({'_id':{$in: user.userData.posts}})
+            .then(posts=>{
+                const photos = helper.getPhotoFromPost(posts)
+                res.send(photos);
+            })
     })
+    .catch((err)=>{console.log(err)});
 };
 
 /**** UPLOAD AVATAR ****/

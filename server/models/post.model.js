@@ -5,17 +5,8 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    content:{
-        type: String,
-        required: true
-    },
-    ownerName:{
-        type: String,
-        required: true
-    },
-    img:{ 
-        type: String
-    }
+    content:String,
+    img:String
 }, {timestamps: true});
 
 const Post = mongoose.model('Post', postSchema);

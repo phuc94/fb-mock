@@ -1,8 +1,10 @@
-const searchEmail = (dataArr,string) =>{
+const self = this;
+
+self.searchEmail = (dataArr,string) =>{
     return dataArr.filter(item => item.email.includes(string))
 };
 
-const checkFriendStatus =(userObj,targetId) => {
+self.checkFriendStatus =(userObj,targetId) => {
     const target = JSON.stringify(targetId);
     console.log("***************************");
     console.log(targetId);
@@ -19,7 +21,7 @@ const checkFriendStatus =(userObj,targetId) => {
     else return 'noStatus'
 }
 
-const userDataFilter = (userData) => {
+self.userDataFilter = (userData) => {
     let result ={};
     result.email = userData.email;
     result.reqPending = userData.reqPending;
@@ -30,7 +32,7 @@ const userDataFilter = (userData) => {
     return result;
 }
 
-const basicUserDatafilter = (userData) => {
+self.basicUserDatafilter = (userData) => {
     let result ={};
     result.email = userData.email;
     result.avatar = userData.userData.avatar;
@@ -41,4 +43,14 @@ const basicUserDatafilter = (userData) => {
     return result;
 }
 
-module.exports = {searchEmail, checkFriendStatus, userDataFilter, basicUserDatafilter};
+self.getPhotoFromPost = (posts) => {
+    let photos=[];
+    for (post of posts){
+        if (post.img !== ''){
+            photos.push(post.img)
+        }
+    }
+    return photos;
+}
+
+module.exports = self;

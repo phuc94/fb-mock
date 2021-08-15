@@ -141,17 +141,25 @@ export const Right =(props)=>{
                 break;
         }
     }
+    const handleAvatarClick = () =>{
+        if (!(props.isOwner == true)){
+            router.push(`/${props.cookies.user}`)
+        };
+        return
+    }
+
     return(
         <div className="pt-2">
             <div className="flex items-center gap-3">
-                {!props.noAvatar &&
-                    <div onClick={()=>{router.push(`/${props.cookies.user}`)}}
-                        className="px-3 py-1 flex items-center gap-2 text-white cursor-pointer hover:bg-gray-600 rounded-full">
-                        <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
-                        className="rounded-full" width={35} height={35}  />
-                        <span>{props.basicUserData.firstName}</span>
-                    </div>
-                }
+                <div onClick={handleAvatarClick}
+                    className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full
+                        ${(props.isOwner == true )? 'bg-blue-600 bg-opacity-30' : 'hover:bg-gray-600'}`}>
+                    <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
+                    className="rounded-full" width={35} height={35}  />
+                    <span className={`${(props.isOwner == true )? 'text-blue-400 bg-opacity-30' : ''} font-medium`}>
+                        {props.basicUserData.firstName}
+                    </span>
+                </div>
                 <div className="flex gap-2 text-white">
                     <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full" 
                         onClick={()=>handleDropdown()}>
@@ -182,10 +190,12 @@ export const Right =(props)=>{
 function Nav (props){
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     return (
-        <div className="flex justify-between px-6 h-14 bg-gray-800 z-20 sticky top-0">
+        <div className="flex justify-between px-6 h-14 bg-gray-800 z-20 sticky top-0 shadow
+            border-b-[1px] border-gray-700 shadow-lg">
             <Left />
             <Mid />
-            <Right cookies={cookies} removeCookie={removeCookie} basicUserData={props.basicUserData}/>
+            <Right cookies={cookies} removeCookie={removeCookie} 
+                basicUserData={props.basicUserData} isOwner={props.isOwner}/>
         </div>
     )
 }

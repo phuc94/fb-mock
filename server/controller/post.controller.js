@@ -1,31 +1,32 @@
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
-const { basicUserDatafilter } = require('../utils/helper')
+const helper = require('../utils/helper')
 
 self = this;
 
 self.addPost = (req,res)=>{
-    User.findOne({_id:req.user._id})
-        .then(user=>{
-            const newPost = new Post({
-                userId: req.session.passport.user,
-                content: req.body.content,
-                ownerName: (user.lastName + ' ' + user.firstName),
-                img: req.body.img
-            });
-            newPost.save()
-                .then((result)=>{
-                    res.send(result)
+    newPost = new Post({
+        userId: req.user._id,
+        content: req.body.content,
+        img: req.body.img
+    });
+    newPost.save()
+        .then(post=>{
+            User.findOne({_id:req.user._id})
+                .then(user=>{
+                    user.userData.posts.push(post._id);
+                    user.save().then(result=>{
+                        res.send(result)
+                    })
                 })
-                .catch((err)=>{console.log(err)});
         })
-    
+        .catch((err)=>{console.log(err)});
 };
 
 self.getOwnerData = (req,res)=>{
     User.findOne({_id:req.query.userId.slice(0,25)})
         .then(user=>{
-            const data = basicUserDatafilter(user);
+            const data = helper.basicUserDatafilter(user);
             res.send(data)
         })
         .catch((err)=>{console.log(err)})
@@ -50,9 +51,14 @@ self.getPost = (req,res) =>{
 };
 
 self.getUserPost = (req,res) => {
-    Post.find({userId: req.query.userId})
-    .then((result)=>{
-        res.send(result);
+    User.findOne({_id: req.query.userId})
+    .then(user=>{
+        Post.find({'_id': {$in: user.userData.posts}})
+            .then(posts=>{
+                console.log('****************************************');
+                console.log(posts);
+                res.send(posts);
+            })
     })
     .catch((err)=>{console.log(err)});
 }

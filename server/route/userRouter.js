@@ -14,6 +14,8 @@ router.get('/GetBasicUserData',(req,res)=> {userController.getBasicUserData(req,
 
 router.post('/AddFriend',(req,res)=>{userController.friendRequest(req,res)});
 
+router.post('/AcceptFriend',(req,res)=>{userController.friendAccept(req,res)});
+
 router.post('/FriendCancle',(req,res)=>{userController.friendCancle(req,res)});
 
 router.post('/UserRegister', (req, res) => {userController.userRegister(req,res)});
