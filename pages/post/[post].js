@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Right } from '../../components/Navbar';
 import { Upper, Lower, Mid } from '../../components/Post/post';
-import Comment from '../../components/Post/comment';
+import CommentSection from '../../components/Post/commentSection';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { useRouter } from 'next/router';
 import * as postServices from '../../services/post';
@@ -9,20 +9,34 @@ import { useEffect, useState } from 'react';
 
 function PostPage(){
     const[postData,setPostData] = useState(null);
+    const[postComment,setPostComment] = useState([]);
+    const[postId,setPostId] = useState(null);
     const router = useRouter();
+
     useEffect(() => {
-        let postId = router.asPath.replace('/','');
-        postId = postId.slice(5,postId.length);
-        if(router.asPath !== 'post/[post]'){
-            postServices.getPost(postId)
-                .then(res=>{console.log(res.data);setPostData(res.data)})
+        let Id = router.asPath.replace('/','');
+        Id = Id.slice(5,Id.length);
+        setPostId(Id);
+        if(!router.asPath.includes('[')){
+            postServices.getPost(Id)
+                .then(res=>{
+                    setPostComment(res.data.comments);
+                    console.log(res.data);setPostData(res.data);
+                })
         }
     }, [router.asPath])
+
+    const reFetchComment = () => {
+        postServices.reFetchComment(postId)
+            .then(comments=>{
+                setPostComment(comments.data);
+            })
+    };
     
     return (
         <section className="flex w-screen h-screen">
             { postData ?
-                (<DataReady data={postData}/>) : (null)
+                (<DataReady data={postData} postId={postId} postComment={postComment} reFetchComment={reFetchComment}/>) : (null)
             }
         </section>
     )
@@ -62,7 +76,7 @@ const DataReady = (props) =>{
                     <Upper data={props.data}/>
                     <Mid data={props.data} noImg/>
                     <Lower />
-                    <Comment />
+                    <CommentSection postId={props.postId} comments={props.postComment} reFetchComment={props.reFetchComment}/>
                 </div>
             </div>
         </>

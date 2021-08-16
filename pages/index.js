@@ -5,7 +5,7 @@ import Messenger from '../components/Messenger/index';
 import StatusForm from '../components/Form/status'
 import { useState, useEffect } from 'react';
 import { getAllPost } from '../services/post'
-import { getBasicUserData } from '../services/user'
+import { getBasicUserDataSSR  } from '../services/user'
 
 const Index = ({basicUserData})=> {
 
@@ -49,7 +49,7 @@ export async function getServerSideProps({req,params}) {
               }
         }
         }else{
-            const respond = await getBasicUserData(req.user._id);
+            const respond = await getBasicUserDataSSR(req.user._id);
             return {
                 props: {basicUserData: respond.data}
             }

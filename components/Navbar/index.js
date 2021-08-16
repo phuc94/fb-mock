@@ -143,7 +143,7 @@ export const Right =(props)=>{
     }
     const handleAvatarClick = () =>{
         if (!(props.isOwner == true)){
-            router.push(`/${props.cookies.user}`)
+            router.push(`/${props.basicUserData._id}`)
         };
         return
     }
@@ -151,15 +151,17 @@ export const Right =(props)=>{
     return(
         <div className="pt-2">
             <div className="flex items-center gap-3">
-                <div onClick={handleAvatarClick}
-                    className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full
-                        ${(props.isOwner == true )? 'bg-blue-600 bg-opacity-30' : 'hover:bg-gray-600'}`}>
-                    <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
-                    className="rounded-full" width={35} height={35}  />
-                    <span className={`${(props.isOwner == true )? 'text-blue-400 bg-opacity-30' : ''} font-medium`}>
-                        {props.basicUserData.firstName}
-                    </span>
-                </div>
+                {!props.noAvatar &&
+                    <div onClick={handleAvatarClick}
+                        className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full
+                            ${(props.isOwner == true )? 'bg-blue-600 bg-opacity-30' : 'hover:bg-gray-600'}`}>
+                        <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
+                        className="rounded-full" width={35} height={35}  />
+                        <span className={`${(props.isOwner == true )? 'text-blue-400 bg-opacity-30' : ''} font-medium`}>
+                            {props.basicUserData.firstName}
+                        </span>
+                    </div>
+                }
                 <div className="flex gap-2 text-white">
                     <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full" 
                         onClick={()=>handleDropdown()}>

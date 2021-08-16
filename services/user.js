@@ -21,15 +21,23 @@ export const checkIfLoggedIn = (userId, targetId) => {
     return axiosRequest(serverURL + '/CheckLoggedIn',options);
 };
 
+export const getBasicUserDataSSR = (userId) => {
+    const options = {
+        params:{
+            userId
+        }
+    }
+    return axiosRequest(serverURL + '/GetBasicUserDataSSR',options);
+}; 
+
 export const getBasicUserData = (userId) => {
     const options = {
         params:{
             userId
         }
     }
-    return axiosRequest(serverURL + '/GetBasicUserData',options);
-};
-
+    return axiosRequest('/GetBasicUserData',options);
+}; 
 
 export const friendRequest = (targetId) => {
     const options = {

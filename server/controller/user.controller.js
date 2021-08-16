@@ -36,6 +36,7 @@ self.checkOwner = (req,res) =>{
                 firstName : userObj.firstName,
                 lastName : userObj.lastName,
                 avatar : userObj.userData.avatar,
+                _id : userObj._id,
             };
             /** Check onwnership **/
             if (userId == targetId){
@@ -62,9 +63,11 @@ self.checkOwner = (req,res) =>{
 
 /**** GET BASIC USER DATA ****/
 self.getBasicUserData = (req,res) =>{
-    const userId = req.query.userId.slice(1,25);
-    console.log('888888888888888888888888888888888888888888');
-    console.log(userId);
+    let userId;
+    if(typeof req.query.userId == 'object'){
+        userId =  req.query.userId;
+    }
+    userId= req.query.userId;
     User.findOne({_id : userId})
         .then(userObj=>{
             let data = {
@@ -72,6 +75,28 @@ self.getBasicUserData = (req,res) =>{
                 firstName : userObj.firstName,
                 lastName : userObj.lastName,
                 avatar : userObj.userData.avatar,
+                _id : userObj._id,
+            };
+            res.send(data);
+        })
+        .catch((err)=>{console.log(err)});   
+};
+
+/**** GET BASIC USER DATA ****/
+self.getBasicUserDataSSR = (req,res) =>{
+    let userId;
+    if(typeof req.query.userId == 'object'){
+        userId =  req.query.userId;
+    }
+    else {userId = req.query.userId.slice(1,25)}
+    User.findOne({_id : userId})
+        .then(userObj=>{
+            let data = {
+                email : userObj.email,
+                firstName : userObj.firstName,
+                lastName : userObj.lastName,
+                avatar : userObj.userData.avatar,
+                _id : userObj._id,
             };
             res.send(data);
         })
@@ -93,7 +118,6 @@ self.friendRequest = (req,res) => {
             newReqPending.push(req.body.targetId);
             User.updateOne({_id : req.user._id},{reqPending : newReqPending})
             .then((result)=>{
-                console.log(result);
                 res.send(result);
                 })
                 .catch((err)=>{console.log(err)});
@@ -116,7 +140,6 @@ self.friendCancle = (req,res) => {
             newReqPending.splice(newReqPending.indexOf(req.body.targetId));
             User.updateOne({_id : req.user._id},{reqPending : newReqPending})
             .then((result)=>{
-                console.log(result);
                 res.send(result);
                 })
                 .catch((err)=>{console.log(err)});
@@ -214,9 +237,9 @@ self.uploadCover = (req,res) =>{
 
 /**** GET USER DATA ****/
 self.getUserData = (req,res) =>{
-    User.findOne({_id: req.query.userId})
+    User.find({'_id': {$in:req.query.userId}})
     .then(user=>{
-        res.send(user)});
+    res.send(user)});
 };
 
 

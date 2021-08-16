@@ -10,20 +10,21 @@ import * as postService from '../../services/post'
 import * as userService from '../../services/user'
 
 const ProfilePage = ({serverProps})=> {
+    console.log(serverProps.userData);
     const router = useRouter();
     const [isFormShow,setIsFormShow] = useState(false)
     const [userData,setUserData] = useState(null)
     const [posts,setPosts]= useState([]);
     const fetchUserData = () =>{
         userService.getUserData(router.asPath.replace('/',''))
-            .then(res=>{setUserData(res.data)});
+            .then(res=>{console.log(res);setUserData(res.data[0])});
     }
     useEffect (()=>{
         console.log(serverProps);
         if(router.asPath !== '/[user]'){
             fetchUserData();
             postService.getUserPost(router.asPath.replace('/',''))
-                .then(res=>{setPosts(res.data)});
+                .then(res=>{console.log(res);setPosts(res.data)});
         }
     },[router.asPath])
     return(

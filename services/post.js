@@ -27,6 +27,24 @@ export const addPost = (data) => {
     return axiosRequest('/AddPost',options);
 };
 
+export const addComment = (data) => {
+    const options = {
+        method: 'post',
+        data: data
+    }
+    return axiosRequest('/AddComment',options);
+};
+
+export const reFetchComment = (postId) => {
+    const options = {
+        method: 'get',
+        params:{
+            postId
+        }
+    }
+    return axiosRequest('/ReFetchComment',options);
+};
+
 export const getPost = (_id) => {
     const options = {
         method: 'get',

@@ -7,6 +7,10 @@ const postController = require('../controller/post.controller')
 
 router.post('/AddPost', isAuth, (req,res)=>{postController.addPost(req,res)});
 
+router.post('/AddComment', isAuth, (req,res)=>{postController.addComment(req,res)});
+
+router.get('/ReFetchComment', isAuth, (req,res)=>{postController.reFetchComment(req,res)});
+
 router.get('/AllPost', (req,res)=>{postController.getAllPost(req,res)});
 
 router.get('/GetOwnerData', (req,res)=>{postController.getOwnerData(req,res)});

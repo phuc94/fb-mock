@@ -47,7 +47,10 @@ self.getPhotoFromPost = (posts) => {
     let photos=[];
     for (post of posts){
         if (post.img !== ''){
-            photos.push(post.img)
+            photos.push({
+                img: post.img,
+                _id:post._id
+            })
         }
     }
     return photos;

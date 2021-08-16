@@ -13,7 +13,7 @@ const MainColumn =(props)=>{
                 <Status setIsFormShow={props.setIsFormShow} avatar={props.userData.userData.avatar}/>
             }
             {props.posts.map(post=>(
-                <Post data={post}/>
+                <Post data={post} key={post._id}/>
             ))}
 
         </div>

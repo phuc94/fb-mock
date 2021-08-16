@@ -94,6 +94,8 @@ export const Lower= ()=>{
 
 
 const Post = (props)=>{
+    console.log('DATAAAAAAAAAAAAAAA');
+    console.log(props.data);
     return (
         <div className="bg-gray-800 w-[630px] rounded-md text-white max-w-2xl shadow-lg">
             <Upper data={props.data}/>

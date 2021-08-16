@@ -12,6 +12,8 @@ router.post('/SearchUser',(req,res)=> {userController.searchUser(req,res)});
 
 router.get('/GetBasicUserData',(req,res)=> {userController.getBasicUserData(req,res)});
 
+router.get('/GetBasicUserDataSSR',(req,res)=> {userController.getBasicUserDataSSR(req,res)});
+
 router.post('/AddFriend',(req,res)=>{userController.friendRequest(req,res)});
 
 router.post('/AcceptFriend',(req,res)=>{userController.friendAccept(req,res)});
