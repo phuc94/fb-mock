@@ -1,4 +1,4 @@
-import MainColumn from '../Post/main-column'
+import MainColumn from '../EachPost/main-column'
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
 import HouseRoundedIcon from '@material-ui/icons/HouseRounded';
