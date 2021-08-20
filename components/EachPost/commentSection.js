@@ -4,12 +4,18 @@ import { addComment } from '../../services/post';
 import { getBasicUserData } from '../../services/user';
 
 const CommentSection = (props) => {
+    /**
+    *   @props postId
+    *   @props comments
+    *   @props reFetchComment
+    *   @props cookie
+    */
     return (
         <div className="px-3 py-3 flex flex-col gap-2">
             {props.comments.map(comment=>(
                 <EachComment comment={comment}/>
             ))}
-            <AddComment postId={props.postId} reFetchComment={props.reFetchComment}/>
+            <AddComment postId={props.postId} reFetchComment={props.reFetchComment} cookie={props.cookie}/>
         </div>
     )
 };
@@ -28,7 +34,7 @@ const EachComment = (props) => {
                     <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
                         <Image className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
                     </div>
-                    <div className="bg-gray-800 py-2 px-4 rounded-2xl">
+                    <div className="bg-gray-700 py-2 px-4 rounded-2xl">
                         <p className="font-medium text-sm">{userData.lastName +' '+ userData.firstName}</p>
                         <p className="text-[0.9rem]">{props.comment.comment}</p>
                     </div>
@@ -42,6 +48,17 @@ const AddComment = (props) => {
     const commentInput = useRef();
     const [commentSubmit,setCommentSubmit] = useState(false)
     const [commentText, setCommentText] = useState();
+    const [userData, setUserData] = useState(null);
+
+    useEffect(()=>{
+        console.log(props.cookie.user);
+        getBasicUserData(props.cookie.user)
+            .then(res=>{setUserData(res.data)})
+    },[])
+
+    useEffect(()=>{
+        commentSubmit ? handleSubmit() : null;
+    },[commentSubmit])
 
     const handleSubmit = () => {
         console.log('submitting');
@@ -56,28 +73,32 @@ const AddComment = (props) => {
         })
     };
 
-    useEffect(()=>{
-        commentSubmit ? handleSubmit() : null;
-    },[commentSubmit])
 
     const handleOnKeyPress = (e) => {
         if (e.shiftKey && (e.code === "Enter")){return}
         setCommentText(commentInput.current.innerHTML);
         if (e.code === "Enter"){
             setCommentSubmit(true);
+            setTimeout(()=>{commentInput.current.innerHTML = "";},100);
         }
     };
     return (
         <div className="flex gap-2">
-            <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
-                <Image className="" width={35} height={35} src="https://via.placeholder.com/150"/>
-            </div>
-            <div className="rounded-2xl flex-grow py-2 px-4 outline-none bg-gray-800 w-full">
-                <span contentEditable role="textbox" className="block w-[367px] resize-y outline-none text-gray-100"
-                    ref={commentInput} onKeyPress={handleOnKeyPress}
-                    >
-                </span>
-            </div>
+            {userData &&
+                <>
+                    <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
+                        <Image className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
+                    </div>
+                    <div className="rounded-2xl flex-grow py-2 px-4 outline-none bg-gray-700 w-full">
+                        {/* { commentSubmit && */}
+                            <span contentEditable role="textbox" className="block max-w-[258px] resize-y outline-none text-gray-100"
+                                ref={commentInput} onKeyPress={handleOnKeyPress}
+                                >
+                            </span>
+                        {/* } */}
+                    </div>
+                </>
+            }
         </div>
     )
 };

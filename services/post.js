@@ -27,6 +27,14 @@ export const addPost = (data) => {
     return axiosRequest('/AddPost',options);
 };
 
+export const likePost = (data) => {
+    const options = {
+        method: 'post',
+        data: data
+    }
+    return axiosRequest('/LikePost',options);
+};
+
 export const addComment = (data) => {
     const options = {
         method: 'post',
@@ -35,14 +43,24 @@ export const addComment = (data) => {
     return axiosRequest('/AddComment',options);
 };
 
-export const reFetchComment = (postId) => {
+export const fetchComment = (postId) => {
     const options = {
         method: 'get',
         params:{
             postId
         }
     }
-    return axiosRequest('/ReFetchComment',options);
+    return axiosRequest('/FetchComment',options);
+};
+
+export const fetchCommentLikeNumber = (postId) => {
+    const options = {
+        method: 'get',
+        params:{
+            postId
+        }
+    }
+    return axiosRequest('/FetchCommentLikeNumber',options);
 };
 
 export const getPost = (_id) => {

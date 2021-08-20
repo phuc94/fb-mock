@@ -54,7 +54,7 @@ self.getOwnerData = (req,res)=>{
 };
 
 /*** GET POST'S COMMENT ***/
-self.reFetchComment = (req,res)=>{
+self.fetchComment = (req,res)=>{
     Post.findOne({_id:req.query.postId})
         .then(post=>{
             res.send(post.comments);
@@ -67,6 +67,20 @@ self.getAllPost = (req,res) =>{
     Post.find()
         .then((result)=>{
             res.send(result);
+        })
+        .catch((err)=>{console.log(err)});
+};
+
+/*** LIKE POST ***/
+self.likePost = (req,res) =>{
+    Post.findOne({_id: req.body.postId})
+        .then((post)=>{
+            if (post.like.includes(req.user._id)){
+                post.like.splice(post.like.indexOf(req.user._id,1))
+            } 
+            else {post.like.push(req.user._id)};
+            post.save()
+                .then(response=>{res.send(response.like)})
         })
         .catch((err)=>{console.log(err)});
 };

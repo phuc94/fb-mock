@@ -1,17 +1,19 @@
 import Image from 'next/image';
 import { Right } from '../../components/Navbar';
-import { Upper, Lower, Mid } from '../../components/Post/post';
-import CommentSection from '../../components/Post/commentSection';
+import CommentSection from '../../components/PostPage/commentSection';
+import { Upper, Mid, Lower } from '../../components/PostPage/upper';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { useRouter } from 'next/router';
 import * as postServices from '../../services/post';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 function PostPage(){
     const[postData,setPostData] = useState(null);
     const[postComment,setPostComment] = useState([]);
     const[postId,setPostId] = useState(null);
     const router = useRouter();
+    const [cookie,setCookie, removeCookie] = useCookies(['user']);
 
     useEffect(() => {
         let Id = router.asPath.replace('/','');
@@ -27,16 +29,21 @@ function PostPage(){
     }, [router.asPath])
 
     const reFetchComment = () => {
-        postServices.reFetchComment(postId)
+        postServices.fetchComment(postId)
             .then(comments=>{
                 setPostComment(comments.data);
+                const newPostData = Object.assign({},postData,{comments:comments.data})
+                setPostData(newPostData);
             })
     };
     
     return (
-        <section className="flex w-screen h-screen">
+        <section className="flex w-screen h-screen overflow-hidden">
             { postData ?
-                (<DataReady data={postData} postId={postId} postComment={postComment} reFetchComment={reFetchComment}/>) : (null)
+                (<DataReady data={postData} postId={postId} postComment={postComment} reFetchComment={reFetchComment}
+                    removeCookie={removeCookie} cookie={cookie}/>) 
+                : 
+                (null)
             }
         </section>
     )
@@ -47,7 +54,7 @@ const DataReady = (props) =>{
     const router = useRouter();
     return(
         <>
-            <div className="relative w-full bg-black">
+            <div className="w-full bg-black">
                 <Image src={props.data.img}
                     className="object-contain w-full h-full" layout="fill"/>
                 <div className="absolute bg-opacity-0 h-[60px] w-full">
@@ -67,16 +74,18 @@ const DataReady = (props) =>{
                     </div>
                 </div>
             </div>
-            <div className="w-[475px] max-w-[475px] bg-gray-900 flex-grow">
-                <div className="w-full">
-                    <div className="h-[60px] flex justify-between px-4 pb-3 border-b-[1px] border-gray-700">
-                        <div></div>
-                        <Right noAvatar/>
-                    </div>
+            <div className="w-[475px] max-w-[475px] bg-gray-800 flex-grow h-screen relative">
+                <div className="h-[60px] flex justify-between px-4 pb-3 sticky top-0
+                    border-b-[1px] border-gray-700">
+                    <div></div>
+                    <Right noAvatar removeCookie={props.removeCookie}/>
+                </div>
+                <div className="w-full flex flex-col h-full max-h-full overflow-y-scroll pb-[60px]">
                     <Upper data={props.data}/>
                     <Mid data={props.data} noImg/>
-                    <Lower />
-                    <CommentSection postId={props.postId} comments={props.postComment} reFetchComment={props.reFetchComment}/>
+                    <Lower data={props.data}/>
+                    <CommentSection postId={props.postId} comments={props.postComment}
+                        reFetchComment={props.reFetchComment} cookie={props.cookie}/>
                 </div>
             </div>
         </>
