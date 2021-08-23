@@ -70,10 +70,11 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 });
                 /***  USING SOCKET.IO <------ ***/
                 
-
-
+                
                 expressApp.use(express.json());
                 expressApp.use(express.urlencoded({extended:true}));
+                expressApp.use(express.json({limit: '50mb'}));
+                expressApp.use(express.urlencoded({extended:true,limit: '50mb'}));
 
                 /*** EXPRESS SESSION USING MONGODB AS STORAGE ***/
                 const MongoStore = require('connect-mongo');

@@ -6,9 +6,6 @@ self.searchEmail = (dataArr,string) =>{
 
 self.checkFriendStatus =(userObj,targetId) => {
     const target = JSON.stringify(targetId);
-    console.log("***************************");
-    console.log(targetId);
-    console.log(userObj);
     if (userObj.reqPending.find(item => item == targetId)){
         return 'reqPending'
     }
