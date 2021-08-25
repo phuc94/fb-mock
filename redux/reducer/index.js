@@ -12,8 +12,8 @@ export default function reducer (state = {}, action) {
         case actionTypes.ALL_POST_ARRIVED:
             // Get post
             console.log('arrived');
-            console.log(action.payload.userPosts);
-            return {userPosts: action.payload.userPosts}
+            console.log(action.payload.userData);
+            return {userData: action.payload.userData}
         default:
             return state;
     }

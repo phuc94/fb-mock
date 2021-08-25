@@ -1,12 +1,13 @@
 import * as actionTypes from './actionTypes';
 import * as userServices from '../../services/user';
 
+
 //Thunk action: return an FUCTION instead of OBJECT
-export const getBasicUserData = () => (
+export const getBasicUserData = (userId) => (
     (dispatch)=>{
         dispatch(getBasic);
-        userServices.getInitialUserData()
-            .then(response=>{console.log(response.data);dispatch(initialDataArrived(response.data))})
+        userServices.getBasicUserData(userId)
+            .then(response=>{console.log('store');console.log(response.data);dispatch(userDataArrived(response.data))})
             .catch(err=>console.log(err));
         
     }
@@ -29,12 +30,12 @@ export const getBasic = () => (
     }
 )
 
-export const allPostArrived = (posts) => (
+export const userDataArrived = (userData) => (
     {
         type: actionTypes.ALL_POST_ARRIVED,
         payload:{
             loadingPost: false,
-            userPosts: posts
+            userData
         }
     }
 )

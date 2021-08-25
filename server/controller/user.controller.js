@@ -63,6 +63,8 @@ self.checkOwner = (req,res) =>{
 
 /**** GET BASIC USER DATA ****/
 self.getBasicUserData = (req,res) =>{
+    console.log('8888888888888888888888888888');
+    console.log(req.query);
     let userId;
     if(typeof req.query.userId == 'object'){
         userId =  req.query.userId;
@@ -70,11 +72,17 @@ self.getBasicUserData = (req,res) =>{
     userId= req.query.userId;
     User.findOne({_id : userId})
         .then(userObj=>{
+            if(userObj == {}){
+                console.log('No user data!');
+                res.send('No User data!');
+                return;
+            }
             let data = {
                 email : userObj.email,
                 firstName : userObj.firstName,
                 lastName : userObj.lastName,
                 avatar : userObj.userData.avatar,
+                friends : userObj.friends,
                 _id : userObj._id,
             };
             res.send(data);
@@ -82,7 +90,7 @@ self.getBasicUserData = (req,res) =>{
         .catch((err)=>{console.log(err)});   
 };
 
-/**** GET BASIC USER DATA ****/
+/**** GET BASIC USER DATA SSR ****/
 self.getBasicUserDataSSR = (req,res) =>{
     let userId;
     if(typeof req.query.userId == 'object'){
@@ -95,6 +103,7 @@ self.getBasicUserDataSSR = (req,res) =>{
                 email : userObj.email,
                 firstName : userObj.firstName,
                 lastName : userObj.lastName,
+                friends : userObj.friends,
                 avatar : userObj.userData.avatar,
                 _id : userObj._id,
             };
@@ -224,6 +233,7 @@ self.uploadAvatar = (req,res) =>{
         user.save().then(response=>{res.send(response)});
         postController.addPost(req,res);
     })
+    .catch((err)=>{console.log(err)});
 };
 
 /**** UPLOAD COVER ****/
@@ -233,6 +243,7 @@ self.uploadCover = (req,res) =>{
         user.userData.cover = req.body.img;
         user.save().then(response=>{res.send(response)});
     })
+    .catch((err)=>{console.log(err)});
 };
 
 /**** GET USER DATA ****/

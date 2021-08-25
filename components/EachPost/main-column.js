@@ -5,8 +5,7 @@ import Story from'../Story/index';
 const MainColumn =(props)=>{
     console.log(props.posts);
     return (
-        <div className="flex flex-col gap-3 flex-grow-1 px-50 mt-4 gap-3">
-            <button onClick={()=>{console.log(props.posts)}}>LOG</button>
+        <div className="flex flex-col gap-3 flex-grow-1 px-50 mt-4 gap-3 mx-auto">
             { props.storyRender &&
                 <Story />
             }

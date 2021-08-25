@@ -62,24 +62,33 @@ export const Mid =(props)=>{
 export const Lower= (props)=>{
     /**
      * @props data {}
+     * @props cookies
      */
-    const [comments,setComments] = useState(null);
+    const [comments,setComments] = useState([]);
     const [like,setLike] = useState([]);
+    const [postLiked,setPostLiked] = useState(false);
     useEffect(()=>{
-        setLike(props.data.like.length)
+        console.log(props.cookie);
+        if(props.data.like.includes(props.cookie.user)){
+            setPostLiked(true);
+        }
+        setLike(props.data.like);
     },[])
     const handdleFetchComment = () => {
         console.log(props.data._id)
         fetchComment(props.data._id)
             .then(comments=>{
                 console.log(comments.data)
-                setComments(comments.data);
+                setComments(prev=>[...prev,...comments.data]);
             })
     };
     const handleLikePost = () =>{
         likePost({postId: props.data._id})
             .then(res=>{
-                console.log(res)
+                console.log(res);
+                if(res.data.includes(props.cookie.user)){
+                    setPostLiked(true);
+                } else {setPostLiked(false)}
                 setLike(res.data)
             })
     };
@@ -89,20 +98,25 @@ export const Lower= (props)=>{
                 <div className="flex justify-between py-2">
                     <div className="flex gap-2">
                         <ThumbUpAltIcon />
-                        <span>{like.length}</span>
+                        <span>
+                            {like.length}
+                        </span>
                     </div>
                     <div className="flex gap-6">
                         { props.data.comments.length !== 0 &&
                             <span>{props.data.comments.length} Bình luận</span>
                         }
-                        {/* <span>105 lượt chia sẻ</span> */}
                     </div>
                 </div>
                 <div className="flex justify-between px-2 py-1 border-b-[1px] border-t-[1px] border-gray-700">
                     <div onClick={handleLikePost}
-                        className="flex gap-2 hover:bg-gray-600 duration-300 w-full
-                        justify-center py-1 rounded cursor-pointer">
-                        <ThumbUpAltOutlinedIcon />
+                        className={`flex gap-2 hover:bg-gray-600 duration-300 w-full justify-center 
+                        py-1 rounded cursor-pointer ${postLiked ? 'text-blue-500' : ''}`}>
+                        { postLiked ?
+                            <ThumbUpAltIcon />
+                            :
+                            <ThumbUpAltOutlinedIcon />
+                        }
                         <p className="font-medium">Like</p>
                     </div>
                     <div onClick={handdleFetchComment}
@@ -133,8 +147,6 @@ const Post = (props)=>{
      * @props data {Post Data}
      * @props key: _id
      */
-    console.log('DATAAAAAAAAAAAAAAA');
-    console.log(props.data);
     return (
         <div className="bg-gray-800 w-[630px] rounded-md text-white max-w-2xl shadow-lg">
             <Upper data={props.data}/>

@@ -17,14 +17,14 @@ const ProfilePage = ({serverProps})=> {
     const [posts,setPosts]= useState([]);
     const fetchUserData = () =>{
         userService.getUserData(router.asPath.replace('/',''))
-            .then(res=>{console.log(res);setUserData(res.data[0])});
+            .then(res=>{setUserData(res.data[0])});
     }
     useEffect (()=>{
         console.log(serverProps);
         if(router.asPath !== '/[user]'){
             fetchUserData();
             postService.getUserPost(router.asPath.replace('/',''))
-                .then(res=>{console.log(res);setPosts(res.data)});
+                .then(res=>{setPosts(res.data)});
         }
     },[router.asPath])
     return(

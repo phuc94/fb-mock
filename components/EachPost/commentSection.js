@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react'
 import { addComment } from '../../services/post';
 import { getBasicUserData } from '../../services/user';
+import { CommentLoading } from '../Loading';
 
 const CommentSection = (props) => {
     /**
@@ -29,8 +30,8 @@ const EachComment = (props) => {
     },[])
     return (
         <>
-            { userData &&
-                <div className="flex gap-2 text-gray-100">
+            { userData == null ? (<CommentLoading />) :
+                (<div className="flex gap-2 text-gray-100">
                     <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
                         <Image className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
                     </div>
@@ -38,7 +39,7 @@ const EachComment = (props) => {
                         <p className="font-medium text-sm">{userData.lastName +' '+ userData.firstName}</p>
                         <p className="text-[0.9rem]">{props.comment.comment}</p>
                     </div>
-                </div>
+                </div>)
             }
         </>
     )

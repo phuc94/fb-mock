@@ -12,13 +12,14 @@ const AccDropdown = (props)=>{
     const router = useRouter();
     return(
         <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700">
-            <div className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
+            <div onClick={()=>{router.push(`/${props.basicUserData._id}`)}}
+                className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
                 <Image
                     className="group-hover:cursor-pointer rounded-full"
                     width={60} height={60}
-                    src='https://via.placeholder.com/150'/>
+                    src={props.basicUserData.avatar == '' ? 'https://via.placeholder.com/150' : props.basicUserData.avatar}/>
                 <div className="ml-3">
-                    <p className="text-white font-medium">Nguyen Truong Trung Phuc</p>
+                    <p className="text-white font-medium">{props.basicUserData.lastName +' '+ props.basicUserData.firstName}</p>
                     <p className="text-gray-300">View your profile</p>
                 </div>
             </div>

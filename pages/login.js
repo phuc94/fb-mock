@@ -70,7 +70,7 @@ const Login = ()=>{
     }
     return(
         <section className="flex h-screen bg-gray-100 ">
-            <div className="mx-auto flex pt-40 gap-10">
+            <div className="mx-auto flex flex-col md:flex-row pt-40 gap-10">
                 <Left />
                 <Formik
                     initialValues ={{

@@ -27,6 +27,7 @@ const Left =()=>{
     const [searchResult,setSearchResult] = useState([]);
     const [isSeach,setIsSeach] = useState(false);
     const [user,setUser]= useState('');
+    const [searching,setSearching]= useState(false);
     const router = useRouter();
     const submitBtn = useRef(null);
     const findUser = (e)=>{
@@ -56,7 +57,8 @@ const Left =()=>{
                     width={40} height={40}
                     src='https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-2019-circle-512.png'/>
             </div>
-            <div className="ml-3 h-10 bg-gray-500 rounded-full items-center flex pl-2 bg-gray-500 relative">
+            {/* DESTOP */}
+            <div className="ml-3 h-10 rounded-full items-center hidden md:flex pl-2 bg-gray-500 relative">
                 <div className='text-gray-300'>
                     <SearchIcon />
                 </div>
@@ -65,7 +67,6 @@ const Left =()=>{
                         className="px-3 rounded-full h-full outline-none bg-gray-500 text-white" placeholder="Search in Facebook"/>
                         <button type='submit' ref={submitBtn} className="hidden"></button>
                 </form>
-                
                 <div className={` bg-gray-800 top-[45px] left-[0px] p-2 ${ isSeach ? 'absolute': 'hidden' }
                     rounded border-[1px] border-gray-700 text-gray-100`}>
                     <div className="flex justify-between">
@@ -88,7 +89,52 @@ const Left =()=>{
                     ))
                     }
                 </div>
-                
+            </div>
+            {/* MOBILE */}
+            <div className="ml-3 h-10 bg-gray-500 rounded-full items-center flex md:hidden pl-2 bg-gray-500 relative">
+                <button onClick={()=>{setSearching(true);document.body.classList.add('overflow-hidden')}}
+                    className='text-gray-300 w-[45px]'>
+                    <SearchIcon />
+                </button>
+                <div className={`${searching ? 'block' : 'hidden'} absolute w-screen h-screen bg-opacity-80 
+                    bg-gray-800 top-[-8px] left-[-77px] flex justify-center`}>
+                    <div className="absolute top-[15%]">
+                        <form onSubmit={findUser} className="p-2 w-[268px] bg-gray-800 flex justify-between
+                            rounded items-center border-[1px] border-gray-700 shadow-xl">
+                            <input onChange={e=>{setUser(e.target.value);debounceFindUser()}}
+                                className="px-3 rounded-full h-full outline-none bg-gray-500 text-white w-full
+                                py-2 mr-2" 
+                                placeholder="Search in Facebook"/>
+                            <button type='submit' ref={submitBtn} className="hidden"></button>
+                            <div onClick={()=>{setSearching(false);document.body.classList.remove('overflow-hidden')}}
+                                className="flex items-center justify-center p-1 hover:bg-gray-600 cursor-pointer rounded-full">
+                                <CloseRoundedIcon className="text-gray-300"/>
+                            </div>
+                        </form>
+                        <div className={` bg-gray-800 top-[45px] left-[0px] p-2 ${ isSeach ? 'absolute': 'hidden' }
+                            rounded border-[1px] border-gray-700 text-gray-100 mt-3`}>
+                            <div className="flex justify-between">
+                                <div>
+                                    <p className="ml-2">Search result</p>
+                                </div>
+                                <div onClick={()=>{setIsSeach(false);setSearchResult([])}}
+                                    className="flex items-center justify-center p-1 hover:bg-gray-600 cursor-pointer rounded-full">
+                                    <CloseRoundedIcon />
+                                </div>
+                            </div>
+                            {searchResult.map(item=>(
+                            <div onClick={()=>{router.push(`/${item.id}`);setSearchResult([]);setIsSeach(false)}} key={item.id}
+                                className=" hover:bg-gray-600 p-1 pl-2 min-w-[250px] rounded-lg flex items-center cursor-pointer gap-2">
+                                <div className="mr-3 cursor-pointer w-[40px] flex-shrink-0">
+                                    <Image width='40' height='40' className="rounded-full" src="https://via.placeholder.com/150" />
+                                </div>
+                                <p className="cursor-pointer font-medium">{item.email}</p>
+                            </div>
+                            ))
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -96,21 +142,28 @@ const Left =()=>{
 
 const Mid =()=>{
     return (
-        <div className="text-white flex gap-3 items-center">
-            <div className="text-3xl py-1 px-10 cursor-pointer border-b-4 text-blue-500 border-blue-500">
-                <HomeIcon fontSize="inherit"/>
+        <div className="flex-grow flex justify-center">
+            <div className="text-white gap-3 items-center hidden lg:flex">
+                <div className="text-3xl py-1 px-10 cursor-pointer border-b-4 text-blue-500 border-blue-500">
+                    <HomeIcon fontSize="inherit"/>
+                </div>
+                <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
+                    <OutlinedFlagIcon fontSize="inherit" />
+                </div>
+                <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
+                    <OndemandVideoOutlinedIcon fontSize="inherit" />
+                </div>
+                <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
+                    <StorefrontOutlinedIcon fontSize="inherit" />
+                </div>
+                <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
+                    <GroupRoundedIcon fontSize="inherit" />
+                </div>
             </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
-                <OutlinedFlagIcon fontSize="inherit" />
-            </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
-                <OndemandVideoOutlinedIcon fontSize="inherit" />
-            </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
-                <StorefrontOutlinedIcon fontSize="inherit" />
-            </div>
-            <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
-                <GroupRoundedIcon fontSize="inherit" />
+            <div className="flex items-center justify-start lg:hidden">
+                <div className="text-3xl text-gray-300 py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
+                    <MenuRoundedIcon fontSize="inherit"/>
+                </div>
             </div>
         </div>
     )
@@ -149,20 +202,22 @@ export const Right =(props)=>{
     }
 
     return(
-        <div className="pt-2">
+        <div className="">
             <div className="flex items-center gap-3">
                 {!props.noAvatar &&
                     <div onClick={handleAvatarClick}
-                        className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full
+                        className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full hidden xl:flex
                             ${(props.isOwner == true )? 'bg-blue-600 bg-opacity-30' : 'hover:bg-gray-600'}`}>
-                        <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
-                        className="rounded-full" width={35} height={35}  />
+                        <div className="min-w-[35px] py-1">
+                            <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
+                            className="rounded-full" width={35} height={35}  />
+                        </div>
                         <span className={`${(props.isOwner == true )? 'text-blue-400 bg-opacity-30' : ''} font-medium`}>
                             {props.basicUserData.firstName}
                         </span>
                     </div>
                 }
-                <div className="flex gap-2 text-white">
+                <div className="flex gap-2 text-white py-1">
                     <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full" 
                         onClick={()=>handleDropdown()}>
                         <MenuRoundedIcon />
@@ -184,7 +239,7 @@ export const Right =(props)=>{
             <div className="relative z-10">
                 {messDropdown && <MessengerDropdown />}
                 {notiDropdown && <NotiDropdown />}
-                {accDropdown && <AccDropdown removeCookie={props.removeCookie}/>}
+                {accDropdown && <AccDropdown basicUserData={props.basicUserData} removeCookie={props.removeCookie}/>}
             </div>
         </div>
     )

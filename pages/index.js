@@ -7,16 +7,24 @@ import { useState, useEffect } from 'react';
 import { getAllPost } from '../services/post'
 import { getBasicUserDataSSR  } from '../services/user'
 import { useCookies } from 'react-cookie';
+import store from '../redux/store'
+// import { useSelector } from 'react-redux'
+import { MainColumnLoading } from '../components/Loading'
 
 const Index = ({basicUserData})=> {
     const [cookie,setCookie] = useCookies(['user']);
-    const [posts,setPosts]= useState([]);
-    const [isFormShow,setIsFormShow] = useState(false)
+    const [posts,setPosts]= useState(null);
+    const [isFormShow,setIsFormShow] = useState(false);
+    // const user = useSelector(state=>state.userPosts);
     const avatarObj = {
         userData:{
             avatar: basicUserData.avatar
         }
     }
+    store.subscribe(()=>{
+
+    })
+
     useEffect (()=>{
         console.log(basicUserData);
         getAllPost()
@@ -31,8 +39,13 @@ const Index = ({basicUserData})=> {
         <section className="bg-gray-900 relative">
             <div>
                 <Layout basicUserData={basicUserData}>
-                    <MainColumn posts={posts} setIsFormShow={setIsFormShow} cookie={cookie}
+                    {(posts == null ) &&
+                        <MainColumnLoading />
+                    }
+                    { posts &&
+                        <MainColumn posts={posts} setIsFormShow={setIsFormShow} cookie={cookie}
                         storyRender={true} statusRender={true} userData={avatarObj}/>
+                    }
                 </Layout>
                 {/* <Messenger/> */}
             </div>
