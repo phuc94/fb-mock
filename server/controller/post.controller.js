@@ -66,6 +66,7 @@ self.fetchComment = (req,res)=>{
 self.getAllPost = (req,res) =>{
     Post.find()
         .then((result)=>{
+            result.reverse();
             res.send(result);
         })
         .catch((err)=>{console.log(err)});

@@ -8,7 +8,9 @@ const Layout = (props)=>{
             <Nav basicUserData={props.basicUserData}/>
             <div className="flex justify-between">
                 <LeftSideBar className=''/>
-                {props.children}
+                <div className="flex-grow">
+                    {props.children}
+                </div>
                 <RightSideBar friends={props.basicUserData.friends} className=""/>
             </div>
             

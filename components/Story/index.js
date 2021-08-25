@@ -4,7 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 const Story =()=>{
     return (
-        <div className="flex flex-row gap-2 relative">
+        <div className="flex flex-row gap-2 relative justify-center">
             <div className="h-48 w-2/12 relative transition transform hover:scale-105 duration-100 cursor-pointer ">
                 <Image className="rounded-xl" objectFit='cover' layout='fill' src="https://via.placeholder.com/500" />
                 <div className="absolute rounded-full border-4 overflow-hidden border-blue-500 top-2 left-2">
@@ -57,7 +57,7 @@ const Story =()=>{
                     <p>Got It</p>
                 </div>
             </div>
-            <div className="h-48 w-2/12 relative transition transform hover:scale-105 duration-100 cursor-pointer">
+            <div className="hidden sm:block h-48 w-2/12 relative transition transform hover:scale-105 duration-100 cursor-pointer">
                 <Image className="rounded-xl" objectFit='cover' layout='fill' src="https://via.placeholder.com/500" />
                 <div className="absolute rounded-full border-4 overflow-hidden border-blue-500 top-3 left-3">
                     <Image className="rounded-full" width={30} height={25} src="https://via.placeholder.com/150" />

@@ -15,7 +15,7 @@ const Body = (props)=>{
                     <LeftSidebar userData={props.userData}/>
                 </div>
                 <MainColumn setIsFormShow={props.setIsFormShow} posts={props.posts} userData={props.userData}
-                    statusRender={(props.isOwner === true) ? true : false } storyRender={false}/>
+                    statusRender={(props.isOwner === true) ? true : false } storyRender={false} cookie={props.cookie}/>
             </div>
         </div>
     )

@@ -5,7 +5,7 @@ import Story from'../Story/index';
 const MainColumn =(props)=>{
     console.log(props.posts);
     return (
-        <div className="flex flex-col gap-3 flex-grow-1 px-50 mt-4 gap-3 mx-auto">
+        <div className="flex flex-col gap-3 flex-grow-1 px-50 mt-4 gap-3 mx-auto max-w-[630px]">
             { props.storyRender &&
                 <Story />
             }

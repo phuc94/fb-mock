@@ -90,9 +90,9 @@ const AddComment = (props) => {
                     <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
                         <Image className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
                     </div>
-                    <div className="rounded-2xl flex-grow py-2 px-4 outline-none bg-gray-700 w-full">
+                    <div className="rounded-2xl flex-grow py-2 px-4 outline-none bg-gray-700 w-full min-w-[10px]">
                         {/* { commentSubmit && */}
-                            <span contentEditable role="textbox" className="block max-w-[258px] resize-y outline-none text-gray-100"
+                            <span contentEditable role="textbox" className="block w-full resize-y outline-none text-gray-100"
                                 ref={commentInput} onKeyPress={handleOnKeyPress}
                                 >
                             </span>

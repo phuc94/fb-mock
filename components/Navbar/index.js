@@ -203,12 +203,12 @@ export const Right =(props)=>{
 
     return(
         <div className="">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pt-1">
                 {!props.noAvatar &&
                     <div onClick={handleAvatarClick}
-                        className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full hidden xl:flex
-                            ${(props.isOwner == true )? 'bg-blue-600 bg-opacity-30' : 'hover:bg-gray-600'}`}>
-                        <div className="min-w-[35px] py-1">
+                        className={`px-3 py-1 flex items-center gap-2 text-white cursor-pointer rounded-full hidden items-center
+                            xl:flex ${(props.isOwner == true )? 'bg-blue-600 bg-opacity-30' : 'hover:bg-gray-600'}`}>
+                        <div className="min-w-[35px] h-[35px]">
                             <Image src={props.basicUserData.avatar == '' ? "https://via.placeholder.com/150" : props.basicUserData.avatar}
                             className="rounded-full" width={35} height={35}  />
                         </div>

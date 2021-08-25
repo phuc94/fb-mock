@@ -148,7 +148,7 @@ const Post = (props)=>{
      * @props key: _id
      */
     return (
-        <div className="bg-gray-800 w-[630px] rounded-md text-white max-w-2xl shadow-lg">
+        <div className="bg-gray-800 w-full rounded-md text-white max-w-2xl shadow-lg">
             <Upper data={props.data}/>
             <Mid data={props.data}/>
             <Lower data={props.data} cookie={props.cookie}/>

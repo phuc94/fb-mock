@@ -5,6 +5,7 @@ import StatusForm from '../../components/Form/status';
 
 import { useState,useEffect } from 'react';
 import { useRouter } from 'next/router'
+import { useCookies } from 'react-cookie';
 
 import * as postService from '../../services/post'
 import * as userService from '../../services/user'
@@ -15,6 +16,7 @@ const ProfilePage = ({serverProps})=> {
     const [isFormShow,setIsFormShow] = useState(false)
     const [userData,setUserData] = useState(null)
     const [posts,setPosts]= useState([]);
+    const [cookie,setCookie] = useCookies(['user']);
     const fetchUserData = () =>{
         userService.getUserData(router.asPath.replace('/',''))
             .then(res=>{setUserData(res.data[0])});
@@ -34,7 +36,8 @@ const ProfilePage = ({serverProps})=> {
                     <section className="bg-gray-900">
                         <Nav basicUserData={serverProps.userData} isOwner={serverProps.isOwner}/>
                         <Header isOwner={serverProps.isOwner} userData={userData} fetchUserData={fetchUserData}/>
-                        <Body isOwner={serverProps.isOwner} posts={posts} setIsFormShow={setIsFormShow} userData={userData}/>
+                        <Body isOwner={serverProps.isOwner} posts={posts} setIsFormShow={setIsFormShow} 
+                            cookie={cookie} userData={userData}/>
                         {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
                     </section>
                 ):
