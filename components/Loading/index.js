@@ -89,7 +89,7 @@ export const ContactsLoading = ()=> {
 
 export const MainColumnLoading = () => {
     return(
-        <div className="mt-[20px] mx-auto">
+        <div className="mt-[20px] max-w-[630px] mx-auto">
             <StoryLoading />
             <PostLoading />
             <PostLoading />

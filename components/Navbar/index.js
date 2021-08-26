@@ -195,9 +195,7 @@ export const Right =(props)=>{
         }
     }
     const handleAvatarClick = () =>{
-        if (!(props.isOwner == true)){
             router.push(`/${props.basicUserData._id}`)
-        };
         return
     }
 
@@ -218,7 +216,7 @@ export const Right =(props)=>{
                     </div>
                 }
                 <div className="flex gap-2 text-white py-1">
-                    <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full" 
+                    <div className="p-2 bg-gray-700 hover:bg-gray-500 duration-500 cursor-pointer rounded-full hidden sm:block" 
                         onClick={()=>handleDropdown()}>
                         <MenuRoundedIcon />
                     </div>
@@ -245,6 +243,9 @@ export const Right =(props)=>{
     )
 }
 function Nav (props){
+    /**
+     * @prop basicUserData
+     */
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     return (
         <div className="flex justify-between px-6 h-14 bg-gray-800 z-20 sticky top-0 shadow
@@ -252,7 +253,7 @@ function Nav (props){
             <Left />
             <Mid />
             <Right cookies={cookies} removeCookie={removeCookie} 
-                basicUserData={props.basicUserData} isOwner={props.isOwner}/>
+                basicUserData={props.basicUserData}/>
         </div>
     )
 }

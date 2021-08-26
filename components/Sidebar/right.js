@@ -29,7 +29,8 @@ const RightSideBar = (props)=>{
      * @prop: friends
      */
     return (
-        <div className="text-white hidden lg:block h-[90vh] bg-gray-900 py-6 px-3 flex flex-col flex-grow-0 w-72 overflow-y-auto sticky top-10">
+        <div className="text-white hidden lg:block h-[90vh] bg-gray-900 py-6 px-3 flex flex-col flex-grow-0 
+        w-72 overflow-y-auto sticky top-10">
             <h3>Your contacts</h3>
             {props.friends.map(friend=>(
                 <Contact userId={friend}/>

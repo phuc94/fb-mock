@@ -10,7 +10,7 @@ const MainColumn =(props)=>{
                 <Story />
             }
             { props.statusRender &&
-                <Status setIsFormShow={props.setIsFormShow} avatar={props.userData.userData.avatar}/>
+                <Status setIsFormShow={props.setIsFormShow} userAvatar={props.userAvatar}/>
             }
             {props.posts.map(post=>(
                 <Post data={post} key={post._id} cookie={props.cookie}/>

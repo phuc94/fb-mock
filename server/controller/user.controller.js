@@ -26,10 +26,13 @@ self.logIn = (req,res,next) => {
 
 /**** CHECK OWNER ****/
 self.checkOwner = (req,res) =>{
-    const userId = req.query.userId.slice(1,25);
-    const targetId = req.query.targetId;
+    // const userId = req.query.userId.slice(1,25);
+    // const targetId = req.query.targetId;
+    console.log('****************************************')
+    console.log(req.query.userId)
+    console.log(req.query.targetId)
     /** Get basic user data **/
-    User.findOne({_id : userId})
+    User.findOne({_id : req.query.userId})
         .then(userObj=>{
             let userData = {
                 email : userObj.email,
@@ -39,7 +42,7 @@ self.checkOwner = (req,res) =>{
                 _id : userObj._id,
             };
             /** Check onwnership **/
-            if (userId == targetId){
+            if (req.query.userId == req.query.targetId){
                 const result = {
                     userData,
                     isOwner:true
@@ -47,11 +50,11 @@ self.checkOwner = (req,res) =>{
                 res.send(result)
             }
             else {
-                User.find({_id : userId})
+                User.find({_id : req.query.userId})
                     .then(userObj=>{
                         const result = {
                             userData,
-                            isOwner:helper.checkFriendStatus(userObj[0],targetId)
+                            isOwner:helper.checkFriendStatus(userObj[0],req.query.targetId)
                         }
                         res.send(result);
                     })
@@ -82,6 +85,8 @@ self.getBasicUserData = (req,res) =>{
                 firstName : userObj.firstName,
                 lastName : userObj.lastName,
                 avatar : userObj.userData.avatar,
+                reqPending : userObj.reqPending,
+                resPending : userObj.resPending,
                 friends : userObj.friends,
                 _id : userObj._id,
             };
@@ -90,27 +95,6 @@ self.getBasicUserData = (req,res) =>{
         .catch((err)=>{console.log(err)});   
 };
 
-/**** GET BASIC USER DATA SSR ****/
-self.getBasicUserDataSSR = (req,res) =>{
-    let userId;
-    if(typeof req.query.userId == 'object'){
-        userId =  req.query.userId;
-    }
-    else {userId = req.query.userId.slice(1,25)}
-    User.findOne({_id : userId})
-        .then(userObj=>{
-            let data = {
-                email : userObj.email,
-                firstName : userObj.firstName,
-                lastName : userObj.lastName,
-                friends : userObj.friends,
-                avatar : userObj.userData.avatar,
-                _id : userObj._id,
-            };
-            res.send(data);
-        })
-        .catch((err)=>{console.log(err)});   
-};
 
 /**** CHECK LOGGED IN ****/
 self.checkLoggedIn = (req,res) =>{

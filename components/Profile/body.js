@@ -10,12 +10,14 @@ import { getUserPhotos, getBasicUserData } from '../../services/user'
 const Body = (props)=>{
     return (
         <div className="bg-gray-900 w-full">
-            <div className="flex gap-6 w-[60%] mx-auto">
-                <div className="">
+            <div className="flex flex-col gap-6 w-full lg:w-[80%] xl:w-[70%] 2xl:w-[60%] mx-auto lg:flex-row">
+                <div className="w-full lg:w-auto max-w-[630px] mx-auto">
                     <LeftSidebar userData={props.userData}/>
                 </div>
-                <MainColumn setIsFormShow={props.setIsFormShow} posts={props.posts} userData={props.userData}
-                    statusRender={(props.isOwner === true) ? true : false } storyRender={false} cookie={props.cookie}/>
+                <div className="w-full max-w-[630px] mx-auto">
+                    <MainColumn setIsFormShow={props.setIsFormShow} posts={props.posts} userData={props.userData}
+                        statusRender={(props.isOwner === true) ? true : false } storyRender={false} cookie={props.cookie}/>
+                </div>
             </div>
         </div>
     )
@@ -23,7 +25,7 @@ const Body = (props)=>{
 export default Body;
 const LeftSidebar = (props) =>{
     return(
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full lg:w-auto items-center">
             <About />
             <Photos userData={props.userData}/>
             <Friends userData={props.userData}/>
@@ -32,7 +34,7 @@ const LeftSidebar = (props) =>{
 }
 const About = ()=> {
     return(
-        <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-[350px] shadow-lg">
+        <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-full lg:w-[350px] shadow-lg">
             <div className="px-3 py-2">
                 <p className="font-bold text-xl">About</p>
             </div>
@@ -85,8 +87,7 @@ const Photos = (props)=> {
         });
     },[])
     return(
-        <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-[350px] shadow-lg">
-            <button onClick={()=>{console.log(photos)}}>LOG</button>
+        <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-full lg:w-[350px] shadow-lg">
             <div className="px-3 py-2 flex justify-between">
                 <p className="font-bold text-xl">Photos</p>
                 <div className="hover:bg-gray-700 cursor-pointer p-1 rounded text-blue-500">
@@ -120,8 +121,7 @@ const Friends = (props)=> {
             });
     },[])
     return(
-        <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-[350px] shadow-lg">
-            <button onClick={()=>{console.log(props.userData.friends)}}>LOG</button>
+        <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-full lg:w-[350px] shadow-lg">
             <div className="px-3 pt-2 flex justify-between">
                 <p className="font-bold text-xl">Friends</p>
                 <div className="hover:bg-gray-700 cursor-pointer p-1 rounded text-blue-500">

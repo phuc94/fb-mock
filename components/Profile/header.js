@@ -99,7 +99,7 @@ const Header = (props)=>{
                         </div>
                     </div> 
                 }
-                <div className="w-[960px] mx-auto">
+                <div className="max-w-[960px] mx-auto">
                     <div className="relative">
 
                         {newCover === null ?
@@ -167,16 +167,16 @@ const Header = (props)=>{
                         </form>}
                     </div>
                     <div className="flex justify-center text-white border-t-[1px] border-gray-700 mt-3">
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200 hidden mg:block">
                             <p>Status</p>
                         </div>
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200 hidden mg:block">
                             <p>About</p>
                         </div>
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200 hidden mg:block">
                             <p>Friends</p>
                         </div>
-                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
+                        <div className="p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200 hidden lg:block">
                             <p>Photos</p>
                         </div>
                         <div className="flex p-4 hover:bg-gray-700 cursor-pointer rounded-lg duration-200">
