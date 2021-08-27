@@ -9,6 +9,7 @@ const handle = app.getRequestHandler();
 
 const userRouter = require('./route/userRouter');
 const postRouter = require('./route/postRouter');
+const chatRouter = require('./route/chatRouter');
 
 
 /*** CONNECT TO MONGODB ATLAS ***/ 
@@ -32,33 +33,41 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 const server = require('http').Server(expressApp);
                 const io = require('socket.io')(server);
                 /*** SOCKET.IO CONFIG ***/
+                const Chat = require('./models/chat.model')
                 // Run when client connects
-                const userJoin =(id,username, room)=>{
-                    return {
-                        id,
-                        user: username,
-                        room
-                    }
-                }
                 io.on('connection', socket => {
-                    socket.on('joinRoom',({username,room})=>{
-                        const User =userJoin(socket.id,username,room);
-                        console.log(User);
-                        socket.join(User.room);
+                    socket.on('joinRoom',({roomId})=>{
+                        socket.join(roomId);
+                        Chat.findOne({_id: roomId})
+                            .then(chat=>{
+                                socket.emit('init',{
+                                    message:chat.data
+                                });
+                            })
                         //Wellcone current user
                         socket.emit('message',{
                             message:'Welcome to ChatCord!'
                         });
                         // Broadcast when a user connects
-                        socket.broadcast.to(User.room).emit('message', {
+                        socket.broadcast.to(roomId).emit('message', {
                             message:'A user has join the chat!'
                         });
                     })
-                    
-                    // Listen to chat message
-                    socket.on('chatMessage', msg=>{
-                        io.emit('message',msg)
-                        console.log(msg);
+                    // Listen for chatMessage
+                    socket.on('chatMessage', msg => {
+                        Chat.findOne({_id: msg.roomId})
+                            .then(chat=>{
+                                chat.data.push({
+                                    userId: msg.userId,
+                                    message: msg.message
+                                });
+                                chat.save()
+                                    .then(response=>{
+                                        io.to(msg.roomId).emit('message', {message:msg.message,userId:msg.userId,roomId:msg.roomId});
+                                    })
+                                .catch(err=>console.log(err))
+                            })
+                            .catch(err=>console.log(err))
                     });
 
                     // Runs when client disconnects
@@ -103,6 +112,7 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                 /*** ROUTER ***/
                 expressApp.use(userRouter);
                 expressApp.use(postRouter);
+                expressApp.use(chatRouter);
                 
 
                 expressApp.get('*', (req,res)=>{

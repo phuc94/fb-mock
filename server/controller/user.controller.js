@@ -1,5 +1,6 @@
 let User = require('../models/user.model');
 let Post = require('../models/post.model');
+let Chat = require('../models/chat.model');
 const postController = require('../controller/post.controller');
 const genPassword = require('../utils/password').genPassword;
 const helper = require('../utils/helper');
@@ -26,11 +27,6 @@ self.logIn = (req,res,next) => {
 
 /**** CHECK OWNER ****/
 self.checkOwner = (req,res) =>{
-    // const userId = req.query.userId.slice(1,25);
-    // const targetId = req.query.targetId;
-    console.log('****************************************')
-    console.log(req.query.userId)
-    console.log(req.query.targetId)
     /** Get basic user data **/
     User.findOne({_id : req.query.userId})
         .then(userObj=>{
@@ -66,8 +62,6 @@ self.checkOwner = (req,res) =>{
 
 /**** GET BASIC USER DATA ****/
 self.getBasicUserData = (req,res) =>{
-    console.log('8888888888888888888888888888');
-    console.log(req.query);
     let userId;
     if(typeof req.query.userId == 'object'){
         userId =  req.query.userId;
@@ -142,21 +136,40 @@ self.friendCancle = (req,res) => {
 
 /**** ACCEPT FRIEND REQUEST ****/
 self.friendAccept = (req,res) => {
-    /** Resquesting User **/
-    User.findOne({_id : req.user._id})
-        .then(user=>{
-            user.resPending.splice(user.resPending.indexOf(req.body.targetId));
-            user.friends.push(req.body.targetId);
-            user.save().then(response=>{res.send(response)});
+    /** Create chat room for both **/
+    const newChatRoom = new Chat({
+        data:[{
+            userId: 'broadcast',
+            content: 'Now you can chat with each others!'
+        }]
+    })
+    newChatRoom.save()
+        .then(room=>{
+            /** Resquesting User **/
+            User.findOne({_id : req.user._id})
+                .then(user=>{
+                    user.resPending.splice(user.resPending.indexOf(req.body.targetId));
+                    const newFriend = {
+                        userId: req.body.targetId,
+                        chatRoom: room._id
+                    }
+                    user.friends.push(newFriend);
+                    user.save().then(response=>{res.send(response)})
+                })
+                .catch((err)=>{console.log(err)});
+            /** Target User **/
+            User.findOne({_id : req.body.targetId})
+                .then((target)=>{
+                    target.reqPending.splice(target.reqPending.indexOf(req.user._id));
+                    const newFriend = {
+                        userId: req.user._id,
+                        chatRoom: room._id
+                    }
+                    target.friends.push(newFriend);
+                    target.save();
+                })
+                .catch((err)=>{console.log(err)});
         })
-    /** Target User **/
-    User.findOne({_id : req.body.targetId})
-        .then((target)=>{
-            target.reqPending.splice(target.reqPending.indexOf(req.user._id));
-            target.friends.push(req.user._id);
-            target.save();
-        })
-        .catch((err)=>{console.log(err)});
 };
 
 

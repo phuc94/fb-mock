@@ -1,7 +1,7 @@
 import Layout from '../components/layout';
 import axios from 'axios'; 
 import MainColumn from '../components/EachPost/main-column';
-import Messenger from '../components/Messenger/index';
+import MessengenWrapper from '../components/Messenger/index';
 import StatusForm from '../components/Form/status'
 import { useState, useEffect } from 'react';
 import { getAllPost } from '../services/post'
@@ -39,7 +39,7 @@ const Index = ()=> {
                                     storyRender={true} statusRender={true} userAvatar={basicUserData.avatar}/>
                                 }
                             </Layout>
-                            {/* <Messenger/> */}
+                            <MessengenWrapper />
                         </div>
                     </section>
                     {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}

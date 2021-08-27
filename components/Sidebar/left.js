@@ -1,7 +1,7 @@
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Image from 'next/image';
-import StorefrontIcon from '@material-ui/icons/Storefront';
+import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import BookmarkRoundedIcon from '@material-ui/icons/BookmarkRounded';
 import { useRouter } from 'next/router';
@@ -38,7 +38,7 @@ const LeftSideBar = (props) =>{
             <UserAvatar basicUserData={props.basicUserData}/>
             <LeftSideBarItem Icon={GroupRoundedIcon} text='Friends' path={"friends"}/>
             <LeftSideBarItem Icon={BookmarkRoundedIcon} text='Bookmark'/>
-            <LeftSideBarItem Icon={StorefrontIcon} text='Your Store'/>
+            <LeftSideBarItem Icon={ChatRoundedIcon} text='Messenger'/>
         </div>
     )
 }

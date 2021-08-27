@@ -7,6 +7,11 @@ const userDataSchema = new mongoose.Schema({
     posts: [String]
 });
 
+const friendSchema = new mongoose.Schema({
+    userId: String,
+    chatRoom: String
+});
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -21,7 +26,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     following: [String],
-    friends: [String],
+    friends: [friendSchema],
     reqPending: [String],
     resPending: [String],
     firstName: String,

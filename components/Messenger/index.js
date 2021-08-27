@@ -14,6 +14,10 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import GifRoundedIcon from '@material-ui/icons/GifRounded';
 import SendIcon from '@material-ui/icons/Send';
 
+import { getChatData, chatClose } from '../../redux/actionCreator'
+import store from '../../redux/store'
+import { useSelector } from 'react-redux'
+
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 import * as yup from 'yup';
 
@@ -30,14 +34,19 @@ const AddNewConvers =()=>{
     )
 }
 
-const Head = ()=>{
+const Head = (props)=>{
     return(
         <div className="flex w-80 flex justify-between shadow">
             <div className=" cursor-pointer px-3 py-1 flex items-center gap-2 text-white hover:bg-gray-700 cursor-poniter duration-100 rounded-lg">
-                <Image className="rounded-full" width={32} height={35} src="https://via.placeholder.com/150" />
+                <div className="min-w-[32px] w-[32px] h-[32px] rounded-full overflow-hidden">
+                    <Image width={32} height={35}
+                        src={props.basicTargetData.avatar == ''? "https://via.placeholder.com/150" : props.basicTargetData.avatar} />
+                </div>
                 <div className="flex flex-col">
-                    <p className="text-base font-medium">qq</p>
-                    <p className="text-xs text-gray-400 font-medium">Online</p>
+                    <p className="text-base font-medium">
+                        {props.basicTargetData.lastName +' '+ props.basicTargetData.firstName}
+                    </p>
+                    {/* <p className="text-xs text-gray-400 font-medium">Online</p> */}
                 </div>
                 <div className="pb-3">
                     <ExpandMoreIcon />
@@ -53,7 +62,10 @@ const Head = ()=>{
                 <div className="rounded-full hover:bg-gray-600 cursor-pointer">
                     <MinimizeRoundedIcon />
                 </div>
-                <div className="rounded-full hover:bg-gray-600 cursor-pointer">
+                <div onClick={()=>{
+                        store.dispatch(chatClose(props.roomId))
+                    }}
+                    className="rounded-full hover:bg-gray-600 cursor-pointer">
                     <CloseRoundedIcon />
                 </div>
             </div>
@@ -63,7 +75,7 @@ const Head = ()=>{
 
 const Body = (props)=> {
     return(
-        <div className="h-80 shadow-inner overflow-y-scroll">
+        <div className="h-80 shadow-inner overflow-y-scroll text-gray-100 px-2">
             {props.chatContent.map(mess=>(
                 <p>{mess}</p>
             ))}
@@ -81,8 +93,8 @@ const Footer = ()=> {
             </div>
             <div className="flex items-center flex-grow-1 w-full">
                 <Form className="flex items-center w-full">
-                    <Field type="text" name="message" 
-                    className="outline-none w-full w-36 px-3 py-2 mr-2 rounded-full bg-gray-500 text-gray-100 w-full" placeholder="Aa"/>
+                    <Field type="text" name="message" autoComplete="off" 
+                    className="outline-none w-full px-3 py-2 mr-2 rounded-full bg-gray-500 text-gray-100 w-full" placeholder="Aa"/>
                 </Form>
             </div>
             <div className="text-blue-500">
@@ -92,10 +104,12 @@ const Footer = ()=> {
     )
 }
 const Converse = (props)=>{
-
+    /**
+     * @prop chatContent, basicTargetData, roomId
+     */
     return (
-        <div className="shadow bg-gray-800 rounded-t-lg ">
-            <Head />
+        <div className="shadow-2xl bg-gray-800 rounded-t-lg border-[1px] border-gray-700">
+            <Head basicTargetData={props.basicTargetData} roomId={props.roomId}/>
             <Body chatContent={props.chatContent}/>
             <Footer />
         </div>
@@ -103,39 +117,80 @@ const Converse = (props)=>{
 }
 
 const socket= io();
-const Messenger = ()=>{
+const Messenger = (props)=>{
+    /**
+     * @props roomId, basicTargetData
+     */
+    console.log(props.roomId);
+    console.log(props.basicTargetData);
     const [chatContent,setChatContent] = useState([]);
-
+    const [chatRoom,setChatRoom] = useState();
+    const userId = useSelector(state => state.userData._id)
+    // const chatData = useSelector(state => state.userData._id)
     useEffect(()=>{
-        socket.on('message', message=>{
-            setChatContent(prev => [...prev,message.message]);
-        });
-        return ()=>{
-            socket.off();
-        }
+        // store.dispatch(getChatData(props.roomId,userId));
+
+        // socket.emit('joinRoom',{roomId:props.roomId});
+        // socket.on('init', message=>{
+        //     console.log(message)
+        //     let mess=[];
+        //     for (let i of message.message){
+        //         mess.push(i.message);
+        //     }
+        //     setChatContent(mess);
+        // });
+        // socket.on('message', message=>{
+        //     if(message.roomId == props.roomId){
+        //         setChatContent(prev => [...prev,message.userId +message.message]);
+        //     }
+        //     // Do some tricks to display who is who HERE
+        //     console.log(message.userId)
+        // });
+        // return ()=>{
+        //     socket.off();
+        // }
     },[])
-    return(
+    return(   
+        <Formik
+            initialValues ={{
+                message:'',
+            }}
+            validationSchema={yup.object({
+                message:yup.string().required('Email is required'),
+            })}
+            onSubmit={(data, actions) => {
+                data.userId=userId;
+                data.roomId=props.roomId;
+                socket.emit('chatMessage',data);
+                actions.resetForm();
+            }}
+            >
+            <Converse chatContent={chatContent} basicTargetData={props.basicTargetData}
+                roomId={props.roomId}/>
+        </Formik>
+    )
+};
+
+const MessengenWrapper = (props) => {
+    /**
+     * @props roomId, basicUserData, basicTargetData
+     */
+    const messenger = useSelector(state => state.messenger)
+    return (
         <>  
             <div className="fixed z-10 bottom-0 right-6 bg-opacity-0">
                 <AddNewConvers />
             </div>
-            <div className="fixed z-10 bottom-0 right-28 bg-opacity-0 overflow-hidden flex gap-3">
-            <Formik
-                    initialValues ={{
-                        message:'',
-                    }}
-                    validationSchema={yup.object({
-                        message:yup.string().required('Email is required'),
-                    })}
-                    onSubmit={(data, actions) => {
-                        socket.emit('chatMessage',data);
-                        actions.resetForm();
-                    }}
-                    >
-                    <Converse chatContent={chatContent}/>
-                </Formik>
+            <div className="fixed z-10 bottom-0 right-28 bg-opacity-0 overflow-hidden flex flex-row-reverse gap-3">
+                {messenger.map(mess=>{
+                    if(mess.isShow){
+                        return(
+                            <Messenger roomId={mess.roomId} basicTargetData={mess.basicTargetData}/>
+                        )
+                    }
+                })}
             </div>
         </>
     )
-};
-export default Messenger;
+}
+export default MessengenWrapper;

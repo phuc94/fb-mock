@@ -5,14 +5,14 @@ self.searchEmail = (dataArr,string) =>{
 };
 
 self.checkFriendStatus =(userObj,targetId) => {
-    const target = JSON.stringify(targetId);
+    // const target = JSON.stringify(targetId);
     if (userObj.reqPending.find(item => item == targetId)){
         return 'reqPending'
     }
     else if (userObj.resPending.find(item => item == targetId)){
         return 'resPending'
     }
-    else if (userObj.friends.find(item => item == targetId)){
+    else if (userObj.friends.find(item => item.userId == targetId)){
         return 'friend'
     }
     else return 'noStatus'

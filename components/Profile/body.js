@@ -107,8 +107,12 @@ const Photos = (props)=> {
 
 const Friends = (props)=> {
     const [friends,setFriends] = useState([]);
-    useEffect(()=>{
-        getBasicUserData(props.userData.friends)
+    const fetchFriends = () =>{
+        let friends=[];
+        for (let friend of props.userData.friends){
+            friends.push(friend.userId);
+        }
+        getBasicUserData(friends)
             .then(res=>{
                 if(typeof res.data == 'object'){
                     setFriends([res.data]);
@@ -119,6 +123,9 @@ const Friends = (props)=> {
                     setFriends(res.data)
                 }
             });
+    }
+    useEffect(()=>{
+        fetchFriends();
     },[])
     return(
         <div className="text-gray-100 bg-gray-800 mt-4 pt-2 rounded-lg w-full lg:w-[350px] shadow-lg">
