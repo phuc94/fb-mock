@@ -74,11 +74,39 @@ const Head = (props)=>{
 };
 
 const Body = (props)=> {
+    const userId = useSelector(state=>state.userData._id)
     return(
-        <div className="h-80 shadow-inner overflow-y-scroll text-gray-100 px-2">
-            {props.chatContent.map(mess=>(
-                <p>{mess}</p>
-            ))}
+        <div className="h-80 shadow-inner overflow-y-scroll text-gray-100 px-2 flex flex-col gap-[2px]">
+            {props.chatContent.map(mess=>{
+                switch (mess.userId){
+                    case 'broadcast':
+                        return(
+                            <div className="flex justify-center py-2">
+                                <p className="max-w-[80%] break-words text-sm text-gray-400">
+                                    {mess.message}
+                                </p>
+                            </div>
+                        )
+                    case userId:
+                        return (
+                            <div className="flex flex-row-reverse">
+                                <p className="bg-blue-500 max-w-[70%] break-words rounded-2xl px-[13px] py-1">
+                                    {mess.message}
+                                </p>
+                                <div></div>
+                            </div>
+                        )
+                    default:
+                        return(
+                            <div className="flex">
+                                <p className="bg-gray-500 max-w-[70%] break-words rounded-2xl px-[13px] py-1">
+                                    {mess.message}
+                                </p>
+                                <div className="w-[10px]"></div>
+                            </div>
+                        )
+                }
+            })}
         </div>
     )
 };
@@ -108,7 +136,7 @@ const Converse = (props)=>{
      * @prop chatContent, basicTargetData, roomId
      */
     return (
-        <div className="shadow-2xl bg-gray-800 rounded-t-lg border-[1px] border-gray-700">
+        <div className="shadow-2xl bg-gray-800 rounded-t-lg border-[1px] border-gray-700 max-w-[320px]">
             <Head basicTargetData={props.basicTargetData} roomId={props.roomId}/>
             <Body chatContent={props.chatContent}/>
             <Footer />
@@ -121,34 +149,31 @@ const Messenger = (props)=>{
     /**
      * @props roomId, basicTargetData
      */
-    console.log(props.roomId);
-    console.log(props.basicTargetData);
     const [chatContent,setChatContent] = useState([]);
     const [chatRoom,setChatRoom] = useState();
     const userId = useSelector(state => state.userData._id)
-    // const chatData = useSelector(state => state.userData._id)
     useEffect(()=>{
-        // store.dispatch(getChatData(props.roomId,userId));
-
-        // socket.emit('joinRoom',{roomId:props.roomId});
-        // socket.on('init', message=>{
-        //     console.log(message)
-        //     let mess=[];
-        //     for (let i of message.message){
-        //         mess.push(i.message);
-        //     }
-        //     setChatContent(mess);
-        // });
-        // socket.on('message', message=>{
-        //     if(message.roomId == props.roomId){
-        //         setChatContent(prev => [...prev,message.userId +message.message]);
-        //     }
-        //     // Do some tricks to display who is who HERE
-        //     console.log(message.userId)
-        // });
-        // return ()=>{
-        //     socket.off();
-        // }
+        socket.emit('joinRoom',{roomId:props.roomId});
+        socket.on('init', message=>{
+            if(message.roomId !== props.roomId){
+                return
+            }
+            console.log(message)
+            // let mess=[];
+            // for (let i of message.message){
+            //     mess.push(i.message);
+            // }
+            setChatContent(message.message);
+        });
+        socket.on('message', message=>{
+            // Do some tricks to display who is who HERE
+            if(message.roomId == props.roomId){
+                setChatContent(prev => [...prev,message]);
+            }
+        });
+        return ()=>{
+            socket.off();
+        }
     },[])
     return(   
         <Formik
@@ -171,10 +196,7 @@ const Messenger = (props)=>{
     )
 };
 
-const MessengenWrapper = (props) => {
-    /**
-     * @props roomId, basicUserData, basicTargetData
-     */
+const MessengenWrapper = () => {
     const messenger = useSelector(state => state.messenger)
     return (
         <>  
@@ -185,7 +207,8 @@ const MessengenWrapper = (props) => {
                 {messenger.map(mess=>{
                     if(mess.isShow){
                         return(
-                            <Messenger roomId={mess.roomId} basicTargetData={mess.basicTargetData}/>
+                            <Messenger roomId={mess.roomId} basicTargetData={mess.basicTargetData} 
+                                key={mess.roomId}/>
                         )
                     }
                 })}

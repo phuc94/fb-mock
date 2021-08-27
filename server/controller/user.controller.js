@@ -140,7 +140,7 @@ self.friendAccept = (req,res) => {
     const newChatRoom = new Chat({
         data:[{
             userId: 'broadcast',
-            content: 'Now you can chat with each others!'
+            message: 'Say hi to your new friend!'
         }]
     })
     newChatRoom.save()

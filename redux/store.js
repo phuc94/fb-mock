@@ -11,10 +11,11 @@ const StateStructure = {
     userPosts: Array,
     targetId: String,
     targetPost: Array,
-    chat: [
+    messenger: [
         {
-            tagetId: String,
-            chatContent: Array
+            isShow: Boolean,
+            roomId: String,
+            basicTargetData: Object
         }
     ],
     notification: [

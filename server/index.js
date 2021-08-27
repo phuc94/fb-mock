@@ -41,7 +41,8 @@ mongoose.connect('mongodb+srv://phuc94:rvrtsHGFttXC5iVY@cluster0.0o4oe.mongodb.n
                         Chat.findOne({_id: roomId})
                             .then(chat=>{
                                 socket.emit('init',{
-                                    message:chat.data
+                                    message:chat.data,
+                                    roomId
                                 });
                             })
                         //Wellcone current user
