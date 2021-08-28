@@ -22,7 +22,7 @@ const Index = ()=> {
                 console.log(res);
                 setPosts(res.data);
             });
-    },[])
+    },[basicUserData])
     
     return (
         <>

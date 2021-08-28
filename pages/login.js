@@ -88,7 +88,9 @@ const Login = ()=>{
                         logIn(data).then(res=>{
                             if (res.data === false){handleToggleLogInFailModal()}
                             else {
-                                router.push('/');
+                                if(window){
+                                    window.location.href ='/'
+                                }
                                 console.log(res.data);
                                 setCookie('user',res.data._id)
                             }
