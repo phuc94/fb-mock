@@ -3,7 +3,7 @@ import MoreHorizRoundedIcon from '@material-ui/icons/MoreHorizRounded';
 
 const NotiDropdown = ()=>{
     return(
-        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700 h-[700px] overflow-auto">
+        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700 h-[700px] overflow-auto z-10">
             <div className="flex items-center justify-between">
                 <p className="pl-3 py-3 text-2xl font-medium">Notification</p>
                 <div className="pr-3 text-gray-400">

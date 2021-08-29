@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 const AccDropdown = (props)=>{
     const router = useRouter();
     return(
-        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700">
+        <div className="absolute bg-gray-800 right-0 top-3 rounded-xl w-80 text-white shadow-xl border-[1px] border-gray-700 z-10">
             <div onClick={()=>{router.push(`/${props.basicUserData._id}`)}}
                 className="m-2 flex cursor-pointer p-2 hover:bg-gray-700 rounded-xl items-center">
                 <Image

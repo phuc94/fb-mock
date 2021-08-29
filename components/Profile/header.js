@@ -255,7 +255,8 @@ const Header = (props)=>{
                             {/**** OWNER OR NOT -> EDIT/CHAT ****/}
                             { props.isOwner === true ?
                                 (
-                                    <div className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600 duration-200">
+                                    <div onClick={()=>{props.setIsEditFormShow(true);document.body.classList.add("overflow-hidden")}}
+                                        className="bg-gray-700 flex py-1 px-2 rounded cursor-pointer hover:bg-gray-600 duration-200">
                                         <EditRoundedIcon />
                                         <p className="font-medium pl-1">Edit your Profile</p>
                                     </div>

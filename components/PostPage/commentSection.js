@@ -31,8 +31,8 @@ const EachComment = (props) => {
         <>
             { userData &&
                 <div className="flex gap-2 text-gray-100">
-                    <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
-                        <Image className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
+                    <div className="flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
+                        <img className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
                     </div>
                     <div className="bg-gray-700 py-2 px-4 rounded-2xl">
                         <p className="font-medium text-sm">{userData.lastName +' '+ userData.firstName}</p>
@@ -86,8 +86,8 @@ const AddComment = (props) => {
         <div className="flex gap-2">
             {userData &&
                 <>
-                    <div className="relative flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
-                        <Image className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
+                    <div className="flex items-center min-w-[35px] h-[35px] rounded-full overflow-hidden">
+                        <img className="" width={35} height={35} src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar}/>
                     </div>
                     <div className="rounded-2xl flex-grow py-2 px-4 outline-none bg-gray-700 w-full">
                         {/* { commentSubmit && */}

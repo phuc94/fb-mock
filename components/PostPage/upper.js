@@ -108,7 +108,7 @@ export const Upper = (props)=>{
             <>
                 <div className="mr-3 cursor-pointer">
                     {ownerData &&
-                        <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
+                        <img src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
                             className="rounded-full" width={40} height={40} />
                     }
                 </div>

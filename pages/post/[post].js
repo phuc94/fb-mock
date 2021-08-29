@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import * as postServices from '../../services/post';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useSelector } from 'react-redux';
 
 function PostPage(){
     const[postData,setPostData] = useState(null);
@@ -14,7 +15,7 @@ function PostPage(){
     const[postId,setPostId] = useState(null);
     const router = useRouter();
     const [cookie,setCookie, removeCookie] = useCookies(['user']);
-
+    const userData = useSelector(state=>state.userData);
     useEffect(() => {
         let Id = router.asPath.replace('/','');
         Id = Id.slice(5,Id.length);
@@ -39,9 +40,9 @@ function PostPage(){
     
     return (
         <section className="flex w-screen h-screen overflow-hidden">
-            { postData ?
+            { (postData && userData) ?
                 (<DataReady data={postData} postId={postId} postComment={postComment} reFetchComment={reFetchComment}
-                    removeCookie={removeCookie} cookie={cookie}/>) 
+                    removeCookie={removeCookie} cookie={cookie} userData={userData}/>) 
                 : 
                 (null)
             }
@@ -78,7 +79,7 @@ const DataReady = (props) =>{
                 <div className="h-[60px] flex justify-between px-4 pb-3 sticky top-0
                     border-b-[1px] border-gray-700">
                     <div></div>
-                    <Right noAvatar removeCookie={props.removeCookie}/>
+                    <Right noAvatar removeCookie={props.removeCookie} basicUserData={props.userData}/>
                 </div>
                 <div className="w-full flex flex-col h-full max-h-full overflow-y-scroll pb-[60px]">
                     <Upper data={props.data}/>

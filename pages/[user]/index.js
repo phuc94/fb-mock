@@ -1,6 +1,7 @@
 import Header from '../../components/Profile/header'
 import Body from '../../components/Profile/body'
 import Nav from '../../components/Navbar';
+import ProfileEditForm from '../../components/Profile/profileEdit'
 import StatusForm from '../../components/Form/status';
 
 import { useState,useEffect } from 'react';
@@ -16,6 +17,7 @@ const ProfilePage = ()=> {
     const userData = useSelector(state=> state.userData);
     const router = useRouter();
     const [isFormShow,setIsFormShow] = useState(false)
+    const [isEditFormShow,setIsEditFormShow] = useState(false)
     const [isOwner,setsOwner] = useState(null)
     const [targetUserData,setTargetUserData] = useState(null)
     const [posts,setPosts]= useState([]);
@@ -36,6 +38,7 @@ const ProfilePage = ()=> {
             const targetId = router.asPath.replace('/','');
             userService.checkIfOwner(cookie.user,targetId)
                 .then(res=>{
+                    console.log('OWNERRRRRR')
                     setsOwner(res.data.isOwner);
                 })
         }
@@ -47,10 +50,12 @@ const ProfilePage = ()=> {
                     <Nav basicUserData={userData} isOwner={isOwner}/>
                         {(targetUserData && isOwner) ?
                             <>
-                                <Header isOwner={isOwner} userData={targetUserData} fetchUserData={fetchUserData}/>
+                                <Header isOwner={isOwner} userData={targetUserData} 
+                                    fetchUserData={fetchUserData} setIsEditFormShow={setIsEditFormShow}/>
                                 <Body isOwner={isOwner} posts={posts} setIsFormShow={setIsFormShow}
                                     cookie={cookie} userData={targetUserData}/>
                                 {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
+                                {isEditFormShow && <ProfileEditForm setIsEditFormShow={setIsEditFormShow}/>}
                             </>
                             :
                             <div className="h-screen w-screen bg-gray-900 overflow-x-hidden" ></div>

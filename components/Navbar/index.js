@@ -171,6 +171,11 @@ const Mid =()=>{
     )
 };
 export const Right =(props)=>{
+    /**
+     * @props basicUserData, noAvatar
+     */
+    console.log(props.isOwner)
+    console.log(props.basicUserData)
     const [accDropdown,setAccDropdown] = useState(false);
     const [notiDropdown,setNotiDropdown] = useState(false);
     const [messDropdown,setMessDropdown] = useState(false);
@@ -246,7 +251,7 @@ export const Right =(props)=>{
 }
 function Nav (props){
     /**
-     * @prop basicUserData
+     * @prop basicUserData, isOwner
      */
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     return (
@@ -255,7 +260,7 @@ function Nav (props){
             <Left />
             <Mid />
             <Right cookies={cookies} removeCookie={removeCookie} 
-                basicUserData={props.basicUserData}/>
+                basicUserData={props.basicUserData} isOwner={props.isOwner}/>
         </div>
     )
 }
