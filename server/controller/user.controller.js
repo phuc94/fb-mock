@@ -62,6 +62,7 @@ self.checkOwner = (req,res) =>{
 
 /**** GET BASIC USER DATA ****/
 self.getBasicUserData = (req,res) =>{
+    console.log(req.query.userId);
     let userId;
     if(typeof req.query.userId == 'object'){
         userId =  req.query.userId;
@@ -69,7 +70,7 @@ self.getBasicUserData = (req,res) =>{
     userId= req.query.userId;
     User.findOne({_id : userId})
         .then(userObj=>{
-            if(userObj == {}){
+            if(userObj == {} || userObj === undefined){
                 console.log('No user data!');
                 res.send('No User data!');
                 return;
@@ -102,7 +103,7 @@ self.friendRequest = (req,res) => {
     User.find({_id : req.user._id})
         .then((result)=>{
             newReqPending=result[0].reqPending;
-            newReqPending.push(req.body.targetId);
+            newReqPending.push({userId: req.body.targetId});
             User.updateOne({_id : req.user._id},{reqPending : newReqPending})
             .then((result)=>{
                 res.send(result);
@@ -113,7 +114,7 @@ self.friendRequest = (req,res) => {
     let newResPending = [];
     User.findOne({_id : req.body.targetId})
         .then(target=>{
-            newResPending = target.resPending.push(req.user._id);
+            newResPending = target.resPending.push({userId: req.user._id});
             target.save();
         })
 };
@@ -124,7 +125,7 @@ self.friendCancle = (req,res) => {
     User.find({_id : req.user._id})
         .then((result)=>{
             newReqPending=result[0].reqPending;
-            newReqPending.splice(newReqPending.indexOf(req.body.targetId));
+            newReqPending.splice(newReqPending.indexOf({userId: req.body.targetId}));
             User.updateOne({_id : req.user._id},{reqPending : newReqPending})
             .then((result)=>{
                 res.send(result);
@@ -148,7 +149,7 @@ self.friendAccept = (req,res) => {
             /** Resquesting User **/
             User.findOne({_id : req.user._id})
                 .then(user=>{
-                    user.resPending.splice(user.resPending.indexOf(req.body.targetId));
+                    user.resPending.splice(user.resPending.indexOf({userId: req.body.targetId}));
                     const newFriend = {
                         userId: req.body.targetId,
                         chatRoom: room._id
@@ -160,7 +161,7 @@ self.friendAccept = (req,res) => {
             /** Target User **/
             User.findOne({_id : req.body.targetId})
                 .then((target)=>{
-                    target.reqPending.splice(target.reqPending.indexOf(req.user._id));
+                    target.reqPending.splice(target.reqPending.indexOf({userId: req.user._id}));
                     const newFriend = {
                         userId: req.user._id,
                         chatRoom: room._id
@@ -196,6 +197,26 @@ self.userRegister = (req,res) =>{
         .then((user) => {
             res.send('This is data')
         });
+};
+
+/**** GET SUGGEST FRIEND ****/
+self.getSuggestFriend = (req,res) =>{
+    const {page,size} = req.query;
+    const skip = (page - 1)*size;
+    const limit = 1*size;
+    User.findOne({_id: req.user._id})
+        .then(user=>{
+            User.find().limit(limit).skip(skip)
+                .then(response=>{
+                    const result = helper.suggestFriendFilter(user._id,user.friends,response);
+                    res.send({
+                        page: page,
+                        data: result
+                    });
+                })
+                .catch((err)=>{console.log(err)});
+        })
+        .catch(err=>console.log(err));
 };
 
 /**** SEARCH USER ****/

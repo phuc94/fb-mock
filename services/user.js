@@ -116,3 +116,13 @@ export const UpdateCover = (img) => {
     return axiosRequest('/UploadCover',options);
 };
 
+export const getSuggestFriend = (size,page) => {
+    const options = {
+        method: "get",
+        params: {
+            size,
+            page
+        }
+    }
+    return axiosRequest('/GetSuggestFriend',options);
+};

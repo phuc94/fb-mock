@@ -109,9 +109,13 @@ const Friends = (props)=> {
     const [friends,setFriends] = useState([]);
     const fetchFriends = () =>{
         let friends=[];
+        if(props.userData.friends.length<1){
+            return
+        }
         for (let friend of props.userData.friends){
             friends.push(friend.userId);
         }
+        console.log(props.userData);
         getBasicUserData(friends)
             .then(res=>{
                 if(typeof res.data == 'object'){

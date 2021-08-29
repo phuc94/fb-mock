@@ -141,11 +141,16 @@ const Left =()=>{
 };
 
 const Mid =()=>{
+    const router = useRouter();
     return (
         <div className="flex-grow flex justify-center">
             <div className="text-white gap-3 items-center hidden lg:flex">
                 <div className="text-3xl py-1 px-10 cursor-pointer border-b-4 text-blue-500 border-blue-500">
                     <HomeIcon fontSize="inherit"/>
+                </div>
+                <div onClick={()=>{router.push('/friends')}}
+                    className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
+                    <GroupRoundedIcon fontSize="inherit" />
                 </div>
                 <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                     <OutlinedFlagIcon fontSize="inherit" />
@@ -155,9 +160,6 @@ const Mid =()=>{
                 </div>
                 <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                     <StorefrontOutlinedIcon fontSize="inherit" />
-                </div>
-                <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
-                    <GroupRoundedIcon fontSize="inherit" />
                 </div>
             </div>
             <div className="flex items-center justify-start lg:hidden">

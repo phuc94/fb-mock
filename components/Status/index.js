@@ -25,7 +25,7 @@ const Status = (props)=>{
                     <p className="text-gray-300 font-medium">Live Stream</p>
                 </div>
                 <div className="text-green-500 flex-grow hover:bg-gray-700 duration-300 py-2 rounded-lg 
-                cursor-pointer flex gap-1 justify-center text-center hidden sm:block">
+                cursor-pointer gap-1 justify-center text-center hidden sm:flex">
                     <PhotoLibraryRoundedIcon />
                     <p className="text-gray-300 font-medium">Photo/Video</p>
                 </div>

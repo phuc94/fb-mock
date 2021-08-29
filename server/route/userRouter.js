@@ -18,6 +18,8 @@ router.post('/AcceptFriend',(req,res)=>{userController.friendAccept(req,res)});
 
 router.post('/FriendCancle',(req,res)=>{userController.friendCancle(req,res)});
 
+router.get('/GetSuggestFriend',(req,res)=>{userController.getSuggestFriend(req,res)});
+
 router.post('/UserRegister', (req, res) => {userController.userRegister(req,res)});
 
 router.get('/UserPhotos',(req,res)=>{userController.getUserPhoto(req,res)})

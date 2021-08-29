@@ -6,10 +6,10 @@ self.searchEmail = (dataArr,string) =>{
 
 self.checkFriendStatus =(userObj,targetId) => {
     // const target = JSON.stringify(targetId);
-    if (userObj.reqPending.find(item => item == targetId)){
+    if (userObj.reqPending.find(item => item.userId == targetId)){
         return 'reqPending'
     }
-    else if (userObj.resPending.find(item => item == targetId)){
+    else if (userObj.resPending.find(item => item.userId == targetId)){
         return 'resPending'
     }
     else if (userObj.friends.find(item => item.userId == targetId)){
@@ -52,5 +52,39 @@ self.getPhotoFromPost = (posts) => {
     }
     return photos;
 }
+
+self.suggestFriendFilter = (reqUserId,userFriend,usersData) => {
+    let userList =[];
+    let suggetFriend=[];
+    for (let user of usersData){
+        userList.push({
+            userId: user._id
+        })
+    }
+    for ( user of userList){
+        if (userFriend.every(friend=> 
+            JSON.parse(JSON.stringify(friend.userId)) !== JSON.parse(JSON.stringify(user.userId)))
+            ){
+                suggetFriend.push({
+                    userId: user.userId
+                })
+        }
+    }
+    suggetFriend.splice(suggetFriend.indexOf(reqUserId),1);
+    return suggetFriend;
+}
+
+// self.userPagination = (size=10,page=1) => {
+//     let size = size
+//     let page = page;
+    
+// };
+
+// self.postPagination = (size,page) => {
+//     let size,page;
+//     if(size){
+
+//     }
+// };
 
 module.exports = self;

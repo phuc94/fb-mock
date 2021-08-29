@@ -23,8 +23,10 @@ export const Upper = (props)=>{
             <>
                 <div className="mr-3 cursor-pointer">
                     {ownerData &&
-                        <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
-                            className="rounded-full" width={40} height={40} />
+                        <div className="min-w-[40px]">
+                            <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
+                                className="rounded-full" width={40} height={40} />
+                        </div>
                     }
                 </div>
                 <div className="flex flex-col text-white">

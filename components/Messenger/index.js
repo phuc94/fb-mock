@@ -37,9 +37,9 @@ const AddNewConvers =()=>{
 const Head = (props)=>{
     return(
         <div className="flex w-80 flex justify-between shadow">
-            <div className=" cursor-pointer px-3 py-1 flex items-center gap-2 text-white hover:bg-gray-700 cursor-poniter duration-100 rounded-lg">
+            <div className=" cursor-pointer my-1 ml-1 px-3 flex items-center gap-2 text-white hover:bg-gray-700 cursor-poniter duration-100 rounded-lg">
                 <div className="min-w-[32px] w-[32px] h-[32px] rounded-full overflow-hidden">
-                    <Image width={32} height={35}
+                    <Image width={32} height={32}
                         src={props.basicTargetData.avatar == ''? "https://via.placeholder.com/150" : props.basicTargetData.avatar} />
                 </div>
                 <div className="flex flex-col">

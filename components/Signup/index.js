@@ -33,10 +33,10 @@ const SignUp = (props) => {
                         gender:''
                     }}
                     validationSchema={yup.object({
-                        firstName:yup.string().required('First Name is required'),
-                        lastName:yup.string().required('Last Name is required'),
-                        email:yup.string().required('Email is required'),
-                        password:yup.string().required('Password is required'),
+                        firstName:yup.string().max(13, 'Too Long!').required('First Name is required'),
+                        lastName:yup.string().max(13, 'Too Long!').required('Last Name is required'),
+                        email:yup.string().max(30, 'Too Long!').required('Email is required'),
+                        password:yup.string().min(4, 'Too Short!').max(20, 'Too Long!').required('Password is required'),
                         day:yup.string(),
                         month:yup.string(),
                         year:yup.string(),
@@ -56,18 +56,28 @@ const SignUp = (props) => {
                     >
                     <Form className="p-4">
                         <div className="mt-3 flex gap-3 w-full ">
-                            <Field 
-                                name="firstName"
-                                type="text" 
-                                className="bg-gray-200 outline-none w-full px-3 py-2 rounded "
-                                placeholder="First Name" 
-                                />
-                            <Field
-                                name="lastName"
-                                type="text" 
-                                className="bg-gray-200 outline-none w-full px-3 py-2 rounded"
-                                placeholder="Last Name" 
-                                />
+                            <div className="flex flex-col">
+                                <Field
+                                    name="firstName"
+                                    type="text"
+                                    className="bg-gray-200 outline-none w-full px-3 py-2 rounded "
+                                    placeholder="First Name"
+                                    />
+                                <div className="text-red-400 text-sm">
+                                    <ErrorMessage name="firstName"/>
+                                </div>
+                            </div>                            
+                            <div>
+                                <Field
+                                    name="lastName"
+                                    type="text"
+                                    className="bg-gray-200 outline-none w-full px-3 py-2 rounded"
+                                    placeholder="Last Name"
+                                    />
+                                <div className="text-red-400 text-sm">
+                                    <ErrorMessage name="lastName"/>
+                                </div>
+                            </div>
                         </div>
                         <div className="pb-3">
                             <Field

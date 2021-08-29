@@ -45,13 +45,15 @@ const ProfilePage = ()=> {
             {userData &&
                 <>
                     <Nav basicUserData={userData} isOwner={isOwner}/>
-                        {(targetUserData && isOwner) &&
+                        {(targetUserData && isOwner) ?
                             <>
                                 <Header isOwner={isOwner} userData={targetUserData} fetchUserData={fetchUserData}/>
                                 <Body isOwner={isOwner} posts={posts} setIsFormShow={setIsFormShow}
                                     cookie={cookie} userData={targetUserData}/>
                                 {isFormShow && <StatusForm setIsFormShow={setIsFormShow}/>}
                             </>
+                            :
+                            <div className="h-screen w-screen bg-gray-900 overflow-x-hidden" ></div>
                         }
                     
                 </>
