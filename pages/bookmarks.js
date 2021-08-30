@@ -15,14 +15,18 @@ const BookmarkPage = () => {
         
     },[])
     return(
-        <div className="bg-gray-900">
+        <div className="bg-gray-900 h-screen">
             {basicUserData &&
             <>
-                <Nav basicUserData={basicUserData}/>
-                <div className="flex">
+                <div className="fixed top-0 left-0 w-full">
+                    <Nav basicUserData={basicUserData}/>
+                </div>
+                <div className="pt-[55px] flex h-full">
                     <LeftSideBar basicUserData={basicUserData}/>
-                    <div className="px-8 pt-8 w-full">
+                    <div className="px-8 pt-8 w-full h-full overflow-y-auto">
                         <BookmarkContainer>
+                            <BookmarkTab />
+                            <BookmarkTab />
                             <BookmarkTab />
                             <BookmarkTab />
                             <BookmarkTab />
