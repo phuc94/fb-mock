@@ -26,13 +26,15 @@ const FriendsPage = () => {
         })
     },[basicUserData])
     return(
-        <div className="bg-gray-900">
+        <div className="bg-gray-900 flex flex-fol h-screen">
             {basicUserData &&
             <>
-                <Nav basicUserData={basicUserData}/>
-                <div className="flex">
+                <div className="fixed top-0 left-0 w-full z-50">
+                    <Nav basicUserData={basicUserData}/>
+                </div>
+                <div className="flex pt-[55px]">
                     <LeftSideBar basicUserData={basicUserData}/>
-                    <div className="px-8 pt-8 w-full">
+                    <div className="px-8 pt-8 w-full h-full overflow-y-auto">
                         {resPending.length > 0 ?
                             <FriendGroup category={"Friend Invitation"} path={""}>
                                 {resPending.map(user=>(

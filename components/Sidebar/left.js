@@ -33,12 +33,12 @@ const LeftSideBarItem = (props)=>{
 const LeftSideBar = (props) =>{
     const router = useRouter();
     return(
-        <div className={`text-white hidden xl:block h-screen bg-gray-900 p-6 pl-10 flex flex-col 
-        overflow-hidden w-72 min-w-[18rem] sticky top-10 ${router.pathname == '/' ? '' : 'border-r-[1px] border-gray-700'}`} >
+        <div className={`text-white hidden xl:block h-full bg-gray-900 p-6 pl-10 flex flex-col 
+        overflow-hidden w-72 min-w-[18rem] overflow-y-auto ${router.pathname == '/' ? '' : 'border-r-[1px] border-gray-700'}`} >
             <UserAvatar basicUserData={props.basicUserData}/>
             <LeftSideBarItem Icon={GroupRoundedIcon} text='Friends' path={"friends"}/>
             <LeftSideBarItem Icon={BookmarkRoundedIcon} text='Bookmark' path={"bookmarks"}/>
-            <LeftSideBarItem Icon={ChatRoundedIcon} text='Messenger'/>
+            <LeftSideBarItem Icon={ChatRoundedIcon} text='Messenger' path={"messenger"}/>
         </div>
     )
 }
