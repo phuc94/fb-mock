@@ -37,7 +37,7 @@ const LeftSideBar = (props) =>{
         overflow-hidden w-72 min-w-[18rem] sticky top-10 ${router.pathname == '/' ? '' : 'border-r-[1px] border-gray-700'}`} >
             <UserAvatar basicUserData={props.basicUserData}/>
             <LeftSideBarItem Icon={GroupRoundedIcon} text='Friends' path={"friends"}/>
-            <LeftSideBarItem Icon={BookmarkRoundedIcon} text='Bookmark'/>
+            <LeftSideBarItem Icon={BookmarkRoundedIcon} text='Bookmark' path={"bookmarks"}/>
             <LeftSideBarItem Icon={ChatRoundedIcon} text='Messenger'/>
         </div>
     )

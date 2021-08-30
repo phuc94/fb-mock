@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ShareIcon from '@material-ui/icons/Share';
 import ChatBubbleOutlineRoundedIcon from '@material-ui/icons/ChatBubbleOutlineRounded';
@@ -7,9 +8,11 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { getOwnerData, fetchComment, likePost } from '../../services/post';
 import CommentSection from './commentSection';
+import PostDropDown from '../Modal/postDropDown'
 
 export const Upper = (props)=>{
     const [ownerData,setOwnerData] = useState(null);
+    const [dropDownIsShow,setDropDownIsShow] = useState(null);
     const router = useRouter();
     useEffect(()=>{
         getOwnerData(props.data.userId)
@@ -18,24 +21,32 @@ export const Upper = (props)=>{
             })
     },[])
     return (
-        <div className="flex p-3">
+        <div className="flex p-3 justify-between relative">
             {ownerData &&
             <>
-                <div className="mr-3 cursor-pointer">
-                    {ownerData &&
-                        <div className="min-w-[40px]">
-                            <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
-                                className="rounded-full" width={40} height={40} />
-                        </div>
-                    }
+                <div className="flex">
+                    <div className="mr-3 cursor-pointer">
+                        {ownerData &&
+                            <div className="min-w-[40px]">
+                                <Image src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
+                                    className="rounded-full" width={40} height={40} />
+                            </div>
+                        }
+                    </div>
+                    <div className="flex flex-col text-white">
+                        <h3 onClick={()=>{router.push(`/${props.data.userId}`)}}
+                            className="cursor-pointer">
+                            {ownerData.data.lastName + ' ' + ownerData.data.firstName}
+                        </h3>
+                        <span className="text-xs text-gray-500 italic ">{props.data.createdAt}</span>
+                    </div>
                 </div>
-                <div className="flex flex-col text-white">
-                    <h3 onClick={()=>{router.push(`/${props.data.userId}`)}}
-                        className="cursor-pointer">
-                        {ownerData.data.lastName + ' ' + ownerData.data.firstName}
-                    </h3>
-                    <span className="text-xs text-gray-500 italic ">{props.data.createdAt}</span>
+                <div onClick={()=>{setDropDownIsShow(prev=>!prev)}}
+                    className=" w-[40px] h-[40px] rounded-full hover:bg-gray-600 cursor-pointer
+                    flex justify-center items-center">
+                    <MoreHorizIcon />
                 </div>
+                {dropDownIsShow && <PostDropDown setIsShow={setDropDownIsShow}/>}
             </>
             }
         </div>
