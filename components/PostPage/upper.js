@@ -106,10 +106,11 @@ export const Upper = (props)=>{
         <div className="flex p-3">
             {ownerData &&
             <>
-                <div className="mr-3 cursor-pointer">
+                <div className="mr-3 cursor-pointer w-[40px] h-[40px] 
+                rounded-full overflow-hidden">
                     {ownerData &&
                         <img src={ownerData.data.avatar == '' ? "https://via.placeholder.com/150" : ownerData.data.avatar}
-                            className="rounded-full" width={40} height={40} />
+                            className="h-full w-full" />
                     }
                 </div>
                 <div className="flex flex-col text-white">

@@ -140,7 +140,7 @@ const Friends = (props)=> {
                 </div>
             </div>
             <div className="px-3 pb-4">
-                <p className="text-gray-300">445 friends</p>
+                <p className="text-gray-300">{friends.length} friends</p>
             </div>
             <div className="flex flex-wrap justify-start items-start mx-3 mb-6 gap-[13px]">
                 {friends.map(friend=>(
