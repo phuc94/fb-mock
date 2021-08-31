@@ -150,7 +150,6 @@ const Messenger = (props)=>{
      * @props roomId, basicTargetData
      */
     const [chatContent,setChatContent] = useState([]);
-    const [chatRoom,setChatRoom] = useState();
     const userId = useSelector(state => state.userData._id)
     useEffect(()=>{
         socket.emit('joinRoom',{roomId:props.roomId});
@@ -166,7 +165,6 @@ const Messenger = (props)=>{
             setChatContent(message.message);
         });
         socket.on('message', message=>{
-            // Do some tricks to display who is who HERE
             if(message.roomId == props.roomId){
                 setChatContent(prev => [...prev,message]);
             }

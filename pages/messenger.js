@@ -12,11 +12,12 @@ import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import SendIcon from '@material-ui/icons/Send';
 import produce from "immer";
 
+import { io } from "socket.io-client";
+
 const MessengerPage = () => {
     const basicUserData = useSelector(state=>state.userData);
     const [friends,setFriends] = useState([]);
     const [currentChat,setCurrentChat] = useState(null);
-    const [chatData,setChatData] = useState([]);
     const [targetData,setTargetData] = useState(null);
     useEffect(()=>{
         if(basicUserData){
@@ -31,16 +32,15 @@ const MessengerPage = () => {
         }
     },[basicUserData])
     useEffect(()=>{
-        if (currentChat){
-            getChatData(currentChat.chatRoom,currentChat.userId)
-            .then(data=>{
-                setChatData(data.data.roomData);
-                setTargetData(data.data.basicTargetData)
-            })
+        if(currentChat){
+            getBasicUserData(currentChat.userId)
+                .then(res=>{
+                    setTargetData(res.data);
+                })
         }
-        
     },[currentChat])
     const handleConverseClick = (friend)=> {
+        console.log(friend)
         setCurrentChat(friend);
         setFriends(prev=>produce(prev,draft=>{
             for (let i of draft){
@@ -60,12 +60,13 @@ const MessengerPage = () => {
                 <div className="flex flex-grow pt-[55px] h-full">
                     <LeftSidebar>
                         {friends.map(friend=>
-                            <ConverseTab friend={friend} handleConverseClick={handleConverseClick}/>
+                            <ConverseTab friend={friend} handleConverseClick={handleConverseClick} />
                         )}
                     </LeftSidebar>
                     <div className="w-full h-full">
-                        { (targetData && chatData && basicUserData) &&
-                            <ChatContent chatData={chatData} targetData={targetData} basicUserData={basicUserData}/>
+                        { (targetData && basicUserData) &&
+                            <ChatContent targetData={targetData} basicUserData={basicUserData}
+                                currentChat={currentChat}/>
                         }
                     </div>
                 </div>
@@ -104,8 +105,8 @@ const LeftSidebar = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full rounded-full bg-gray-700 my-3">
-                        Search
+                    <div className="w-full rounded-full bg-gray-700 my-3 text-center">
+                        Search comming soon!
                     </div>
                     <div className="">
                         {props.children}
@@ -145,10 +146,31 @@ const ConverseTab = (props) => {
     )
 };
 
+const socket= io();
 const ChatContent = (props) => {
     /**
-     * @props basicUserData, chatData, targetData
+     * @props basicUserData, targetData, currentChat
      */
+    const [chatContent,setChatContent] = useState([]);
+    useEffect(()=>{
+        console.log(props.currentChat.chatRoom)
+        socket.emit('joinRoom',{roomId:props.currentChat.chatRoom});
+        socket.on('init', message=>{
+            if(message.roomId !== props.currentChat.chatRoom){
+                return
+            }
+            console.log(message)
+            setChatContent(message.message);
+        });
+        socket.on('message', message=>{
+            if(message.roomId == props.currentChat.chatRoom){
+                setChatContent(prev => [...prev,message]);
+            }
+        });
+        return ()=>{
+            socket.off();
+        }
+    },[props.currentChat])
     return (
         <div className="p-2 text-gray-300 max-h-full h-full flex flex-col">
             <div className="flex justify-between items-center w-full px-5 py-3
@@ -174,7 +196,8 @@ const ChatContent = (props) => {
                 </div>
             </div>
             <div className="w-full overflow-y-auto text-gray-100 px-2 flex flex-col gap-[2px] flex-grow">
-                {props.chatData.map(message=>{
+                {chatContent &&
+                chatContent.map(message=>{                  
                     switch (message.userId){
                         case 'broadcast':
                         return(
@@ -206,16 +229,41 @@ const ChatContent = (props) => {
                             break;
                     }
                 })
-
                 }
             </div>
-            <div className="pt-3 px-3 flex gap-3 border-t-[1px] border-gray-800">
-                {/* commentSection */}
-                <input className="bg-gray-700 rounded-2xl outline-none px-5 py-2 w-full"/> 
-                <div className="text-blue-500 text-2xl">
-                    <SendIcon fontSize="inherit" />
-                </div>
+            <div className="pt-3 px-3 border-t-[1px] border-gray-800">
+                <ChatSubmit currentChat={props.currentChat} userId={props.basicUserData._id}/>
             </div>
         </div>
+    )
+};
+
+const ChatSubmit = (props) => {
+    /**
+     * @props currentChat, userId
+     */
+    const [inputData, setInputData] = useState('');
+    const handleSubmit = (e) => {
+        const data={};
+        e.preventDefault();
+        console.log(props.currentChat)
+        if(inputData !== ''){
+            data.message = inputData;
+            data.userId = props.userId;
+            data.roomId = props.currentChat.chatRoom;
+            console.log(data)
+            socket.emit('chatMessage',data);
+            setInputData('k');
+        }
+    }
+    return (
+        <form onSubmit={handleSubmit} className="w-full flex  gap-3 ">
+            <input onChange={(e)=>{setInputData(e.target.value)}} value={inputData}
+                className="bg-gray-700 rounded-2xl outline-none px-5 py-2 w-full"/>
+            <div onClick={handleSubmit}
+                className="text-blue-500 text-2xl cursor-pointer">
+                <SendIcon fontSize="inherit" />
+            </div>
+        </form>
     )
 };
