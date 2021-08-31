@@ -57,26 +57,42 @@ export default function reducer (state = {}, action) {
                 userData: action.payload.userData,
                 messenger:[]
             }
+        case actionTypes.BOOKMARK:
+            newState = produce(state,draft=>{
+                draft.userData.userData.bookmark
+                    .push(action.payload.postId)
+            });
+            return newState
+        case actionTypes.REMOVE_BOOKMARK:
+            newState = produce(state,draft=>{
+                let bookmark = draft.userData.userData.bookmark;
+                if (bookmark.indexOf(action.payload.postId)>-1){
+                    draft.userData.userData.bookmark
+                    .splice(bookmark.indexOf(action.payload.postId),1);
+                }
+                return
+            })
+            return newState
         default:
             return state;
     }
 }
-const StateStructure = {
-    userId: String,
-    userPosts: Array,
-    targetId: String,
-    targetPost: Array,
-    messenger: [
-        {
-            isShow: Boolean,
-            roomId: String,
-            basicTargetData: Object
-        }
-    ],
-    notification: [
-        {
-            notiType: String,
-            notiContent: String
-        }
-    ]
-};
+// const StateStructure = {
+//     userId: String,
+//     userPosts: Array,
+//     targetId: String,
+//     targetPost: Array,
+//     messenger: [
+//         {
+//             isShow: Boolean,
+//             roomId: String,
+//             basicTargetData: Object
+//         }
+//     ],
+//     notification: [
+//         {
+//             notiType: String,
+//             notiContent: String
+//         }
+//     ]
+// };

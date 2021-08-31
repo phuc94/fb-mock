@@ -8,7 +8,7 @@ import * as chatServices from '../../services/chat';
 export const getBasicUserData = (userId) => (
     (dispatch)=>{
         dispatch(getBasic);
-        userServices.getBasicUserData(userId)
+        userServices.fetchUserData()
             .then(response=>{console.log('store');console.log(response.data);dispatch(userDataArrived(response.data))})
             .catch(err=>console.log(err));
         
@@ -85,6 +85,24 @@ export const userDataArrived = (userData) => (
         payload:{
             loadingPost: false,
             userData
+        }
+    }
+);
+
+export const bookmarkPost = (postId) => (
+    {
+        type: actionTypes.BOOKMARK,
+        payload:{
+            postId
+        }
+    }
+);
+
+export const removeBookmark = (postId) => (
+    {
+        type: actionTypes.REMOVE_BOOKMARK,
+        payload:{
+            postId
         }
     }
 )

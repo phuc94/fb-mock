@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const userDataSchema = new mongoose.Schema({
     avatar: String,
     cover: String,
+    bookmark: [String],
     posts: [String]
 });
 

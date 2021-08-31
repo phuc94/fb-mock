@@ -11,6 +11,15 @@ export const checkIfOwner = (userId, targetId) => {
     return axiosRequest('/CheckOwner',options);
 };
 
+export const fetchUserData = () => {
+    const options = {
+        option:{
+            method:"get"
+        }
+    }
+    return axiosRequest('/FetchUserData',options);
+};
+
 export const getBasicUserData = (userId) => {
     const options = {
         params:{
@@ -125,4 +134,24 @@ export const getSuggestFriend = (size,page) => {
         }
     }
     return axiosRequest('/GetSuggestFriend',options);
+};
+
+export const postBookMark = (postId) => {
+    const options = {
+        method: "post",
+        data: {
+            postId
+        }
+    }
+    return axiosRequest('/PostBookMark',options);
+};
+
+export const removeBookMark = (postId) => {
+    const options = {
+        method: "post",
+        data: {
+            postId
+        }
+    }
+    return axiosRequest('/RemoveBookMark',options);
 };

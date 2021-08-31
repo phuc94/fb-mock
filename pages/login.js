@@ -1,5 +1,6 @@
 import SignUp from "../components/Signup";
 import LoginFail from "../components/Modal/loginFail";
+import RegisterSuccess from "../components/Modal/registerSuccess";
 import { useState } from 'react';
 import { logIn } from '../services/user'
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
@@ -56,9 +57,11 @@ const Login = ()=>{
     const router = useRouter()
     const [isSingUpShow,setIsSingUpShow] = useState(false);
     const [isLogInFailShow,setIsLogInFailShow] = useState(false);
+    const [isRegisterSuccess,setIsRegisterSuccess] = useState(false);
     const [cookies, setCookie] = useCookies(['user']);
     const handleToggleSignUpModal = ()=>{
         setIsSingUpShow(!isSingUpShow);
+        setIsRegisterSuccess(true);
     };
     const handleToggleLogInFailModal = ()=>{
         setIsLogInFailShow(!isLogInFailShow);
@@ -106,6 +109,7 @@ const Login = ()=>{
             </div>
             <SignUp isSingUpShow={isSingUpShow} handleToggleSignUpModal={handleToggleSignUpModal}/>
             <LoginFail isLogInFailShow={isLogInFailShow} handleToggleLogInFailModal={handleToggleLogInFailModal} />
+            <RegisterSuccess isRegisterSuccess={isRegisterSuccess} setIsRegisterSuccess={setIsRegisterSuccess}/>
         </section>
     )
 };

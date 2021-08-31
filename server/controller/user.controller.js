@@ -24,6 +24,26 @@ self.logIn = (req,res,next) => {
     })(req, res, next)
 };
 
+/**** FETCH INITIAL USER DATA ****/
+self.fetchUserData = (req,res) => {
+    User.findOne({_id:req.user._id})
+        .then(userObj=>{
+            let userData = {
+                email : userObj.email,
+                firstName : userObj.firstName,
+                lastName : userObj.lastName,
+                friends : userObj.friends,
+                reqPending : userObj.reqPending,
+                resPending : userObj.resPending,
+                avatar : userObj.userData.avatar,
+                _id : userObj._id,
+                userData : userObj.userData,
+            };
+            res.send(userData);
+        })
+        .catch(err=>console.log(err))
+};
+
 
 /**** CHECK OWNER ****/
 self.checkOwner = (req,res) =>{
@@ -269,6 +289,28 @@ self.getUserData = (req,res) =>{
     User.find({'_id': {$in:req.query.userId}})
     .then(user=>{
     res.send(user)});
+};
+
+/**** BOOKMARK POST ****/
+self.postBookMark = (req,res) =>{
+    User.findOne({_id: req.user._id})
+        .then(user=>{
+            user.userData.bookmark.push(req.body.postId)
+            user.save()
+                .then(response=>res.send(response))
+        })
+        .catch(err=>console.log(err));
+};
+
+/**** REMOVE BOOKMARK POST ****/
+self.removeBookMark = (req,res) =>{
+    User.findOne({_id: req.user._id})
+        .then(user=>{
+            user.userData.bookmark.splice(user.userData.bookmark.indexOf(req.body.postId),1)
+            user.save()
+                .then(response=>res.send(response))
+        })
+        .catch(err=>console.log(err));
 };
 
 

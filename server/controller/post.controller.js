@@ -89,8 +89,17 @@ self.likePost = (req,res) =>{
 /*** GET ONE POST ***/
 self.getPost = (req,res) =>{
     Post.findOne({_id:req.query._id})
-        .then((result)=>{
-            res.send(result);
+        .then(post=>{
+            User.findOne({_id: post.userId})
+                .then(user=>{
+                    let result={
+                        ...post._doc,
+                        avatar:user.userData.avatar,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
+                    res.send(result);
+                })
         })
         .catch((err)=>{console.log(err)});
 };

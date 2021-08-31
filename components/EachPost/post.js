@@ -46,7 +46,7 @@ export const Upper = (props)=>{
                     flex justify-center items-center">
                     <MoreHorizIcon />
                 </div>
-                {dropDownIsShow && <PostDropDown setIsShow={setDropDownIsShow}/>}
+                {dropDownIsShow && <PostDropDown setIsShow={setDropDownIsShow} data={props.data}/>}
             </>
             }
         </div>

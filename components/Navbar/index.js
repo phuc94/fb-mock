@@ -156,9 +156,6 @@ const Mid =()=>{
                     <OutlinedFlagIcon fontSize="inherit" />
                 </div>
                 <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
-                    <OndemandVideoOutlinedIcon fontSize="inherit" />
-                </div>
-                <div className="text-3xl py-1 px-10 hover:bg-gray-600 duration-500 cursor-pointer rounded">
                     <StorefrontOutlinedIcon fontSize="inherit" />
                 </div>
             </div>

@@ -21,6 +21,9 @@ self.checkFriendStatus =(userObj,targetId) => {
 self.userDataFilter = (userData) => {
     let result ={};
     result.email = userData.email;
+    result.firstName = userData.firstName;
+    result.lastName = userData.lastName;
+    result.avatar = userData.userData.avatar;
     result.reqPending = userData.reqPending;
     result.friends = userData.friends;
     result.resPending = userData.resPending;

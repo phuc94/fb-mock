@@ -1,23 +1,55 @@
 import Nav from '../components/Navbar';
 import { useSelector } from 'react-redux';
 import { useEffect,useState } from 'react';
-import Image from 'next/image';
 import { getBasicUserData, getSuggestFriend, AcceptFriend, friendRequest } from '../services/user';
-import { FriendTabLoading } from '../components/Loading/friendTab'
+import { getChatData } from '../services/chat';
 import MoreHorizRoundedIcon from '@material-ui/icons/MoreHorizRounded';
-import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
 import VideoCallRoundedIcon from '@material-ui/icons/VideoCallRounded';
 import BorderColorRoundedIcon from '@material-ui/icons/BorderColorRounded';
 import CallRoundedIcon from '@material-ui/icons/CallRounded';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import SendIcon from '@material-ui/icons/Send';
+import produce from "immer";
 
 const MessengerPage = () => {
     const basicUserData = useSelector(state=>state.userData);
+    const [friends,setFriends] = useState([]);
+    const [currentChat,setCurrentChat] = useState(null);
+    const [chatData,setChatData] = useState([]);
+    const [targetData,setTargetData] = useState(null);
     useEffect(()=>{
+        if(basicUserData){
+            let friendsData = basicUserData.friends;
+            for (let friend of friendsData){
+                if(friendsData.indexOf(friend)==0){
+                    friend.isSelected = true;
+                }else {friend.isSelected = false;}
+            }
+            setFriends(friendsData);
+            setCurrentChat(basicUserData.friends[0]);
+        }
+    },[basicUserData])
+    useEffect(()=>{
+        if (currentChat){
+            getChatData(currentChat.chatRoom,currentChat.userId)
+            .then(data=>{
+                setChatData(data.data.roomData);
+                setTargetData(data.data.basicTargetData)
+            })
+        }
         
-    },[])
+    },[currentChat])
+    const handleConverseClick = (friend)=> {
+        setCurrentChat(friend);
+        setFriends(prev=>produce(prev,draft=>{
+            for (let i of draft){
+                i.isSelected=false;
+            }
+            const friendIndex = friends.findIndex(friends=>friends.userId==friend.userId);
+            draft[friendIndex].isSelected = true;
+        }))
+    }
     return(
         <div className="bg-gray-900 h-screen flex flex-col">
             {basicUserData &&
@@ -27,24 +59,14 @@ const MessengerPage = () => {
                 </div>
                 <div className="flex flex-grow pt-[55px] h-full">
                     <LeftSidebar>
-                        <ConverseTab isShowing={true}/>
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
-                        <ConverseTab />
+                        {friends.map(friend=>
+                            <ConverseTab friend={friend} handleConverseClick={handleConverseClick}/>
+                        )}
                     </LeftSidebar>
                     <div className="w-full h-full">
-                        <ChatContent />
+                        { (targetData && chatData && basicUserData) &&
+                            <ChatContent chatData={chatData} targetData={targetData} basicUserData={basicUserData}/>
+                        }
                     </div>
                 </div>
             </>
@@ -58,7 +80,7 @@ export default MessengerPage;
 
 const LeftSidebar = (props) => {
     /**
-     * @props Conversations?
+     * @props handleConverseClick
      */
     return(
         <div className="flex flex-col h-full">
@@ -96,38 +118,49 @@ const LeftSidebar = (props) => {
 
 const ConverseTab = (props) => {
     /**
-     * @props isShowing
+     * @props friend
      */
+    const [userData,setUserData] = useState();
+    useEffect(()=>{
+        getBasicUserData(props.friend.userId)
+            .then(res=>{
+                setUserData(res.data);
+            })
+    },[])
     return(
-        <div className={`flex items-center gap-5 p-3  rounded-xl cursor-pointer hover:bg-gray-700 hover:bg-opacity-50
-            ${props.isShowing == true ? "bg-blue-500 bg-opacity-20" : ""} `}>
-            <div className="w-[56px] h-[56px] overflow-hidden rounded-full">
-                <img src="https://via.placeholder.com/150" />
-            </div>
-            <div>
-                <p>sdafasdf</p>
-                <p>fasfasdfs</p>
-            </div>
+        <div onClick={()=>{props.handleConverseClick(props.friend)}}
+            className={`flex items-center gap-5 p-3  rounded-xl cursor-pointer hover:bg-gray-700 hover:bg-opacity-50
+            ${props.friend.isSelected == true ? "bg-blue-500 bg-opacity-20" : ""} `}>
+            {userData &&
+            <>
+                <div className="w-[56px] h-[56px] overflow-hidden rounded-full">
+                    <img src={userData.avatar == '' ? "https://via.placeholder.com/150" : userData.avatar} />
+                </div>
+                <div>
+                    <p>{userData.lastName +' '+ userData.firstName}</p>
+                </div>
+            </>
+            }
         </div>
     )
 };
 
-const ChatContent = () => {
+const ChatContent = (props) => {
     /**
-     * @props basicUserData
+     * @props basicUserData, chatData, targetData
      */
     return (
-        <div className="p-2 text-gray-300 max-h-full flex flex-col">
+        <div className="p-2 text-gray-300 max-h-full h-full flex flex-col">
             <div className="flex justify-between items-center w-full px-5 py-3
                 border-b-[1px] border-gray-800">
-                <div className="flex items-center gap-3">
-                    <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
-                        <img src="https://via.placeholder.com/150"/>
+                {props.targetData && 
+                    <div className="flex items-center gap-3">
+                        <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
+                            <img src={props.targetData.avatar == '' ? "https://via.placeholder.com/150" : props.targetData.avatar}/>
+                        </div>
+                        <p>{props.targetData.lastName +' '+ props.targetData.firstName}</p>
                     </div>
-                    <p>
-                        Some one
-                    </p>
-                </div>
+                }
                 <div className="flex items-center text-2xl gap-5">
                     <div className="text-blue-500 flex items-center">
                         <CallRoundedIcon fontSize="inherit" />
@@ -140,48 +173,41 @@ const ChatContent = () => {
                     </div>
                 </div>
             </div>
-            <div className="w-full overflow-y-auto ">
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
-                <p>Chat content</p>
+            <div className="w-full overflow-y-auto text-gray-100 px-2 flex flex-col gap-[2px] flex-grow">
+                {props.chatData.map(message=>{
+                    switch (message.userId){
+                        case 'broadcast':
+                        return(
+                            <div className="flex justify-center py-2">
+                                <p className="max-w-[80%] break-words text-sm text-gray-400">
+                                    {message.message}
+                                </p>
+                            </div>
+                        )
+                        case props.basicUserData._id:
+                            return(
+                                <div className="flex flex-row-reverse">
+                                    <div className="bg-blue-500 max-w-[70%] break-words rounded-2xl px-[13px] py-1">
+                                        {message.message}
+                                    </div>
+                                    <div></div>
+                                </div>
+                            )
+                        case props.targetData._id:
+                            return(
+                                <div className="flex">
+                                    <div className="bg-gray-500 max-w-[70%] break-words rounded-2xl px-[13px] py-1">
+                                        {message.message}
+                                    </div>
+                                    <div></div>
+                                </div>
+                            )
+                        default:
+                            break;
+                    }
+                })
+
+                }
             </div>
             <div className="pt-3 px-3 flex gap-3 border-t-[1px] border-gray-800">
                 {/* commentSection */}

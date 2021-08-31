@@ -15,3 +15,7 @@ export const GETTING_CHAT_DATA = 'GETTING_CHAT_DATA';
 export const CHAT_OPEN = 'CHAT_OPEN';
 
 export const CHAT_CLOSE = 'CHAT_CLOSE';
+
+export const BOOKMARK = 'BOOKMARK';
+
+export const REMOVE_BOOKMARK = 'REMOVE_BOOKMARK';
