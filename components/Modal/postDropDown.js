@@ -7,12 +7,13 @@ import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import store from '../../redux/store'
 import { bookmarkPost, removeBookmark } from '../../redux/actionCreator'
+import { useRouter } from 'next/router';
 
 const PostDropDown = (props)=>{
+    const router = useRouter();
     const bookmark = useSelector(state=> state.userData.userData.bookmark);
     const [bookmarked,setBookmarked] = useState(false);
     useEffect(() => {
-        console.log(bookmark);
         if(bookmark){
             if(bookmark.includes(props.data._id)){
                 setBookmarked(true);
@@ -79,7 +80,11 @@ const PostDropDown = (props)=>{
                     <div className="text-3xl flex items-center px-1">
                         <LinkRoundedIcon fontSize="inherit"/>
                     </div>
-                    <div className="pr-2">
+                    <div onClick={()=>{
+                            navigator.clipboard.writeText(window.location.href + props.data._id);
+                            props.setIsShow(false);
+                        }}
+                        className="pr-2">
                         <p>Copy this post's link</p>
                     </div>
                 </div>
