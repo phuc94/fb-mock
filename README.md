@@ -6,4 +6,4 @@ The aim of this project is learning **ReactJs/NextJs** and additional other: **M
 
 ## Current state
 
-This project were deployed to _heroku_ with _MongoDb Atlas_ before but currently unavailable, so you can sadly only review the code structure and such only.
+This project were deployed to _heroku_ with _MongoDb Atlas_ before but currently unavailable, so you can only review the code structure and such.
